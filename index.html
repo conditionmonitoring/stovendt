@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Terminal — Live Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0E14; --panel:#131A24; --panel-2:#1B2330; --border:#232B3A;
+  --text:#E6E8EB; --muted:#7A8699; --mint:#00D9A3; --coral:#FF5C5C; --amber:#FFB454;
+  --mint-dim: rgba(0,217,163,.12); --coral-dim: rgba(255,92,92,.12);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+}
+h1,h2,h3,.display{ font-family:'Space Grotesk',sans-serif; }
+.num{ font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; }
+::selection{ background:var(--mint-dim); }
+
+/* ---- top bar ---- */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px; border-bottom:1px solid var(--border);
+  position:sticky; top:0; background:rgba(11,14,20,.9); backdrop-filter:blur(10px);
+  z-index:50; flex-wrap:wrap; gap:10px;
+}
+.brand{ display:flex; align-items:center; gap:10px; }
+.brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--mint); box-shadow:0 0 10px var(--mint); }
+.brand h1{ font-size:17px; font-weight:600; letter-spacing:.2px; }
+.status-pill{ font-size:11px; padding:4px 10px; border-radius:99px; border:1px solid var(--border); color:var(--muted); }
+.status-pill.live{ color:var(--mint); border-color:rgba(0,217,163,.3); }
+.status-pill.closed{ color:var(--coral); border-color:rgba(255,92,92,.3); }
+.config-btn{
+  background:var(--panel-2); border:1px solid var(--border); color:var(--muted);
+  font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer; font-family:inherit;
+}
+.config-btn:hover{ color:var(--text); border-color:var(--mint); }
+
+/* ---- ticker strip ---- */
+.ticker-strip{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1px; background:var(--border); border-bottom:1px solid var(--border);
+}
+.ticker-card{ background:var(--panel); padding:16px 22px; }
+.ticker-card .label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+.ticker-card .value{ font-size:26px; font-weight:600; }
+.ticker-card .delta{ font-size:13px; margin-top:4px; }
+.up{ color:var(--mint); } .down{ color:var(--coral); } .flat{ color:var(--muted); }
+
+/* ---- nav ---- */
+.tabs{ display:flex; gap:4px; padding:0 24px; border-bottom:1px solid var(--border); overflow-x:auto; }
+.tab{
+  background:none; border:none; color:var(--muted); font-family:inherit; font-size:13px;
+  padding:14px 16px; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap;
+}
+.tab.active{ color:var(--text); border-bottom-color:var(--mint); }
+.tab:hover{ color:var(--text); }
+
+main{ max-width:1280px; margin:0 auto; padding:22px 24px 60px; }
+.panel-view{ display:none; }
+.panel-view.active{ display:block; animation:fade .25s ease; }
+@keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+.grid{ display:grid; gap:16px; }
+.grid-2{ grid-template-columns:1fr 1fr; }
+.grid-3{ grid-template-columns:repeat(3,1fr); }
+@media(max-width:820px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
+
+.card{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px; }
+.card h3{ font-size:13px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:14px; }
+
+table{ width:100%; border-collapse:collapse; font-size:13px; }
+th{ text-align:right; color:var(--muted); font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:.4px; padding:8px 10px; border-bottom:1px solid var(--border); }
+th:first-child, td:first-child{ text-align:left; }
+td{ text-align:right; padding:9px 10px; border-bottom:1px solid rgba(35,43,58,.5); font-family:'IBM Plex Mono',monospace; }
+tr:hover td{ background:var(--panel-2); }
+.strike-col{ color:var(--amber); font-weight:600; }
+
+.controls{ display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; align-items:center; }
+select, input[type=text]{
+  background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+  padding:8px 12px; border-radius:8px; font-family:inherit; font-size:13px;
+}
+button.primary{
+  background:var(--mint); color:#04140F; border:none; font-weight:600;
+  padding:8px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-size:13px;
+}
+button.primary:hover{ filter:brightness(1.08); }
+
+.stat-row{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(35,43,58,.5); font-size:13px; }
+.stat-row:last-child{ border-bottom:none; }
+.stat-row .v{ font-family:'IBM Plex Mono',monospace; font-weight:600; }
+
+.gauge-wrap{ text-align:center; padding:10px 0; }
+.gauge-val{ font-size:34px; font-weight:700; font-family:'IBM Plex Mono',monospace; }
+.gauge-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
+.bar-track{ height:8px; background:var(--panel-2); border-radius:99px; overflow:hidden; margin-top:12px; }
+.bar-fill{ height:100%; background:linear-gradient(90deg,var(--coral),var(--amber),var(--mint)); }
+
+.breadth-bar{ display:flex; height:34px; border-radius:8px; overflow:hidden; margin:14px 0; }
+.breadth-bar div{ display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; font-family:'IBM Plex Mono',monospace; }
+
+.empty-state{ text-align:center; padding:50px 20px; color:var(--muted); }
+.empty-state .icon{ font-size:32px; margin-bottom:10px; }
+.empty-state code{ background:var(--panel-2); padding:2px 8px; border-radius:5px; color:var(--mint); }
+
+.gainer{ color:var(--mint); } .loser{ color:var(--coral); }
+
+.notice{
+  background:var(--panel-2); border:1px solid var(--border); border-left:3px solid var(--amber);
+  padding:12px 14px; border-radius:8px; font-size:12.5px; color:var(--muted); margin-bottom:16px; line-height:1.5;
+}
+
+.modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:100; }
+.modal-backdrop.open{ display:flex; }
+.modal{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:24px; width:min(480px,90vw); }
+.modal h3{ margin-bottom:6px; }
+.modal p{ font-size:12.5px; color:var(--muted); margin-bottom:14px; line-height:1.5; }
+.modal input{ width:100%; margin-bottom:12px; }
+.modal-actions{ display:flex; gap:8px; justify-content:flex-end; }
+.modal-actions button.ghost{ background:none; border:1px solid var(--border); color:var(--muted); padding:8px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-size:13px; }
+
+.loading-dot::after{ content:'···'; animation:blink 1.2s infinite; }
+@keyframes blink{ 0%,100%{opacity:.3;} 50%{opacity:1;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span><h1>Market Terminal</h1></div>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span class="status-pill" id="marketStatusPill">checking…</span>
+    <span class="status-pill" id="lastUpdated">—</span>
+    <button class="config-btn" onclick="openConfig()">⚙ Data Source</button>
+  </div>
+</div>
+
+<div class="ticker-strip" id="tickerStrip">
+  <div class="ticker-card"><div class="label">NIFTY 50</div><div class="value num" id="t-nifty">—</div><div class="delta" id="d-nifty">—</div></div>
+  <div class="ticker-card"><div class="label">Nifty Bank</div><div class="value num" id="t-banknifty">—</div><div class="delta" id="d-banknifty">—</div></div>
+  <div class="ticker-card"><div class="label">Sensex (BSE)</div><div class="value num" id="t-sensex">manual</div><div class="delta" id="d-sensex">not on NSE feed</div></div>
+  <div class="ticker-card"><div class="label">PCR (Nifty)</div><div class="value num" id="t-pcr">—</div><div class="delta" id="d-pcr">Put/Call OI ratio</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-view="overview">Overview</button>
+  <button class="tab" data-view="optionchain">Option Chain</button>
+  <button class="tab" data-view="movers">Gainers / Losers</button>
+  <button class="tab" data-view="breadth">Market Breadth</button>
+  <button class="tab" data-view="quote">Stock Quote</button>
+  <button class="tab" data-view="fiidii">FII / DII</button>
+</div>
+
+<main>
+
+  <!-- OVERVIEW -->
+  <section class="panel-view active" id="view-overview">
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>Advances vs Declines — Nifty 50</h3>
+        <div class="breadth-bar" id="breadthBarMini"><div style="flex:1;background:var(--panel-2);color:var(--muted)">no data</div></div>
+        <div class="stat-row"><span>Advances</span><span class="v up" id="ov-adv">—</span></div>
+        <div class="stat-row"><span>Declines</span><span class="v down" id="ov-dec">—</span></div>
+        <div class="stat-row"><span>Unchanged</span><span class="v" id="ov-unc">—</span></div>
+      </div>
+      <div class="card">
+        <h3>Put/Call Ratio</h3>
+        <div class="gauge-wrap">
+          <div class="gauge-val" id="ov-pcr">—</div>
+          <div class="gauge-label" id="ov-pcr-read">awaiting data</div>
+          <div class="bar-track"><div class="bar-fill" id="ov-pcr-bar" style="width:50%"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Max Pain — Nifty</h3>
+        <div class="gauge-wrap">
+          <div class="gauge-val num" id="ov-maxpain">—</div>
+          <div class="gauge-label">strike with min. option-writer loss</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:16px;">
+      <div class="card">
+        <h3>Top Gainers</h3>
+        <table><thead><tr><th>Symbol</th><th>LTP</th><th>Chg %</th></tr></thead>
+        <tbody id="ov-gainers"><tr><td colspan="3" style="text-align:center;color:var(--muted)">no data</td></tr></tbody></table>
+      </div>
+      <div class="card">
+        <h3>Top Losers</h3>
+        <table><thead><tr><th>Symbol</th><th>LTP</th><th>Chg %</th></tr></thead>
+        <tbody id="ov-losers"><tr><td colspan="3" style="text-align:center;color:var(--muted)">no data</td></tr></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPTION CHAIN -->
+  <section class="panel-view" id="view-optionchain">
+    <div class="controls">
+      <select id="ocSymbol">
+        <option value="NIFTY">NIFTY</option>
+        <option value="BANKNIFTY">BANKNIFTY</option>
+        <option value="FINNIFTY">FINNIFTY</option>
+      </select>
+      <select id="ocExpiry"><option>—</option></select>
+      <button class="primary" onclick="loadOptionChain()">Refresh</button>
+      <span style="color:var(--muted);font-size:12px;">Underlying: <span class="num" id="ocUnderlying">—</span></span>
+    </div>
+    <div class="grid grid-3" style="margin-bottom:16px;">
+      <div class="card"><h3>PCR (OI)</h3><div class="gauge-val" id="oc-pcr">—</div></div>
+      <div class="card"><h3>Total Call OI</h3><div class="gauge-val num" id="oc-callOi" style="color:var(--coral)">—</div></div>
+      <div class="card"><h3>Total Put OI</h3><div class="gauge-val num" id="oc-putOi" style="color:var(--mint)">—</div></div>
+    </div>
+    <div class="card">
+      <h3>Chain (strikes near ATM) · Max Pain: <span class="num" id="oc-maxpain" style="color:var(--amber)">—</span></h3>
+      <table>
+        <thead><tr>
+          <th>Call OI</th><th>Call ΔOI</th><th>Call IV</th><th>Call LTP</th>
+          <th style="text-align:center">Strike</th>
+          <th>Put LTP</th><th>Put IV</th><th>Put ΔOI</th><th>Put OI</th>
+        </tr></thead>
+        <tbody id="oc-body"><tr><td colspan="9" style="text-align:center;color:var(--muted)">Configure a data source to load the chain</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MOVERS -->
+  <section class="panel-view" id="view-movers">
+    <div class="controls">
+      <select id="moversIndex">
+        <option value="NIFTY 50">NIFTY 50</option>
+        <option value="NIFTY BANK">NIFTY BANK</option>
+        <option value="NIFTY MIDCAP 50">NIFTY MIDCAP 50</option>
+        <option value="NIFTY NEXT 50">NIFTY NEXT 50</option>
+      </select>
+      <button class="primary" onclick="loadMovers()">Refresh</button>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Gainers</h3>
+        <table><thead><tr><th>Symbol</th><th>LTP</th><th>Chg</th><th>Chg %</th></tr></thead>
+        <tbody id="mv-gainers"></tbody></table>
+      </div>
+      <div class="card">
+        <h3>Losers</h3>
+        <table><thead><tr><th>Symbol</th><th>LTP</th><th>Chg</th><th>Chg %</th></tr></thead>
+        <tbody id="mv-losers"></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- BREADTH -->
+  <section class="panel-view" id="view-breadth">
+    <div class="controls">
+      <select id="breadthIndex">
+        <option value="NIFTY 50">NIFTY 50</option>
+        <option value="NIFTY BANK">NIFTY BANK</option>
+        <option value="NIFTY 500">NIFTY 500</option>
+      </select>
+      <button class="primary" onclick="loadBreadth()">Refresh</button>
+    </div>
+    <div class="card">
+      <h3 id="breadthTitle">Market Breadth</h3>
+      <div class="breadth-bar" id="breadthBarFull"></div>
+      <div class="grid grid-3" style="margin-top:14px;">
+        <div class="stat-row"><span>Advances</span><span class="v up" id="br-adv">—</span></div>
+        <div class="stat-row"><span>Declines</span><span class="v down" id="br-dec">—</span></div>
+        <div class="stat-row"><span>Unchanged</span><span class="v" id="br-unc">—</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="panel-view" id="view-quote">
+    <div class="controls">
+      <input type="text" id="quoteSymbol" placeholder="e.g. RELIANCE, TCS, INFY" style="width:220px;">
+      <button class="primary" onclick="loadQuote()">Get Quote</button>
+    </div>
+    <div class="card" id="quoteCard">
+      <div class="empty-state"><div class="icon">📈</div>Search a symbol to see its live quote.</div>
+    </div>
+  </section>
+
+  <!-- FII/DII -->
+  <section class="panel-view" id="view-fiidii">
+    <div class="notice">
+      FII/DII cash-market activity isn't published on NSE's live API — it's released once daily (after market close) via NSE's reports section or NSDL/exchange bulletins, not as a free real-time endpoint. Log today's figures here manually; they're saved locally in this dashboard.
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Add Today's Figures (₹ Cr)</h3>
+        <div class="controls" style="flex-direction:column; align-items:stretch;">
+          <input type="text" id="fiiBuy" placeholder="FII Buy value">
+          <input type="text" id="fiiSell" placeholder="FII Sell value">
+          <input type="text" id="diiBuy" placeholder="DII Buy value">
+          <input type="text" id="diiSell" placeholder="DII Sell value">
+          <button class="primary" onclick="saveFiiDii()">Save Entry</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Log</h3>
+        <table><thead><tr><th>Date</th><th>FII Net</th><th>DII Net</th></tr></thead>
+        <tbody id="fiiLog"><tr><td colspan="3" style="text-align:center;color:var(--muted)">no entries yet</td></tr></tbody></table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Config modal -->
+<div class="modal-backdrop" id="configModal">
+  <div class="modal">
+    <h3>Connect your data source</h3>
+    <p>This dashboard needs a small proxy to pull NSE data (browsers can't call nseindia.com directly). Deploy the included <code>worker.js</code> to Cloudflare Workers (free) and paste its URL below. See the README for the 5-minute setup.</p>
+    <input type="text" id="workerUrlInput" placeholder="https://your-worker.workers.dev">
+    <div class="modal-actions">
+      <button class="ghost" onclick="closeConfig()">Cancel</button>
+      <button class="primary" onclick="saveConfig()">Save & Connect</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let WORKER_URL = '';
+let refreshTimer = null;
+
+async function initConfig(){
+  try{
+    const stored = await window.storage.get('worker-url');
+    if(stored) WORKER_URL = stored.value;
+  }catch(e){ /* no key saved yet */ }
+  if(!WORKER_URL){ openConfig(); }
+  else{ startAutoRefresh(); }
+}
+function openConfig(){
+  document.getElementById('workerUrlInput').value = WORKER_URL;
+  document.getElementById('configModal').classList.add('open');
+}
+function closeConfig(){ document.getElementById('configModal').classList.remove('open'); }
+async function saveConfig(){
+  const val = document.getElementById('workerUrlInput').value.trim().replace(/\/$/,'');
+  if(!val) return;
+  WORKER_URL = val;
+  try{ await window.storage.set('worker-url', val); }catch(e){ console.error(e); }
+  closeConfig();
+  startAutoRefresh();
+}
+
+function startAutoRefresh(){
+  refreshAll();
+  if(refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = setInterval(refreshAll, 15000);
+}
+function refreshAll(){
+  loadIndices();
+  loadMarketStatus();
+  loadOptionChain();
+  loadMovers();
+  loadBreadth();
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+}
+
+async function apiGet(path){
+  if(!WORKER_URL) throw new Error('no worker configured');
+  const res = await fetch(WORKER_URL + path);
+  if(!res.ok) throw new Error('upstream error ' + res.status);
+  return res.json();
+}
+
+function fmtDelta(change, pChange){
+  const cls = change > 0 ? 'up' : change < 0 ? 'down' : 'flat';
+  const sign = change > 0 ? '+' : '';
+  return `<span class="${cls}">${sign}${change?.toFixed(2)} (${sign}${pChange?.toFixed(2)}%)</span>`;
+}
+
+async function loadMarketStatus(){
+  const pill = document.getElementById('marketStatusPill');
+  try{
+    const data = await apiGet('/api/market-status');
+    const state = (data?.marketState || []).find(m => m.market === 'Capital Market') || data?.marketState?.[0];
+    if(state && /open/i.test(state.marketStatus)){
+      pill.textContent = 'Market Open'; pill.className = 'status-pill live';
+    } else {
+      pill.textContent = state?.marketStatus || 'Market Closed'; pill.className = 'status-pill closed';
+    }
+  }catch(e){ pill.textContent = 'status unavailable'; pill.className='status-pill'; }
+}
+
+async function loadIndices(){
+  try{
+    const rows = await apiGet('/api/indices');
+    const nifty = rows.find(r => r.index === 'NIFTY 50');
+    const bank = rows.find(r => r.index === 'NIFTY BANK');
+    if(nifty){
+      document.getElementById('t-nifty').textContent = nifty.last?.toLocaleString('en-IN');
+      document.getElementById('d-nifty').innerHTML = fmtDelta(nifty.change, nifty.pChange);
+      document.getElementById('ov-adv').textContent = nifty.advances ?? '—';
+      document.getElementById('ov-dec').textContent = nifty.declines ?? '—';
+      document.getElementById('ov-unc').textContent = nifty.unchanged ?? '—';
+      renderMiniBreadth(nifty.advances, nifty.declines, nifty.unchanged);
+    }
+    if(bank){
+      document.getElementById('t-banknifty').textContent = bank.last?.toLocaleString('en-IN');
+      document.getElementById('d-banknifty').innerHTML = fmtDelta(bank.change, bank.pChange);
+    }
+  }catch(e){ console.error('indices', e); }
+}
+
+function renderMiniBreadth(adv, dec, unc){
+  const total = (adv||0)+(dec||0)+(unc||0);
+  const el = document.getElementById('breadthBarMini');
+  if(!total){ return; }
+  el.innerHTML = `
+    <div style="flex:${adv};background:var(--mint-dim);color:var(--mint)">${adv}</div>
+    <div style="flex:${dec};background:var(--coral-dim);color:var(--coral)">${dec}</div>
+    <div style="flex:${unc||1};background:var(--panel-2);color:var(--muted)">${unc}</div>`;
+}
+
+async function loadOptionChain(){
+  const symbol = document.getElementById('ocSymbol').value;
+  try{
+    const data = await apiGet('/api/option-chain?symbol=' + symbol);
+    document.getElementById('ocUnderlying').textContent = data.underlyingValue;
+    document.getElementById('oc-pcr').textContent = data.pcr ?? '—';
+    document.getElementById('oc-callOi').textContent = data.totalCallOI?.toLocaleString('en-IN');
+    document.getElementById('oc-putOi').textContent = data.totalPutOI?.toLocaleString('en-IN');
+    document.getElementById('oc-maxpain').textContent = data.maxPain ?? '—';
+    document.getElementById('t-pcr').textContent = data.pcr ?? '—';
+    document.getElementById('ov-pcr').textContent = data.pcr ?? '—';
+    document.getElementById('ov-maxpain').textContent = data.maxPain ?? '—';
+    if(data.pcr != null){
+      const pct = Math.min(100, (data.pcr/2)*100);
+      document.getElementById('ov-pcr-bar').style.width = pct + '%';
+      document.getElementById('ov-pcr-read').textContent = data.pcr > 1.2 ? 'Oversold bias (put-heavy)' : data.pcr < 0.7 ? 'Overbought bias (call-heavy)' : 'Neutral zone';
+    }
+
+    // expiry dropdown
+    const expSel = document.getElementById('ocExpiry');
+    if(data.expiryDates?.length){
+      expSel.innerHTML = data.expiryDates.slice(0,6).map(d => `<option>${d}</option>`).join('');
+    }
+    const nearestExpiry = expSel.value || data.expiryDates?.[0];
+
+    // filter near-ATM strikes (10 above/below) for the nearest expiry
+    const rowsForExpiry = data.rows.filter(r => r.expiryDate === nearestExpiry);
+    const atmIndex = rowsForExpiry.reduce((best,r,i) =>
+      Math.abs(r.strikePrice - data.underlyingValue) < Math.abs(rowsForExpiry[best].strikePrice - data.underlyingValue) ? i : best, 0);
+    const windowRows = rowsForExpiry.slice(Math.max(0, atmIndex-10), atmIndex+10);
+
+    document.getElementById('oc-body').innerHTML = windowRows.map(r => `
+      <tr>
+        <td>${r.CE?.oi?.toLocaleString('en-IN') ?? '—'}</td>
+        <td class="${r.CE?.changeOi>0?'up':'down'}">${r.CE?.changeOi?.toLocaleString('en-IN') ?? '—'}</td>
+        <td>${r.CE?.iv ?? '—'}</td>
+        <td>${r.CE?.ltp ?? '—'}</td>
+        <td class="strike-col" style="text-align:center">${r.strikePrice}</td>
+        <td>${r.PE?.ltp ?? '—'}</td>
+        <td>${r.PE?.iv ?? '—'}</td>
+        <td class="${r.PE?.changeOi>0?'up':'down'}">${r.PE?.changeOi?.toLocaleString('en-IN') ?? '—'}</td>
+        <td>${r.PE?.oi?.toLocaleString('en-IN') ?? '—'}</td>
+      </tr>`).join('');
+  }catch(e){ console.error('option chain', e); }
+}
+
+async function loadMovers(){
+  const index = document.getElementById('moversIndex').value;
+  try{
+    const data = await apiGet('/api/gainers-losers?index=' + encodeURIComponent(index));
+    const rowHtml = s => `<tr><td>${s.symbol}</td><td>${s.ltp}</td><td class="${s.change>0?'gainer':'loser'}">${s.change}</td><td class="${s.pChange>0?'gainer':'loser'}">${s.pChange}%</td></tr>`;
+    document.getElementById('mv-gainers').innerHTML = data.gainers.map(rowHtml).join('');
+    document.getElementById('mv-losers').innerHTML = data.losers.map(rowHtml).join('');
+    document.getElementById('ov-gainers').innerHTML = data.gainers.slice(0,5).map(s => `<tr><td>${s.symbol}</td><td>${s.ltp}</td><td class="gainer">${s.pChange}%</td></tr>`).join('');
+    document.getElementById('ov-losers').innerHTML = data.losers.slice(0,5).map(s => `<tr><td>${s.symbol}</td><td>${s.ltp}</td><td class="loser">${s.pChange}%</td></tr>`).join('');
+  }catch(e){ console.error('movers', e); }
+}
+
+async function loadBreadth(){
+  const index = document.getElementById('breadthIndex').value;
+  try{
+    const data = await apiGet('/api/breadth?index=' + encodeURIComponent(index));
+    document.getElementById('breadthTitle').textContent = 'Market Breadth — ' + data.index;
+    document.getElementById('br-adv').textContent = data.advances;
+    document.getElementById('br-dec').textContent = data.declines;
+    document.getElementById('br-unc').textContent = data.unchanged;
+    const total = (data.advances||0)+(data.declines||0)+(data.unchanged||0) || 1;
+    document.getElementById('breadthBarFull').innerHTML = `
+      <div style="flex:${data.advances};background:var(--mint-dim);color:var(--mint)">${data.advances} Adv</div>
+      <div style="flex:${data.declines};background:var(--coral-dim);color:var(--coral)">${data.declines} Dec</div>
+      <div style="flex:${data.unchanged||1};background:var(--panel-2);color:var(--muted)">${data.unchanged} Unch</div>`;
+  }catch(e){ console.error('breadth', e); }
+}
+
+async function loadQuote(){
+  const symbol = document.getElementById('quoteSymbol').value.trim().toUpperCase();
+  if(!symbol) return;
+  const card = document.getElementById('quoteCard');
+  card.innerHTML = '<div class="empty-state loading-dot">Loading</div>';
+  try{
+    const q = await apiGet('/api/quote?symbol=' + encodeURIComponent(symbol));
+    const cls = q.change > 0 ? 'up' : q.change < 0 ? 'down' : 'flat';
+    card.innerHTML = `
+      <h3 style="text-transform:none;color:var(--text);font-size:16px;">${q.companyName || q.symbol} <span style="color:var(--muted);font-size:12px;">${q.symbol}</span></h3>
+      <div class="gauge-val num" style="margin:10px 0;">₹${q.last} <span class="${cls}" style="font-size:16px;">${q.change>0?'+':''}${q.change} (${q.pChange}%)</span></div>
+      <div class="grid grid-3">
+        <div class="stat-row"><span>Open</span><span class="v">${q.open}</span></div>
+        <div class="stat-row"><span>Day High</span><span class="v">${q.dayHigh}</span></div>
+        <div class="stat-row"><span>Day Low</span><span class="v">${q.dayLow}</span></div>
+        <div class="stat-row"><span>Prev Close</span><span class="v">${q.prevClose}</span></div>
+        <div class="stat-row"><span>52w High</span><span class="v">${q.yearHigh}</span></div>
+        <div class="stat-row"><span>52w Low</span><span class="v">${q.yearLow}</span></div>
+      </div>`;
+  }catch(e){ card.innerHTML = `<div class="empty-state">Couldn't fetch ${symbol}. Check the symbol or your data source connection.</div>`; }
+}
+
+async function loadFiiDiiLog(){
+  try{
+    const listRes = await window.storage.list('fiidii:', false);
+    const keys = listRes?.keys || [];
+    if(!keys.length) return;
+    const entries = [];
+    for(const k of keys){
+      const r = await window.storage.get(k.key || k, false);
+      if(r) entries.push(JSON.parse(r.value));
+    }
+    entries.sort((a,b) => b.date.localeCompare(a.date));
+    document.getElementById('fiiLog').innerHTML = entries.map(e => `
+      <tr><td>${e.date}</td>
+      <td class="${e.fiiNet>=0?'gainer':'loser'}">${e.fiiNet.toFixed(0)}</td>
+      <td class="${e.diiNet>=0?'gainer':'loser'}">${e.diiNet.toFixed(0)}</td></tr>`).join('');
+  }catch(e){ /* nothing saved yet */ }
+}
+async function saveFiiDii(){
+  const fb = parseFloat(document.getElementById('fiiBuy').value) || 0;
+  const fs = parseFloat(document.getElementById('fiiSell').value) || 0;
+  const db = parseFloat(document.getElementById('diiBuy').value) || 0;
+  const ds = parseFloat(document.getElementById('diiSell').value) || 0;
+  const date = new Date().toISOString().slice(0,10);
+  const entry = { date, fiiNet: fb-fs, diiNet: db-ds };
+  try{
+    await window.storage.set('fiidii:' + date, JSON.stringify(entry), false);
+    loadFiiDiiLog();
+    ['fiiBuy','fiiSell','diiBuy','diiSell'].forEach(id => document.getElementById(id).value = '');
+  }catch(e){ console.error(e); }
+}
+
+// tab switching
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel-view').forEach(v => v.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('view-' + btn.dataset.view).classList.add('active');
+  });
+});
+
+document.getElementById('ocSymbol').addEventListener('change', loadOptionChain);
+document.getElementById('moversIndex').addEventListener('change', loadMovers);
+document.getElementById('breadthIndex').addEventListener('change', loadBreadth);
+
+initConfig();
+loadFiiDiiLog();
+</script>
+</body>
+</html>
