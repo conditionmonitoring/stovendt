@@ -111,6 +111,8 @@ body.col{--sw:68px}
 .usr{display:flex;gap:8px;align-items:center;padding:4px 4px 4px 6px;border:1px solid var(--bd);border-radius:14px;background:var(--glass)}
 .usr div{display:flex;flex-direction:column;line-height:1.15;font-size:13px}.usr small{color:var(--mu);font-size:11px}
 .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));color:#fff;display:grid;place-items:center;font-weight:700;text-transform:uppercase}
+.ib{width:38px;height:38px;padding:0;display:grid;place-items:center;font-size:17px}
+.av{font-size:16px}
 .zc{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px}.zc .btn{padding:5px 11px}.zc small{color:var(--mu);font-size:11px}
 @media(min-width:901px){body.col .sl,body.col .sbh b,body.col .sbf span{display:none}body.col .ic{cursor:pointer}body.col .sbf em{display:block}}
 @media(max-width:900px){body{padding-left:14px}#sb{width:244px;transform:translateX(-105%)}body.mo #sb{transform:none;box-shadow:var(--sh)}#mm{display:inline-flex}.usr div{display:none}}
@@ -119,6 +121,31 @@ body.col{--sw:68px}
 @media(min-width:2200px){body{font-size:19px}.wrap{max-width:2400px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media print{body{background:#fff;color:#000;padding:0}.glass{box-shadow:none;backdrop-filter:none;background:#fff;border-color:#bbb;break-inside:avoid}.hb,.bar-f,#toasts,#md,#ld,.compass{display:none!important}.rings{max-height:none}.kpi b{color:#4c1d95;-webkit-text-fill-color:#4c1d95}}
+/* ---- compact phone layout ---- */
+@media(max-width:700px){
+body{padding:8px}
+.glass{padding:10px;border-radius:14px}
+section{margin-top:10px}
+h2{font-size:14px;margin-bottom:8px}
+header{flex-wrap:nowrap;gap:8px}
+.brand{flex:1;min-width:0;gap:8px}
+.brand .logo,.brand p,#clock{display:none}
+.brand h1{font-size:14.5px}
+.hb{flex:none;gap:6px;flex-wrap:nowrap}
+.ib,#mm{width:36px;height:36px;padding:0;font-size:16px;justify-content:center;align-items:center}
+.usr{padding:0;border:0;background:none}.av{display:none}
+.bar-f{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.seg{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.seg .btn{padding:7px 2px;font-size:12.5px}
+.bar-f select,.bar-f input[type=search]{width:100%;padding:7px 8px;font-size:13px}
+.bar-f label{font-size:12px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.bar-f input[type=range]{flex:1;min-width:0;width:100%}
+#fQ{grid-column:1/-1}
+.kpis{grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.kpi{padding:9px 10px}.kpi span{font-size:11px}.kpi b{font-size:20px;margin-top:2px}
+.sc svg{width:76px;height:76px}
+.g3,.g2{gap:8px}
+}
 </style>
 </head>
 <body>
@@ -129,16 +156,16 @@ body.col{--sw:68px}
   <div class="si" id="upl"><div class="ic">⬆</div><div class="sl"><small id="uls">🔒 Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
   <div class="si"><div class="ic">⇩</div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
   <div class="si"><div class="ic">⛶</div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
-  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring. All Rights Reserved</b>Created by Sourav Biswal</span><em>CM</em></div>
+  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>MED</em></div>
 </aside>
 <div class="wrap" id="app">
 <header class="glass">
   <div class="brand"><button class="btn" id="mm" aria-label="Menu">☰</button><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
     <div><h1>Blast Furnace Stove NDT Digital Twin</h1><p>Buffing and UT progress · 3 hot blast stoves · 22 rings each</p></div></div>
   <div class="hb"><span id="clock"></span>
-    <button class="btn" id="bR" title="Refresh (R)">⟳ Refresh</button>
-    <button class="btn" id="bT" title="Day / night (T)">🌙 Night mode</button>
-    <div class="usr"><span class="av" id="av"></span><div><b id="un"></b><small id="ur"></small></div><button class="btn" id="bL">Log out</button></div>
+    <button class="btn ib" id="bR" title="Refresh (R)" aria-label="Refresh">⟳</button>
+    <button class="btn ib" id="bT" title="Switch to night mode (T)" aria-label="Day or night mode">🌙</button>
+    <div class="usr"><span class="av" id="av"></span><button class="btn ib" id="bL" aria-label="Admin login"></button></div>
   </div>
 </header>
 
@@ -192,11 +219,6 @@ body.col{--sw:68px}
     <div class="obl" id="obl"></div></div>
 </section>
 
-<section><h2>Trend analytics <small id="hn"></small></h2>
-  <div class="g3"><div class="glass"><h2>Daily progress</h2><div id="c1"></div></div><div class="glass"><h2>Buffing vs UT trend</h2><div id="c2"></div></div><div class="glass"><h2>Completion forecast (days)</h2><div id="c3"></div></div></div></section>
-
-<section><h2>Productivity analytics</h2><div class="prod" id="prod"></div>
-  <div class="g2"><div class="glass"><h2>Work distribution across stoves</h2><div id="c4"></div></div><div class="glass"><h2>Observation severity index</h2><div id="c5"></div></div></div></section>
 </div>
 <div id="lgn"><form class="glass" id="lf"><h2 style="font-size:20px;margin:0">Admin sign-in</h2><small style="color:var(--mu)">Needed to edit data or upload a CSV. Viewing needs no login.</small><input id="lu" placeholder="User ID" autocomplete="username" required><input id="lp" type="password" placeholder="Password" autocomplete="current-password" required><div id="le"></div><div style="display:flex;gap:8px"><button class="btn on" type="submit" style="flex:1">Sign in</button><button class="btn" type="button" id="lc">Cancel</button></div></form></div>
 <div id="md" role="dialog" aria-modal="true"><div class="glass" id="mb"></div></div>
@@ -323,7 +345,7 @@ const esc = s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&
 
 /* ================= KPIs & stove cards ================= */
 function renderKPI(){const a=agg(scope());
-  const k=[['Total rings',a.n,0,''],['Total circumference',a.c,0,' m'],['Buffing',a.bp,1,'%'],['UT',a.up,1,'%'],['Remaining length',a.rem,0,' m'],['Completed rings',a.done,0,''],['In progress rings',a.prog,0,''],['Pending rings',a.pend,0,''],['Observations',a.obs,0,'']];
+  const k=[['Total rings',a.n,0,''],['Completed rings',a.done,0,''],['In progress rings',a.prog,0,''],['Pending rings',a.pend,0,''],['Observations',a.obs,0,'']];
   $('#kpis').innerHTML=k.map(x=>`<div class="glass kpi hv"><span>${x[0]}</span><b data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</b></div>`).join('');count($('#kpis'));}
 function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const a=agg(S.data.filter(r=>r.st===s)),R=42,C=2*Math.PI*R,r2=30,C2=2*Math.PI*r2;
   return `<div class="glass hv sc ${S.stove===s?'act':''}" data-s="${s}" tabindex="0"><svg viewBox="0 0 104 104"><g transform="rotate(-90 52 52)" fill="none" stroke-width="9" stroke-linecap="round"><circle cx="52" cy="52" r="${R}" stroke="rgba(127,127,170,.25)"/><circle cx="52" cy="52" r="${R}" stroke="#06B6D4" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C*(1-a.up/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/><circle cx="52" cy="52" r="${r2}" stroke="rgba(127,127,170,.25)" stroke-width="7"/><circle cx="52" cy="52" r="${r2}" stroke="#A855F7" stroke-width="7" stroke-dasharray="${C2}" stroke-dashoffset="${C2}" data-o="${C2*(1-a.bp/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/></g><text x="52" y="57" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">${f1(a.up)}%</text></svg>
@@ -409,26 +431,12 @@ function renderCharts(){
     dataLabels:{enabled:true,formatter:v=>v+'%',style:{fontSize:'10px'}},stroke:{width:2,colors:['#0b0b14']},
     plotOptions:{heatmap:{radius:3,colorScale:{ranges:[{from:0,to:0,color:'#7f1d1d',name:'0%'},{from:.1,to:25,color:'#ef4444',name:'1–25%'},{from:25.1,to:50,color:'#f97316',name:'26–50%'},{from:50.1,to:75,color:'#eab308',name:'51–75%'},{from:75.1,to:99.9,color:'#84cc16',name:'76–99%'},{from:100,to:100,color:'#22c55e',name:'100%'}]}}},
     tooltip:{y:{formatter:v=>v+'% UT complete'}},xaxis:{position:'top'}});
-  const lab=S.hist.map(h=>h.d.slice(5)),cb=cum(0),cu=cum(1),tot=scope().reduce((s,r)=>s+r.c,0)||1;
-  mk('c1',{chart:{type:'area'},series:[{name:'UT m/day',data:dlt(cu)},{name:'Buffing m/day',data:dlt(cb)}],xaxis:{categories:lab},colors:['#06B6D4','#A855F7'],stroke:{curve:'smooth',width:2},fill:{type:'gradient',gradient:{opacityFrom:.55,opacityTo:.05}},dataLabels:{enabled:false},yaxis:{title:{text:'metres'}}});
-  mk('c2',{chart:{type:'line'},series:[{name:'Buffing %',data:cb.map(v=>+f1(v/tot*100))},{name:'UT %',data:cu.map(v=>+f1(v/tot*100))}],xaxis:{categories:lab},colors:['#A855F7','#06B6D4'],stroke:{curve:'smooth',width:3},markers:{size:4},yaxis:{max:100,min:0}});
-  const fc=STOVES.map((s,i)=>{const u=S.hist.map(h=>h.v[i][1]),rate=Math.max((u[u.length-1]-u[0])/Math.max(1,u.length-1),.5),a=agg(S.data.filter(r=>r.st===s));return {rate,days:+(a.rem/rate).toFixed(1)};});
-  mk('c3',{chart:{type:'bar'},series:[{name:'Days to finish UT',data:fc.map(x=>x.days)}],xaxis:{categories:STOVES},colors:['#7C3AED'],plotOptions:{bar:{borderRadius:6,distributed:true,columnWidth:'50%'}},dataLabels:{enabled:true,formatter:v=>v+' d'},legend:{show:false}});
-  S.fc=fc;
-  const per=STOVES.map(s=>agg(S.data.filter(r=>r.st===s)));
-  mk('c4',{chart:{type:'donut',height:290},series:per.map(a=>a.u),labels:STOVES,colors:['#7C3AED','#06B6D4','#A855F7'],tooltip:{y:{formatter:v=>v+' m UT done'}},plotOptions:{pie:{donut:{labels:{show:true,total:{show:true,label:'UT metres',formatter:w=>w.globals.seriesTotals.reduce((x,y)=>x+y,0)}}}}}});
-  const sv=STOVES.map(s=>S.data.filter(r=>r.st===s).reduce((t,r)=>t+r.obs.reduce((x,o)=>x+o.sev,0),0));
-  mk('c5',{chart:{type:'bar',height:290},series:[{name:'Severity index',data:sv}],xaxis:{categories:STOVES},colors:['#ef4444'],plotOptions:{bar:{borderRadius:6,columnWidth:'45%'}},dataLabels:{enabled:true},tooltip:{y:{formatter:v=>v+' pts (High 3 · Medium 2 · Low 1)'}}});}
-function renderProd(){const a=agg(scope()),cu=cum(1),cb=cum(0),dU=dlt(cu).pop()||0,dB=dlt(cb).pop()||0,ix=idx(),
-  rate=ix.reduce((s,i)=>s+S.fc[i].rate,0),proj=Math.min(100,a.up+rate*7/(a.c||1)*100),eta=rate?iso(Date.now()+Math.ceil(a.rem/rate)*864e5):'–';
-  $('#hn').textContent=S.sim?'Illustrative 7-day back-cast – real daily snapshots build up as you upload a CSV each day':'Built from your daily CSV snapshots';
-  $('#prod').innerHTML=[['Daily UT metres',dU,0,' m'],['Daily buffing metres',dB,0,' m'],['Remaining UT metres',a.rem,0,' m'],['Projected UT in 7 days',proj,1,'%'],['Avg UT rate',rate,1,' m/day']].map(x=>`<div class="glass hv"><span>${x[0]}</span><b data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</b></div>`).join('')+`<div class="glass hv"><span>Estimated finish</span><b>${eta}</b></div>`;count($('#prod'));}
-
+}
 /* ================= Render orchestration ================= */
 function render(){
   $$('#seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.s===S.stove));
   if(S.stove!=='All')S.twin=S.stove;
-  renderKPI();renderCmp();drawTwin();renderRings();renderObs();renderCharts();renderProd();}
+  renderKPI();renderCmp();drawTwin();renderRings();renderObs();renderCharts();}
 /* ================= Cloud (Supabase) + CSV data sources ================= */
 const SB_URL='https://lgyladuiyezqccyjxqgn.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxneWxhZHVpeWV6cWNjeWp4cWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDEyMTksImV4cCI6MjA3ODUxNzIxOX0.O-K3aJkcdvnj0k3ltu37AK3hrW2ibZCZbwVy9SDTBZg';
@@ -461,21 +469,21 @@ function fillForm(st,ring){$('#aS').value=st;$('#aR').value=ring;const r=S.data.
 async function saveRing(e){e.preventDefault();if(S.role!=='admin')return toast('Only admin can save');if(!sb)return toast('Supabase not available');
   const c=+$('#aC').value,b=+$('#aB').value,u=+$('#aU').value;
   if(b>c||u>c)return toast('Buffing and UT cannot exceed the circumference');
-  const row={stove:$('#aS').value,ring:+$('#aR').value,circumference:c,buffing_completed:b,ut_completed:u,observations:$('#aO').value.trim()||null,updated_by:S.user};
+  const row={stove:$('#aS').value,ring:+$('#aR').value,circumference:c,buffing_completed:b,ut_completed:u,observations:$('#aO').value.trim(),updated_by:S.user};
   const {error}=await sb.from(TABLE).upsert(row,{onConflict:'stove,ring'});
   if(error)return toast('Save failed: '+error.message);
   await fetchCloud();S.src='cloud';$('#src').value='cloud';apply(`Saved ${row.stove} Ring-${row.ring} to cloud`);}
 async function pushCSV(){if(S.role!=='admin')return;if(!S.csv.length)return toast('Upload a CSV first');
   if(!confirm(`Upsert ${S.csv.length} CSV rows into the cloud table? Existing rings will be overwritten.`))return;
-  const rows=S.csv.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw||null,updated_by:S.user}));
+  const rows=S.csv.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw||'',updated_by:S.user}));
   for(let i=0;i<rows.length;i+=200){const {error}=await sb.from(TABLE).upsert(rows.slice(i,i+200),{onConflict:'stove,ring'});if(error)return toast('Push failed: '+error.message);}
   await fetchCloud();S.src='cloud';$('#src').value='cloud';apply(`Pushed ${rows.length} rows to cloud`);}
 
 /* ================= Login ================= */
 function setRole(user){S.user=user||'Guest';S.role=user?USERS[user].role:'viewer';
   try{user?sessionStorage.setItem('stoveUser',user):sessionStorage.removeItem('stoveUser');}catch(e){}
-  const ad=S.role==='admin';$('#av').textContent=S.user[0];$('#un').textContent=S.user;$('#ur').textContent=ad?'Admin':'View only';
-  $('#bL').textContent=user?'Log out':'🔒 Admin login';$('#af').hidden=!ad;$('#alock').hidden=ad;$('#uls').textContent=ad?'Admin only':'🔒 Admin login required';}
+  const ad=S.role==='admin';$('#av').textContent=ad?'🛡':'👤';$('#av').title=S.user+' · '+(ad?'Admin':'View only');
+  $('#bL').textContent=user?'⎋':'🔒';$('#bL').title=user?'Log out':'Admin login';$('#af').hidden=!ad;$('#alock').hidden=ad;$('#uls').textContent=ad?'Admin only':'🔒 Admin login required';}
 function askLogin(then){S.pending=then||null;$('#le').textContent='';$('#lgn').style.display='grid';$('#lu').focus();}
 function closeLogin(){$('#lgn').style.display='none';S.pending=null;}
 function enter(user){setRole(user);$('#lgn').style.display='none';toast('Signed in as '+user);const p=S.pending;S.pending=null;if(p&&S.role==='admin')p();}
@@ -502,7 +510,7 @@ function exportCSV(){const rows=S.data.map(r=>({Stove:r.st,Ring:r.ring,Circumfer
 function doExport(k){$('#xm').classList.remove('open');if(k==='png')exportPNG();else if(k==='csv')exportCSV();else{toast(k==='pdf'?'Choose "Save as PDF" in the print dialog':'Opening print view');setTimeout(()=>window.print(),400);}}
 
 /* ================= Theme, fullscreen, refresh ================= */
-function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;$('#bT').textContent=t==='dark'?'☀ Day mode':'🌙 Night mode';if(S.data.length)renderCharts();}
+function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;$('#bT').textContent=t==='dark'?'☀':'🌙';$('#bT').title=t==='dark'?'Switch to day mode (T)':'Switch to night mode (T)';if(S.data.length)renderCharts();}
 function fullscreen(){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(e){toast('Fullscreen not available here');}}
 async function refresh(silent){await fetchCloud();apply(silent?'':'Refreshed');if(!silent&&S.fallback===false&&S.online)toast('Cloud data refreshed');}
 
