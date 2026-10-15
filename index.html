@@ -44,7 +44,7 @@ header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:s
 input[type=range]{accent-color:var(--s);width:110px}
 /* grids */
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
-.kpi{padding:14px}.kpi span{color:var(--mu);font-size:12px}.kpi b{display:block;font-size:clamp(20px,2.4vw,30px);margin-top:4px;background:linear-gradient(90deg,#fff,var(--s));-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi{padding:14px}.kpi span{color:var(--mu);font-size:12px}.kpi i{font-style:normal}.kpi small{font-size:.58em;font-weight:600}.kpi b{display:block;font-size:clamp(20px,2.4vw,30px);margin-top:4px;background:linear-gradient(90deg,#fff,var(--s));-webkit-background-clip:text;background-clip:text;color:transparent}
 :root[data-theme=light] .kpi b{background:linear-gradient(90deg,var(--p),var(--s));-webkit-background-clip:text;background-clip:text}
 .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
 .g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
@@ -171,12 +171,12 @@ header{flex-wrap:nowrap;gap:8px}
   <div class="si" id="upl"><div class="ic">⬆</div><div class="sl"><small id="uls">🔒 Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
   <div class="si"><div class="ic">⇩</div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
   <div class="si"><div class="ic">⛶</div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
-  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>CMC</em></div>
+  <div class="sbf"><span><b>Copyright © 2025 Condition Monitoring</b>Developed by Sourav Biswal</span><em>CMC</em></div>
 </aside>
 <div class="wrap" id="app">
 <header class="glass">
   <div class="brand"><button class="btn" id="mm" aria-label="Menu">☰</button><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
-    <div><h1>Blast Furnace Stove NDT Digital Tracker</h1><p>Buffing and UT Progress · 3 Hot Blast Stoves · 22 Rings Each</p></div></div>
+    <div><h1>Blast Furnace Stove NDT Digital Tracker</h1><p>Buffing and UT progress · 3 hot blast stoves · 22 rings each</p></div></div>
   <div class="hb"><span class="live" id="lv" title="Cloud status"><i></i><span id="lt">LIVE</span></span><span id="clock"></span>
     <button class="btn ib" id="bR" title="Refresh (R)" aria-label="Refresh">⟳</button>
     <button class="btn ib" id="bT" title="Switch to night mode (T)" aria-label="Day or night mode">🌙</button>
@@ -363,8 +363,8 @@ const esc = s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&
 
 /* ================= KPIs & stove cards ================= */
 function renderKPI(){const a=agg(scope());
-  const k=[['Total rings',a.n,0,''],['Completed rings',a.done,0,''],['In progress rings',a.prog,0,''],['Pending rings',a.pend,0,''],['Observations',a.obs,0,'']];
-  $('#kpis').innerHTML=k.map(x=>`<div class="glass kpi hv"><span>${x[0]}</span><b data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</b></div>`).join('');count($('#kpis'));}
+  const bd=scope().filter(r=>r.b>=r.c).length,k=[['Total rings',a.n,0,''],['Buffing completed rings',bd,0,'',a.bp],['UT completed rings',a.done,0,'',a.up],['Completed rings',a.done,0,''],['In progress rings',a.prog,0,''],['Pending rings',a.pend,0,''],['Observations',a.obs,0,'']];
+  $('#kpis').innerHTML=k.map(x=>`<div class="glass kpi hv"><span>${x[0]}</span><b><i data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</i>${x[4]===undefined?'':` <small>(<i data-v="${x[4]}" data-d="1" data-s="%">0</i>)</small>`}</b></div>`).join('');count($('#kpis'));}
 function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const rs=S.data.filter(r=>r.st===s),a=agg(rs),cnt=rs.reduce((c,r)=>(c[band(r.up)]++,c),[0,0,0,0,0,0]),R=42,C=2*Math.PI*R,r2=30,C2=2*Math.PI*r2;
   return `<div class="glass hv sc ${S.stove===s?'act':''}" data-s="${s}" tabindex="0"><svg viewBox="0 0 104 104"><g transform="rotate(-90 52 52)" fill="none" stroke-width="9" stroke-linecap="round"><circle cx="52" cy="52" r="${R}" stroke="rgba(127,127,170,.25)"/><circle cx="52" cy="52" r="${R}" stroke="#06B6D4" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C*(1-a.up/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/><circle cx="52" cy="52" r="${r2}" stroke="rgba(127,127,170,.25)" stroke-width="7"/><circle cx="52" cy="52" r="${r2}" stroke="#A855F7" stroke-width="7" stroke-dasharray="${C2}" stroke-dashoffset="${C2}" data-o="${C2*(1-a.bp/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/></g><text x="52" y="57" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">${f1(a.up)}%</text></svg>
   <div><h2 style="margin:0">${s}</h2><p>Buffing <b>${f1(a.bp)}%</b> · UT <b>${f1(a.up)}%</b></p><p>Rings completed <b>${a.done}/${a.n}</b></p><p>Observations <b style="color:#ef4444">${a.obs}</b></p><div class="stack">${cnt.map((n,i)=>`<i title="${LBL[i]}: ${n} rings" style="width:${n/(rs.length||1)*100}%;background:${COL[i]}"></i>`).join('')}</div></div></div>`;}).join('');
