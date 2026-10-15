@@ -1,14 +1,14 @@
 
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Blast Furnace Stove NDT Digital Tracker</title>
+<title>Blast Furnace Stove NDT Digital Twin</title>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
 /* ===== Theme tokens ===== */
 :root{--bg:#090714;--bg2:#1a103a;--glass:rgba(255,255,255,.08);--bd:rgba(255,255,255,.14);--tx:#f3f0ff;--mu:#a79fc7;--p:#7C3AED;--s:#A855F7;--a:#06B6D4;--sh:0 10px 34px rgba(0,0,0,.45);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -37,8 +37,8 @@ header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:s
 .brand p{color:var(--mu);font-size:12px}
 .hb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:relative}
 #clock{font-variant-numeric:tabular-nums;color:var(--mu);font-size:13px;margin-right:6px}
-#xm{display:none;position:absolute;right:0;top:44px;z-index:30;flex-direction:column;gap:6px;min-width:190px}
-#xm.open{display:flex}
+#xm{display:flex;flex-direction:column;gap:6px}#xm .btn{text-align:left;padding:7px 10px;font-size:12px}
+[hidden]{display:none!important}
 .bar-f{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
 .seg{display:flex;gap:4px}
 input[type=range]{accent-color:var(--s);width:110px}
@@ -52,8 +52,8 @@ input[type=range]{accent-color:var(--s);width:110px}
 .sc.act{border-color:var(--a)}
 .sc svg{width:104px;height:104px;flex:none}
 .sc div p{font-size:13px;color:var(--mu);margin-top:3px}.sc div p b{color:var(--tx)}
-.twin{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(280px,1fr);gap:12px}
-#twin{width:100%;max-height:78vh;display:block;margin:auto}
+.twin{display:grid;grid-template-columns:minmax(320px,1.25fr) minmax(280px,1fr);gap:12px}
+#twin{width:100%;max-height:84vh;display:block;margin:auto;touch-action:pan-y}
 .rg{cursor:pointer;transition:filter .2s}.rg:hover{filter:brightness(1.35)}
 .rg.sel path:first-child{stroke:#fff;stroke-width:3}
 .pulse{animation:pl 1.2s ease-in-out infinite}
@@ -86,14 +86,35 @@ input[type=range]{accent-color:var(--s);width:110px}
 #ld{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:99}
 #ld div{width:54px;height:54px;border-radius:50%;border:4px solid rgba(168,85,247,.25);border-top-color:var(--a);animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-body[data-role=user] .adm{display:none!important}
-#lo{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:var(--bg);padding:16px}
-#lo form{width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px}
-.ef{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end}
-.ef label,#lo label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mu)}.ef .w{grid-column:1/-1}
-textarea,input[type=number],input[type=text],input[type=password]{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;min-width:0;font:inherit;color:var(--tx);width:100%}
-.role{font-size:12px;padding:4px 10px;border-radius:20px;background:linear-gradient(135deg,var(--p),var(--s));color:#fff}
 .empty{color:var(--mu);font-size:13px;padding:14px;text-align:center}
+.afm{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+.afm label{font-size:12px;color:var(--mu);display:flex;flex-direction:column;gap:4px}
+.afm .wide{grid-column:1/-1}.afm textarea{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;font:inherit;color:var(--tx);min-height:70px;resize:vertical}
+.afm input[type=number]{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;width:100%}
+#lgn{position:fixed;inset:0;z-index:98;display:none;place-items:center;background:rgba(5,3,15,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:16px}
+#lgn form{background:var(--bg2);max-width:360px;width:100%;display:flex;flex-direction:column;gap:10px}
+#lgn input{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:10px}
+#le{color:#f87171;font-size:13px;min-height:18px}
+/* sidebar */
+:root{--sw:244px;--sbg:rgba(20,12,45,.92)}
+:root[data-theme=light]{--sbg:rgba(255,255,255,.94)}
+body{padding-left:calc(var(--sw) + 14px);transition:padding-left .3s}
+body.col{--sw:68px}
+#sb{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--sbg);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border-right:1px solid var(--bd);z-index:40;display:flex;flex-direction:column;padding:calc(12px + env(safe-area-inset-top,0px)) 10px 12px;transition:width .3s,transform .3s;overflow:hidden}
+.sbh{display:flex;align-items:center;gap:10px;margin-bottom:14px}.sbh b{white-space:nowrap}
+.si{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--bd)}
+.ic{width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:10px;background:var(--glass);font-size:17px}
+.sl{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;font-size:13px}.sl select{width:100%}.sl small{color:var(--mu);font-size:11px;line-height:1.3}
+.sl .btn{text-align:center}
+.sbf{margin-top:auto;font-size:12px;color:var(--mu);line-height:1.5;border-top:1px solid var(--bd);padding-top:10px;white-space:nowrap}.sbf b{color:var(--tx);display:block}.sbf em{display:none;font-style:normal;font-weight:700;text-align:center}
+#mm{display:none}
+.usr{display:flex;gap:8px;align-items:center;padding:4px 4px 4px 6px;border:1px solid var(--bd);border-radius:14px;background:var(--glass)}
+.usr div{display:flex;flex-direction:column;line-height:1.15;font-size:13px}.usr small{color:var(--mu);font-size:11px}
+.av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));color:#fff;display:grid;place-items:center;font-weight:700;text-transform:uppercase}
+.zc{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px}.zc .btn{padding:5px 11px}.zc small{color:var(--mu);font-size:11px}
+@media(min-width:901px){body.col .sl,body.col .sbh b,body.col .sbf span{display:none}body.col .ic{cursor:pointer}body.col .sbf em{display:block}}
+@media(max-width:900px){body{padding-left:14px}#sb{width:244px;transform:translateX(-105%)}body.mo #sb{transform:none;box-shadow:var(--sh)}#mm{display:inline-flex}.usr div{display:none}}
+@media print{#sb{display:none}body{padding-left:0}}
 @media(max-width:900px){.twin{grid-template-columns:1fr}}
 @media(min-width:2200px){body{font-size:19px}.wrap{max-width:2400px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -102,20 +123,22 @@ textarea,input[type=number],input[type=text],input[type=password]{background:var
 </head>
 <body>
 <div id="ld"><div></div></div>
+<aside id="sb" aria-label="Menu">
+  <div class="sbh"><button class="btn" id="sbt" aria-label="Collapse or expand menu">☰</button><b>Menu</b></div>
+  <div class="si"><div class="ic">⇄</div><div class="sl"><small>Data source</small><select id="src" aria-label="Data source"><option value="cloud">Cloud</option><option value="csv">CSV</option><option value="merge">Cloud + CSV</option></select><small id="cs"></small></div></div>
+  <div class="si" id="upl"><div class="ic">⬆</div><div class="sl"><small id="uls">🔒 Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
+  <div class="si"><div class="ic">⇩</div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
+  <div class="si"><div class="ic">⛶</div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
+  <div class="sbf"><span><b>Condition Monitoring Cell 2026</b>Created by Sourav Biswal</span><em>CMC</em></div>
+</aside>
 <div class="wrap" id="app">
 <header class="glass">
-  <div class="brand"><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
+  <div class="brand"><button class="btn" id="mm" aria-label="Menu">☰</button><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
     <div><h1>Blast Furnace Stove NDT Digital Twin</h1><p>Buffing and UT progress · 3 hot blast stoves · 22 rings each</p></div></div>
   <div class="hb"><span id="clock"></span>
-    <label class="btn">⬆ Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label>
     <button class="btn" id="bR" title="Refresh (R)">⟳ Refresh</button>
-    <button class="btn" id="bX">⇩ Export</button>
-    <button class="btn" id="bT" title="Theme (T)">◐</button>
-    <button class="btn" id="bF" title="Fullscreen (F)">⛶</button>
-    <label class="btn"><input type="checkbox" id="auto"> Auto 30 s</label>
-    <select id="src" title="Data source" aria-label="Data source"><option value="merge">Source: Cloud + CSV</option><option value="cloud">Source: Cloud only</option><option value="csv">Source: CSV only</option></select>
-    <span class="chip" id="cs" style="background:#6b7280">☁ offline</span><span class="role" id="who"></span><button class="btn" id="bO">Sign out</button>
-    <div id="xm" class="glass"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="print">Print view</button></div>
+    <button class="btn" id="bT" title="Day / night (T)">🌙 Night mode</button>
+    <div class="usr"><span class="av" id="av"></span><div><b id="un"></b><small id="ur"></small></div><button class="btn" id="bL">Log out</button></div>
   </div>
 </header>
 
@@ -133,7 +156,7 @@ textarea,input[type=number],input[type=text],input[type=password]{background:var
 
 <section class="glass"><h2>Furnace digital twin <small id="tt"></small></h2>
   <div class="twin">
-    <div><svg id="twin" viewBox="0 0 300 620" role="img" aria-label="Stove with 22 rings"></svg></div>
+    <div><div class="zc"><button class="btn" id="zi" aria-label="Zoom in">＋</button><button class="btn" id="zo" aria-label="Zoom out">－</button><button class="btn" id="zr">Reset</button><b id="zl">100%</b><small>Ctrl + scroll to zoom · drag to pan · keys + / −</small></div><svg id="twin" viewBox="0 0 300 620" role="img" aria-label="Stove with 22 rings"></svg></div>
     <div>
       <p style="font-size:13px;color:var(--mu);text-align:center">Orientation – rotates the shell and slides observation markers by their stated angle</p>
       <div class="compass">
@@ -149,11 +172,16 @@ textarea,input[type=number],input[type=text],input[type=password]{background:var
   </div>
 </section>
 
-<section class="glass adm" id="entry"><h2>Data entry <small>admin only · saves to Supabase</small></h2>
-  <form id="ef" class="ef"><label>Stove<select id="eS"></select></label><label>Ring<select id="eR"></select></label>
-  <label>Circumference (m)<input id="eC" type="number" min="0.1" step="any" required></label><label>Buffing completed (m)<input id="eB" type="number" min="0" step="any" required></label><label>UT completed (m)<input id="eU" type="number" min="0" step="any" required></label>
-  <label class="w">Observations (one per line, e.g. "Undercut observed 270° Side: Depth 4.5mm, length 50mm")<textarea id="eO" rows="3"></textarea></label>
-  <div class="w" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn on" type="submit">Save to cloud</button><button class="btn" type="button" id="pushCsv">Push loaded CSV to cloud</button></div></form></section>
+<section class="glass" id="adm"><h2>Admin · post / update ring data <small>saves to Supabase table stove_rings</small></h2>
+  <div id="alock" class="empty">🔒 Editing is restricted to the admin. <button class="btn on" id="alb" type="button">Admin login</button></div>
+  <form id="af" class="afm" hidden>
+    <label>Stove<select id="aS"></select></label><label>Ring<select id="aR"></select></label>
+    <label>Circumference (m)<input id="aC" type="number" min="1" step="any" required></label>
+    <label>Buffing completed (m)<input id="aB" type="number" min="0" step="any" required></label>
+    <label>UT completed (m)<input id="aU" type="number" min="0" step="any" required></label>
+    <label class="wide">Observation (one finding per line, e.g. "Undercut at 270° Side: Depth 4.5mm, length 50mm")<textarea id="aO"></textarea></label>
+    <div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn on" type="submit">Save to cloud</button><button class="btn" type="button" id="aP">Push loaded CSV to cloud</button><span id="am" style="font-size:12px;color:var(--mu);align-self:center"></span></div>
+  </form></section>
 
 <section class="glass"><h2>Ring-wise progress <small id="rn"></small></h2><div class="rings" id="rings"></div></section>
 
@@ -170,8 +198,8 @@ textarea,input[type=number],input[type=text],input[type=password]{background:var
 <section><h2>Productivity analytics</h2><div class="prod" id="prod"></div>
   <div class="g2"><div class="glass"><h2>Work distribution across stoves</h2><div id="c4"></div></div><div class="glass"><h2>Observation severity index</h2><div id="c5"></div></div></div></section>
 </div>
+<div id="lgn"><form class="glass" id="lf"><h2 style="font-size:20px;margin:0">Admin sign-in</h2><small style="color:var(--mu)">Needed to edit data or upload a CSV. Viewing needs no login.</small><input id="lu" placeholder="User ID" autocomplete="username" required><input id="lp" type="password" placeholder="Password" autocomplete="current-password" required><div id="le"></div><div style="display:flex;gap:8px"><button class="btn on" type="submit" style="flex:1">Sign in</button><button class="btn" type="button" id="lc">Cancel</button></div></form></div>
 <div id="md" role="dialog" aria-modal="true"><div class="glass" id="mb"></div></div>
-<div id="lo"><form id="lf" class="glass"><h2 style="font-size:18px">Blast Furnace Stove NDT Digital Twin</h2><label>User ID<input id="lu" type="text" autocomplete="username" required></label><label>Password<input id="lp" type="password" autocomplete="current-password" required></label><button class="btn on" type="submit">Sign in</button><p id="le" style="color:#ef4444;font-size:12px"></p></form></div>
 <div id="toasts" aria-live="polite"></div>
 
 <script>
@@ -250,9 +278,8 @@ Stove-3,22,35,0,0,
 const STOVES = ['Stove-1','Stove-2','Stove-3'];
 const COL = ['#6b7280','#ef4444','#f97316','#eab308','#a855f7','#22c55e'];
 const LBL = ['0% – not started','1–25%','26–50%','51–75%','76–99%','100% – complete'];
-const S = {data:[],stove:'All',twin:'Stove-1',sel:null,view:90,f:{ring:'All',st:'All',ob:'All',min:0,q:''},oq:'',os:'All',hist:[],sim:true,file:null,theme:'dark',timer:null};
+const S = {data:[],stove:'All',twin:'Stove-1',sel:null,view:90,f:{ring:'All',st:'All',ob:'All',min:0,q:''},oq:'',os:'All',hist:[],sim:true,file:null,theme:'light',timer:null};
 const CH = {};
-S.cloud=[];S.csv=[];S.logs=[];S.src='merge';S.user=null;S.sample=[];
 const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>[...r.querySelectorAll(s)];
 const f1 = n=>(Math.round(n*10)/10).toFixed(1);
 const band = p=>p<=0?0:p<=25?1:p<=50?2:p<=75?3:p<100?4:5;
@@ -282,11 +309,7 @@ function buildHist(){let sn={};try{sn=JSON.parse(localStorage.getItem('stoveSnap
   const cur=STOVES.map(s=>{const a=agg(S.data.filter(r=>r.st===s));return [a.b,a.u];});
   sn[iso(Date.now())]=cur;try{localStorage.setItem('stoveSnaps',JSON.stringify(sn))}catch(e){}
   const days=Object.keys(sn).sort();S.sim=days.length<3;
-  const lh=logHist();S.hist=lh?lh:S.sim?[6,5,4,3,2,1,0].map(k=>{const f=k?Math.max(0,1-k*.14+(k%2?.02:-.02)):1;return {d:iso(Date.now()-k*864e5),v:cur.map(x=>[Math.round(x[0]*f),Math.round(x[1]*f)])};}):days.map(d=>({d,v:sn[d]}));}
-// Real trend data: daily state rebuilt from the stove_ring_log table (needs >= 3 distinct days)
-function logHist(){if(S.src==='csv')return null;const days=[...new Set(S.logs.map(l=>l.recorded_on))].sort();if(days.length<3)return null;
-  const st=new Map(),h=[];days.forEach(d=>{S.logs.filter(l=>l.recorded_on===d).forEach(l=>st.set(l.stove+'|'+l.ring,[+l.buffing_completed,+l.ut_completed]));
-    h.push({d,v:STOVES.map(s=>{let b=0,u=0;st.forEach((x,k)=>{if(k.startsWith(s+'|')){b+=x[0];u+=x[1];}});return [b,u];})});});S.sim=false;return h;}
+  S.hist=S.sim?[6,5,4,3,2,1,0].map(k=>{const f=k?Math.max(0,1-k*.14+(k%2?.02:-.02)):1;return {d:iso(Date.now()-k*864e5),v:cur.map(x=>[Math.round(x[0]*f),Math.round(x[1]*f)])};}):days.map(d=>({d,v:sn[d]}));}
 const idx = ()=>S.stove==='All'?[0,1,2]:[STOVES.indexOf(S.stove)];
 const cum = k=>S.hist.map(h=>idx().reduce((s,i)=>s+h.v[i][k],0));
 const dlt = a=>a.map((v,i)=>i?Math.max(0,v-a[i-1]):0);
@@ -315,10 +338,12 @@ function geom(i){
   const [yb,wb,yt,wt]={17:[216,90,200,100],18:[200,100,164,118],19:[164,118,152,118],20:[152,118,138,118],21:[138,118,98,112]}[i];
   const m=(yb+yt)/2,wm=(wb+wt)/2+(i===18||i===21?10:0);
   return {d:`M${150-wb} ${yb}H${150+wb}Q${150+wm} ${m} ${150+wt} ${yt}H${150-wt}Q${150-wm} ${m} ${150-wb} ${yb}Z`,y:m,h:yb-yt,hw:wm};}
+function pill(i,r,G){const fs=i<=16?11.5:Math.max(7.5,Math.min(11.5,G.h-5)),lab=`Ring-${i}${r.up?` · ${f1(r.up)}%`:''}`,tw=lab.length*fs*.58+12,ph=fs+5;
+  return `<rect x="${150-tw/2}" y="${G.y-ph/2}" width="${tw}" height="${ph}" rx="${ph/2}" fill="rgba(8,6,22,.84)" pointer-events="none"/><text x="150" y="${G.y+fs*.36}" text-anchor="middle" font-size="${fs}" font-weight="700" font-family="Segoe UI,system-ui,sans-serif" fill="#fff" pointer-events="none">${lab}</text>`;}
 function drawTwin(){
   const rows=S.data.filter(r=>r.st===S.twin);let g='',mk='';
   for(let i=1;i<=22;i++){const r=rows.find(x=>x.ring===i)||{up:0,obs:[]},G=geom(i);
-    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${COL[band(r.up)]}" stroke="#0b0b14" stroke-width="1.2"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}<text x="150" y="${G.y+3.5}" text-anchor="middle" font-size="${Math.min(10,G.h-3)}" font-weight="700" fill="#fff" stroke="#000" stroke-width=".35" pointer-events="none">Ring-${i}${r.up?` · ${f1(r.up)}%`:''}</text></g>`;
+    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${COL[band(r.up)]}" stroke="#0b0b14" stroke-width="1.2"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}${pill(i,r,G)}</g>`;
     r.obs.forEach(o=>{mk+=`<circle class="mk" data-a="${o.angle??''}" data-hw="${G.hw}" r="5" cy="${G.y}" cx="150" fill="#ef4444" stroke="#fff" stroke-width="1.5" pointer-events="none"/>`;});}
   $('#twin').innerHTML=`<defs><linearGradient id="cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop id="hl" offset=".5" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient></defs>
   <rect x="48" y="600" width="204" height="12" rx="3" fill="#2a2540"/><g>${g}</g><g>${mk}</g>
@@ -332,7 +357,19 @@ function rotate(t){const from=S.view,d=((t-from+540)%360)-180,o={v:from};S.view=
   $$('.cb').forEach(b=>b.classList.toggle('on',+b.dataset.v===t));
   $('#vl').textContent={0:'0° – Left view',90:'90° – Front view',180:'180° – Right view',270:'270° – Back view'}[t];
   gsap.to(o,{v:from+d,duration:.9,ease:'power2.inOut',onUpdate:()=>place(o.v)});}
-$('#twin').addEventListener('click',e=>{const g=e.target.closest('.rg');if(!g)return;const i=+g.dataset.ring;S.sel=i;
+/* Zoom / pan: animate the SVG viewBox */
+const Z={x:0,y:0,w:300,h:620,k:1};
+function applyZ(){const s=$('#twin');s.setAttribute('viewBox',`${Z.x} ${Z.y} ${Z.w} ${Z.h}`);$('#zl').textContent=Math.round(Z.k*100)+'%';s.style.cursor=Z.k>1?'grab':'';s.style.touchAction=Z.k>1?'none':'pan-y';}
+function zoomTo(k,cx,cy){k=Math.min(4,Math.max(1,k));const w=300/k,h=620/k;cx=cx??Z.x+Z.w/2;cy=cy??Z.y+Z.h/2;
+  const x=Math.max(0,Math.min(300-w,cx-w/2)),y=Math.max(0,Math.min(620-h,cy-h/2));gsap.to(Z,{x,y,w,h,k,duration:.35,ease:'power2.out',onUpdate:applyZ});}
+$('#zi').onclick=()=>zoomTo(Z.k*1.4);$('#zo').onclick=()=>zoomTo(Z.k/1.4);$('#zr').onclick=()=>zoomTo(1);
+$('#twin').addEventListener('wheel',e=>{if(!(e.ctrlKey||e.metaKey))return;e.preventDefault();const s=$('#twin'),p=s.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(s.getScreenCTM().inverse());zoomTo(Z.k*(e.deltaY<0?1.2:1/1.2),q.x,q.y);},{passive:false});
+$('#twin').addEventListener('pointerdown',e=>{if(Z.k<=1)return;const s=$('#twin'),r=s.getBoundingClientRect(),sc=Math.min(r.width/Z.w,r.height/Z.h);let lx=e.clientX,ly=e.clientY,moved=0;
+  const mv=ev=>{const dx=ev.clientX-lx,dy=ev.clientY-ly;moved+=Math.abs(dx)+Math.abs(dy);if(moved<6)return;lx=ev.clientX;ly=ev.clientY;gsap.killTweensOf(Z);
+    Z.x=Math.max(0,Math.min(300-Z.w,Z.x-dx/sc));Z.y=Math.max(0,Math.min(620-Z.h,Z.y-dy/sc));S.dragged=true;applyZ();};
+  const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);setTimeout(()=>{S.dragged=false;},0);};
+  window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);});
+$('#twin').addEventListener('click',e=>{if(S.dragged)return;const g=e.target.closest('.rg');if(!g)return;const i=+g.dataset.ring;S.sel=i;
   $$('#twin .rg').forEach(x=>x.classList.toggle('sel',+x.dataset.ring===i));
   gsap.fromTo(g,{scale:1.05,svgOrigin:'150 '+geom(i).y},{scale:1,svgOrigin:'150 '+geom(i).y,duration:.5,ease:'back.out(3)'});
   openModal(S.twin,i);});
@@ -353,11 +390,11 @@ function openModal(st,ring){const r=S.data.find(x=>x.st===st&&x.ring===ring);if(
   const circ=2*Math.PI*40;
   $('#mb').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:20px">${st} · Ring-${ring}</h2><button class="btn" id="mx" aria-label="Close">✕</button></div>
   <div style="display:flex;gap:14px;align-items:center;margin-top:10px"><svg width="110" height="110" viewBox="0 0 100 100"><g transform="rotate(-90 50 50)" fill="none" stroke-width="10" stroke-linecap="round"><circle cx="50" cy="50" r="40" stroke="rgba(127,127,170,.25)"/><circle id="mc" cx="50" cy="50" r="40" stroke="${COL[band(r.up)]}" stroke-dasharray="${circ}" stroke-dashoffset="${circ}"/></g><text x="50" y="55" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">${f1(r.up)}%</text></svg>
-  <div style="flex:1"><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${bars(r)}</div></div>
+  <div style="flex:1"><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${bars(r)}</div></div><button class="btn" id="me" style="margin-top:10px">✎ Edit${S.role==='admin'?' in admin form':' (admin login)'}</button>
   <div class="kv"><div><small>Circumference</small>${r.c} m</div><div><small>Remaining (UT)</small>${r.rem} m</div><div><small>Buffing length</small>${r.b} m</div><div><small>UT length</small>${r.u} m</div><div><small>Buffing %</small>${f1(r.bp)}%</div><div><small>UT %</small>${f1(r.up)}%</div></div>
-  <div class="adm" style="margin-bottom:10px"><button class="btn" id="me">✎ Edit this ring</button></div><h2>Observation</h2>${r.obs.length?r.obs.map(o=>`<div class="oi" style="cursor:default">${esc(o.text)}</div>`).join(''):'<p class="empty">No observation recorded.</p>'}`;
+  <h2>Observation</h2>${r.obs.length?r.obs.map(o=>`<div class="oi" style="cursor:default">${esc(o.text)}</div>`).join(''):'<p class="empty">No observation recorded.</p>'}`;
   const m=$('#md');m.style.display='grid';gsap.fromTo('#mb',{y:30,opacity:0,scale:.96},{y:0,opacity:1,scale:1,duration:.35,ease:'power3.out'});
-  requestAnimationFrame(()=>{$('#mc').style.transition='stroke-dashoffset 1s';$('#mc').setAttribute('stroke-dashoffset',circ*(1-r.up/100));});fillBars($('#mb'));$('#mx').focus();$('#me').onclick=()=>{closeModal();fillForm(st,ring);$('#entry').scrollIntoView({behavior:'smooth'});};}
+  requestAnimationFrame(()=>{$('#mc').style.transition='stroke-dashoffset 1s';$('#mc').setAttribute('stroke-dashoffset',circ*(1-r.up/100));});fillBars($('#mb'));$('#mx').focus();$('#me').onclick=()=>{closeModal();const go=()=>{fillForm(st,ring);$('#adm').scrollIntoView({behavior:'smooth'});};S.role==='admin'?go():askLogin(go);};}
 const closeModal=()=>{$('#md').style.display='none';};
 $('#md').addEventListener('click',e=>{if(e.target.id==='md'||e.target.id==='mx')closeModal();});
 
@@ -392,14 +429,68 @@ function render(){
   $$('#seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.s===S.stove));
   if(S.stove!=='All')S.twin=S.stove;
   renderKPI();renderCmp();drawTwin();renderRings();renderObs();renderCharts();renderProd();}
-function compose(){const m=new Map(),add=a=>a.forEach(r=>m.set(r.st+'|'+r.ring,r));
-  if(S.src!=='csv')add(S.cloud);if(S.src!=='cloud')add(S.csv);
-  return m.size?[...m.values()]:S.sample;}  // sample data only when no cloud / CSV rows exist
-function refreshAll(){S.data=compose();buildHist();render();}
-function setData(rows,msg){if(!rows.length){toast('No valid rows. Expected: Stove, Ring, Circumference, BuffingCompleted, UTCompleted, Observations');return;}
-  S.csv=rows;S.src=S.cloud.length?'merge':'csv';$('#src').value=S.src;refreshAll();toast(msg);}
-function _old(rows,msg){}
-function loadFile(f,silent){S.file=f;Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>setData(ingest(r.data),silent?'Auto-refreshed from file':`Loaded ${f.name}`),error:()=>toast('Could not read the CSV file')});}
+/* ================= Cloud (Supabase) + CSV data sources ================= */
+const SB_URL='https://lgyladuiyezqccyjxqgn.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxneWxhZHVpeWV6cWNjeWp4cWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDEyMTksImV4cCI6MjA3ODUxNzIxOX0.O-K3aJkcdvnj0k3ltu37AK3hrW2ibZCZbwVy9SDTBZg';
+const TABLE='stove_rings';
+// Hard-coded logins (change here). Visible to anyone who opens the file source – see notes.
+const USERS={admin:{pw:'Admin@123',role:'admin'},user:{pw:'User@123',role:'viewer'}};
+let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY);}catch(e){}
+Object.assign(S,{cloud:[],csv:[],src:'cloud',role:null,user:null,online:false});
+const fromDB=d=>d.map(x=>({Stove:x.stove,Ring:x.ring,Circumference:x.circumference,BuffingCompleted:x.buffing_completed,UTCompleted:x.ut_completed,Observations:x.observations}));
+function compose(){let rows;
+  if(S.src==='cloud')rows=S.cloud;
+  else if(S.src==='csv')rows=S.csv;
+  else{const m=new Map();S.cloud.concat(S.csv).forEach(r=>m.set(r.st+'|'+r.ring,r));rows=[...m.values()];} // CSV wins per ring
+  if(!rows.length){S.fallback=true;return parseCSV(SAMPLE);}S.fallback=false;return rows;}
+function apply(msg){S.data=compose();buildHist();render();
+  $('#cs').textContent=(S.online?'☁ Connected':'☁ Offline')+` · cloud ${S.cloud.length} · csv ${S.csv.length}`;
+  if(msg)toast(S.fallback?'Selected source is empty – showing sample data':msg);}
+async function fetchCloud(){if(!sb){S.online=false;return;}
+  const {data,error}=await sb.from(TABLE).select('*').order('stove').order('ring');
+  if(error){S.online=false;toast('Cloud error: '+error.message);return;}
+  S.online=true;S.cloud=ingest(fromDB(data));}
+function loadFile(f){if(S.role!=='admin')return toast('Only admin can upload a CSV');Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>{const rows=ingest(r.data);
+  if(!rows.length)return toast('No valid rows. Expected: Stove, Ring, Circumference, BuffingCompleted, UTCompleted, Observations');
+  S.csv=rows;S.src='csv';$('#src').value='csv';apply(`Loaded ${f.name} (view only until an admin pushes it to cloud)`);},error:()=>toast('Could not read the CSV file')});}
+function subscribe(){if(!sb)return;try{sb.channel('stove-rt').on('postgres_changes',{event:'*',schema:'public',table:TABLE},()=>{clearTimeout(S.rt);S.rt=setTimeout(async()=>{await fetchCloud();apply('Cloud data updated');},600);}).subscribe();}catch(e){}}
+
+/* ================= Admin form ================= */
+function fillForm(st,ring){$('#aS').value=st;$('#aR').value=ring;const r=S.data.find(x=>x.st===st&&x.ring===ring);
+  $('#aC').value=r?r.c:'';$('#aB').value=r?r.b:0;$('#aU').value=r?r.u:0;$('#aO').value=r?r.raw:'';$('#am').textContent=r?'Existing values loaded':'New record';}
+async function saveRing(e){e.preventDefault();if(S.role!=='admin')return toast('Only admin can save');if(!sb)return toast('Supabase not available');
+  const c=+$('#aC').value,b=+$('#aB').value,u=+$('#aU').value;
+  if(b>c||u>c)return toast('Buffing and UT cannot exceed the circumference');
+  const row={stove:$('#aS').value,ring:+$('#aR').value,circumference:c,buffing_completed:b,ut_completed:u,observations:$('#aO').value.trim()||null,updated_by:S.user};
+  const {error}=await sb.from(TABLE).upsert(row,{onConflict:'stove,ring'});
+  if(error)return toast('Save failed: '+error.message);
+  await fetchCloud();S.src='cloud';$('#src').value='cloud';apply(`Saved ${row.stove} Ring-${row.ring} to cloud`);}
+async function pushCSV(){if(S.role!=='admin')return;if(!S.csv.length)return toast('Upload a CSV first');
+  if(!confirm(`Upsert ${S.csv.length} CSV rows into the cloud table? Existing rings will be overwritten.`))return;
+  const rows=S.csv.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw||null,updated_by:S.user}));
+  for(let i=0;i<rows.length;i+=200){const {error}=await sb.from(TABLE).upsert(rows.slice(i,i+200),{onConflict:'stove,ring'});if(error)return toast('Push failed: '+error.message);}
+  await fetchCloud();S.src='cloud';$('#src').value='cloud';apply(`Pushed ${rows.length} rows to cloud`);}
+
+/* ================= Login ================= */
+function setRole(user){S.user=user||'Guest';S.role=user?USERS[user].role:'viewer';
+  try{user?sessionStorage.setItem('stoveUser',user):sessionStorage.removeItem('stoveUser');}catch(e){}
+  const ad=S.role==='admin';$('#av').textContent=S.user[0];$('#un').textContent=S.user;$('#ur').textContent=ad?'Admin':'View only';
+  $('#bL').textContent=user?'Log out':'🔒 Admin login';$('#af').hidden=!ad;$('#alock').hidden=ad;$('#uls').textContent=ad?'Admin only':'🔒 Admin login required';}
+function askLogin(then){S.pending=then||null;$('#le').textContent='';$('#lgn').style.display='grid';$('#lu').focus();}
+function closeLogin(){$('#lgn').style.display='none';S.pending=null;}
+function enter(user){setRole(user);$('#lgn').style.display='none';toast('Signed in as '+user);const p=S.pending;S.pending=null;if(p&&S.role==='admin')p();}
+$('#lf').onsubmit=e=>{e.preventDefault();const u=$('#lu').value.trim(),p=$('#lp').value;
+  if(USERS[u]&&USERS[u].pw===p){$('#le').textContent='';$('#lp').value='';enter(u);}else $('#le').textContent='Wrong user ID or password.';};
+$('#bL').onclick=()=>{if(S.user!=='Guest'){setRole(null);toast('Signed out – view only');}else askLogin();};
+$('#alb').onclick=()=>askLogin();$('#lc').onclick=closeLogin;
+$('#lgn').addEventListener('click',e=>{if(e.target.id==='lgn')closeLogin();});
+$('#lgn').addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin();});
+$('#file').addEventListener('click',e=>{if(S.role!=='admin'){e.preventDefault();askLogin(()=>$('#file').click());}});
+$('#af').onsubmit=saveRing;$('#aP').onclick=pushCSV;
+$('#aS').innerHTML=STOVES.map(s=>`<option>${s}</option>`).join('');
+$('#aR').innerHTML=Array.from({length:22},(_,i)=>`<option value="${i+1}">Ring-${i+1}</option>`).join('');
+$('#aS').onchange=$('#aR').onchange=()=>fillForm($('#aS').value,+$('#aR').value);
+$('#src').onchange=e=>{S.src=e.target.value;apply('Source: '+e.target.selectedOptions[0].text.replace('Source: ',''));};
 
 /* ================= Exports ================= */
 function exportPNG(){const svg=$('#twin').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('width',600);svg.setAttribute('height',1240);
@@ -411,9 +502,9 @@ function exportCSV(){const rows=S.data.map(r=>({Stove:r.st,Ring:r.ring,Circumfer
 function doExport(k){$('#xm').classList.remove('open');if(k==='png')exportPNG();else if(k==='csv')exportCSV();else{toast(k==='pdf'?'Choose "Save as PDF" in the print dialog':'Opening print view');setTimeout(()=>window.print(),400);}}
 
 /* ================= Theme, fullscreen, refresh ================= */
-function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;if(S.data.length)renderCharts();}
+function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;$('#bT').textContent=t==='dark'?'☀ Day mode':'🌙 Night mode';if(S.data.length)renderCharts();}
 function fullscreen(){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(e){toast('Fullscreen not available here');}}
-function refresh(silent){if(S.file)loadFile(S.file,silent);if(S.user)loadCloud(silent);if(!S.file&&!S.user){refreshAll();if(!silent)toast('Refreshed');}}
+async function refresh(silent){await fetchCloud();apply(silent?'':'Refreshed');if(!silent&&S.fallback===false&&S.online)toast('Cloud data refreshed');}
 
 /* ================= Wiring ================= */
 $('#seg').innerHTML=['All',...STOVES].map(s=>`<button class="btn" data-s="${s}">${s}</button>`).join('');
@@ -433,73 +524,38 @@ $('#oS').onchange=e=>{S.os=e.target.value;renderObs();};
 $$('.cb').forEach(b=>b.onclick=()=>rotate(+b.dataset.v));
 $('#file').onchange=e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value='';};
 $('#bR').onclick=()=>{refresh(false);};
-$('#bX').onclick=()=>$('#xm').classList.toggle('open');
+
 $('#xm').onclick=e=>{const b=e.target.closest('[data-x]');if(b)doExport(b.dataset.x);};
 $('#bT').onclick=()=>setTheme(S.theme==='dark'?'light':'dark');
 $('#bF').onclick=fullscreen;
 $('#auto').onchange=e=>{clearInterval(S.timer);if(e.target.checked){S.timer=setInterval(()=>refresh(true),30000);toast('Auto refresh on (30 s)');}else toast('Auto refresh off');};
-document.addEventListener('keydown',e=>{const t=e.target.tagName;if(t==='INPUT'||t==='SELECT')return;if(e.key==='Escape')return closeModal();
+document.addEventListener('keydown',e=>{const t=e.target.tagName;if(t==='INPUT'||t==='SELECT'||t==='TEXTAREA')return;if(e.key==='Escape')return closeModal();
   const k=e.key.toLowerCase();
   if(k==='/'){e.preventDefault();$('#fQ').focus();}
   else if('123'.includes(k)&&k)S.stove='Stove-'+k,render();
   else if(k==='0'||k==='a'){S.stove='All';render();}
   else if(e.key==='ArrowRight')rotate((S.view+90)%360);
   else if(e.key==='ArrowLeft')rotate((S.view+270)%360);
+  else if(k==='='||k==='+')zoomTo(Z.k*1.4);else if(k==='-')zoomTo(Z.k/1.4);
   else if(k==='t')setTheme(S.theme==='dark'?'light':'dark');
   else if(k==='f')fullscreen();else if(k==='r')refresh(false);else if(k==='p')window.print();
-  else if(k==='?')toast('Keys: 1/2/3 stove · A all · ←/→ rotate · T theme · F fullscreen · R refresh · P print · / search');});
+  else if(k==='?')toast('Keys: 1/2/3 stove · A all · ←/→ rotate · T theme · +/− zoom · F fullscreen · R refresh · P print · / search');});
 setInterval(()=>{$('#clock').textContent=new Date().toLocaleString([], {dateStyle:'medium',timeStyle:'medium'});},1000);
 $('#clock').textContent=new Date().toLocaleString();
 
+/* ================= Sidebar ================= */
+function toggleSB(){const b=document.body;if(innerWidth<=900)b.classList.toggle('mo');else{b.classList.toggle('col');try{localStorage.setItem('stoveSb',b.classList.contains('col')?'1':'0');}catch(e){}}
+  setTimeout(()=>window.dispatchEvent(new Event('resize')),350);}
+$('#sbt').onclick=toggleSB;$('#mm').onclick=toggleSB;
+$('#sb').addEventListener('click',e=>{if(document.body.classList.contains('col')&&e.target.closest('.ic')&&innerWidth>900)toggleSB();});
+document.addEventListener('click',e=>{if(document.body.classList.contains('mo')&&!e.target.closest('#sb,#mm'))document.body.classList.remove('mo');});
+try{if(localStorage.getItem('stoveSb')==='1')document.body.classList.add('col');}catch(e){}
+
 /* ================= Boot ================= */
-S.sample=parseCSV(SAMPLE);refreshAll();rotate(90);
+S.data=parseCSV(SAMPLE);render();rotate(90);subscribe();
 gsap.to('#ld',{opacity:0,delay:.7,duration:.5,onComplete:()=>$('#ld').remove()});
-
-/* ================= Supabase (cloud) ================= */
-const SB_URL='https://lgyladuiyezqccyjxqgn.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxneWxhZHVpeWV6cWNjeWp4cWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDEyMTksImV4cCI6MjA3ODUxNzIxOX0.O-K3aJkcdvnj0k3ltu37AK3hrW2ibZCZbwVy9SDTBZg';
-let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY);}catch(e){}
-const setCloud=(t,c)=>{const e=$('#cs');e.textContent='☁ '+t;e.style.background=c;};
-async function loadCloud(silent){
-  if(!sb){setCloud('library blocked','#ef4444');return toast('Supabase library did not load (check internet / network policy)');}
-  const a=await sb.from('stove_rings').select('*');
-  if(a.error){setCloud('error','#ef4444');return toast('Cloud: '+a.error.message);}
-  const l=await sb.from('stove_ring_log').select('stove,ring,buffing_completed,ut_completed,recorded_on').order('id');
-  S.cloud=ingest(a.data.map(d=>({Stove:d.stove,Ring:d.ring,Circumference:d.circumference,BuffingCompleted:d.buffing_completed,UTCompleted:d.ut_completed,Observations:d.observations})));
-  S.logs=l.data||[];setCloud(`connected · ${S.cloud.length} rings`,'#16a34a');refreshAll();if(!silent)toast(`Cloud loaded: ${S.cloud.length} rings`);}
-function startRealtime(){if(!sb||S.rt)return;S.rt=sb.channel('stove-live').on('postgres_changes',{event:'*',schema:'public',table:'stove_rings'},()=>loadCloud(true)).subscribe();}
-// Upsert current values + append an audit/trend row to the log table
-async function writeRows(rows){const now=new Date().toISOString(),by=S.user.name,day=iso(Date.now());
-  const main=rows.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw,updated_by:by,updated_at:now}));
-  const log=rows.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw,recorded_by:by,recorded_on:day}));
-  for(let i=0;i<main.length;i+=100){
-    let e=(await sb.from('stove_rings').upsert(main.slice(i,i+100),{onConflict:'stove,ring'})).error;if(e)throw e;
-    e=(await sb.from('stove_ring_log').insert(log.slice(i,i+100))).error;if(e)throw e;}}
-function fillForm(st,ring){$('#eS').value=st;$('#eR').value=ring;const r=S.data.find(x=>x.st===st&&x.ring===+ring);
-  $('#eC').value=r?r.c:'';$('#eB').value=r?r.b:'';$('#eU').value=r?r.u:'';$('#eO').value=r?r.raw:'';}
-$('#eS').innerHTML=STOVES.map(s=>`<option>${s}</option>`).join('');
-$('#eR').innerHTML=Array.from({length:22},(_,i)=>`<option value="${i+1}">Ring-${i+1}</option>`).join('');
-$('#eS').onchange=$('#eR').onchange=()=>fillForm($('#eS').value,$('#eR').value);
-$('#ef').onsubmit=async e=>{e.preventDefault();if(S.user?.role!=='admin')return toast('Only admin can save data');
-  const c=+$('#eC').value,b=+$('#eB').value,u=+$('#eU').value;
-  if(!(c>0)||b<0||u<0||b>c||u>c)return toast('Buffing and UT must be between 0 and the circumference');
-  const raw=$('#eO').value.trim(),row=ingest([{Stove:$('#eS').value,Ring:$('#eR').value,Circumference:c,BuffingCompleted:b,UTCompleted:u,Observations:raw}]);
-  try{await writeRows(row);toast(`${row[0].st} Ring-${row[0].ring} saved`);await loadCloud(true);}catch(er){toast('Save failed: '+(er.message||er));}};
-$('#pushCsv').onclick=async()=>{if(S.user?.role!=='admin')return;if(!S.csv.length)return toast('Upload a CSV first');
-  if(!confirm(`Push ${S.csv.length} CSV rows to the cloud? Existing rings will be overwritten.`))return;
-  try{await writeRows(S.csv);toast('CSV pushed to cloud');await loadCloud(true);}catch(er){toast('Push failed: '+(er.message||er));}};
-$('#src').onchange=e=>{S.src=e.target.value;refreshAll();};
-
-/* ================= Login (hard-coded, UI-level access control) ================= */
-const USERS=[{u:'admin',p:'Admin@123',role:'admin',name:'Admin'},{u:'user',p:'User@123',role:'user',name:'Viewer'}];
-function enter(usr){S.user=usr;document.body.dataset.role=usr.role;$('#who').textContent=usr.role==='admin'?'Admin':'Viewer (read-only)';
-  try{sessionStorage.setItem('stoveUser',usr.u);}catch(e){}
-  gsap.to('#lo',{opacity:0,duration:.3,onComplete:()=>$('#lo').style.display='none'});loadCloud(true);startRealtime();fillForm('Stove-1',1);}
-$('#lf').onsubmit=e=>{e.preventDefault();const m=USERS.find(x=>x.u===$('#lu').value.trim()&&x.p===$('#lp').value);
-  if(m)enter(m);else $('#le').textContent='Invalid user ID or password';};
-$('#bO').onclick=()=>{try{sessionStorage.removeItem('stoveUser');}catch(e){}location.reload();};
-document.body.dataset.role='user';
-{let k=null;try{k=sessionStorage.getItem('stoveUser');}catch(e){}const m=USERS.find(x=>x.u===k);if(m){$('#lo').style.display='none';enter(m);}}
+const saved=sessionStorage.getItem('stoveUser');
+setRole(saved&&USERS[saved]?saved:null);refresh(true);
 </script>
 </body>
 </html>
