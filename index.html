@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Blast Furnace Stove NDT Digital Twin</title>
+<title>Blast Furnace Stove NDT Digital Tracker</title>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -57,7 +57,7 @@ input[type=range]{accent-color:var(--s);width:110px}
 .rg{cursor:pointer;transition:filter .2s}.rg:hover{filter:brightness(1.35)}
 .rg.sel path:first-child{stroke:#fff;stroke-width:3}
 .pulse{animation:pl 1.2s ease-in-out infinite}
-.mk{animation:pl 1.2s ease-in-out infinite}
+.mk{cursor:pointer}.halo{animation:halo 1.6s ease-out infinite}@keyframes halo{0%{r:5px;opacity:.8}100%{r:16px;opacity:0}}.aura{animation:au 6s ease-in-out infinite alternate}@keyframes au{from{opacity:.5}to{opacity:1}}
 @keyframes pl{50%{stroke-width:5;stroke:#fecaca}}
 .compass{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:330px;margin:6px auto}
 .compass .btn{padding:8px 4px;font-size:12px}.compass i{display:grid;place-items:center;color:var(--a);font-style:normal;font-size:20px}
@@ -121,6 +121,21 @@ body.col{--sw:68px}
 @media(min-width:2200px){body{font-size:19px}.wrap{max-width:2400px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media print{body{background:#fff;color:#000;padding:0}.glass{box-shadow:none;backdrop-filter:none;background:#fff;border-color:#bbb;break-inside:avoid}.hb,.bar-f,#toasts,#md,#ld,.compass{display:none!important}.rings{max-height:none}.kpi b{color:#4c1d95;-webkit-text-fill-color:#4c1d95}}
+/* ---- enterprise polish ---- */
+:root{--grid:rgba(168,85,247,.08)}:root[data-theme=light]{--grid:rgba(80,40,160,.07)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse at 50% 15%,#000 15%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 15%,#000 15%,transparent 75%)}
+header.glass{background:linear-gradient(120deg,var(--glass),rgba(124,58,237,.14))}
+.live{display:inline-flex;gap:7px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.05em;padding:6px 11px;border:1px solid var(--bd);border-radius:20px;background:var(--glass);color:var(--mu)}
+.live i{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:lv 2s infinite}.live.off i{background:#f59e0b;animation:none}
+@keyframes lv{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%,100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
+.kpi{position:relative;overflow:hidden}.kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--p),var(--a))}
+#tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .15s;background:var(--bg2);border:1px solid var(--s);border-radius:12px;padding:9px 12px;font-size:12px;box-shadow:var(--sh);max-width:240px;line-height:1.5}
+.stack{display:flex;height:7px;border-radius:6px;overflow:hidden;margin-top:9px;background:rgba(127,127,170,.2)}.stack i{display:block;height:100%}
+.rc{content-visibility:auto;contain-intrinsic-size:auto 118px}
+.dial{display:block;margin:4px auto;width:200px;max-width:62%;color:var(--tx)}
+.met{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}.met .btn{padding:5px 10px;font-size:12px}
+#twin{filter:drop-shadow(0 12px 22px rgba(0,0,0,.25))}
+@media(max-width:700px){.live span{display:none}.live{padding:8px}}
 /* ---- compact phone layout ---- */
 @media(max-width:700px){
 body{padding:8px}
@@ -156,13 +171,13 @@ header{flex-wrap:nowrap;gap:8px}
   <div class="si" id="upl"><div class="ic">⬆</div><div class="sl"><small id="uls">🔒 Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
   <div class="si"><div class="ic">⇩</div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
   <div class="si"><div class="ic">⛶</div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
-  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>MED</em></div>
+  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>CMC</em></div>
 </aside>
 <div class="wrap" id="app">
 <header class="glass">
   <div class="brand"><button class="btn" id="mm" aria-label="Menu">☰</button><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
-    <div><h1>Blast Furnace Stove NDT Digital Twin</h1><p>Buffing and UT progress · 3 hot blast stoves · 22 rings each</p></div></div>
-  <div class="hb"><span id="clock"></span>
+    <div><h1>Blast Furnace Stove NDT Digital Tracker</h1><p>Buffing and UT Progress · 3 Hot Blast Stoves · 22 Rings Each</p></div></div>
+  <div class="hb"><span class="live" id="lv" title="Cloud status"><i></i><span id="lt">LIVE</span></span><span id="clock"></span>
     <button class="btn ib" id="bR" title="Refresh (R)" aria-label="Refresh">⟳</button>
     <button class="btn ib" id="bT" title="Switch to night mode (T)" aria-label="Day or night mode">🌙</button>
     <div class="usr"><span class="av" id="av"></span><button class="btn ib" id="bL" aria-label="Admin login"></button></div>
@@ -183,7 +198,7 @@ header{flex-wrap:nowrap;gap:8px}
 
 <section class="glass"><h2>Furnace digital twin <small id="tt"></small></h2>
   <div class="twin">
-    <div><div class="zc"><button class="btn" id="zi" aria-label="Zoom in">＋</button><button class="btn" id="zo" aria-label="Zoom out">－</button><button class="btn" id="zr">Reset</button><b id="zl">100%</b><small>Ctrl + scroll to zoom · drag to pan · keys + / −</small></div><svg id="twin" viewBox="0 0 300 620" role="img" aria-label="Stove with 22 rings"></svg></div>
+    <div><div class="zc"><button class="btn" id="zi" aria-label="Zoom in">＋</button><button class="btn" id="zo" aria-label="Zoom out">－</button><button class="btn" id="zr">Reset</button><b id="zl">100%</b><small>Ctrl + scroll to zoom · drag to pan · keys + / −</small></div><svg id="twin" viewBox="0 0 300 640" role="img" aria-label="Stove with 22 rings"></svg></div>
     <div>
       <p style="font-size:13px;color:var(--mu);text-align:center">Orientation – rotates the shell and slides observation markers by their stated angle</p>
       <div class="compass">
@@ -192,8 +207,9 @@ header{flex-wrap:nowrap;gap:8px}
         <span></span><button class="btn cb" data-v="90">90° Front View</button><span></span>
       </div>
       <p id="vl" style="text-align:center;font-size:13px;margin:6px 0"></p>
+      <svg id="dial" class="dial" viewBox="0 0 200 200" role="img" aria-label="Top view azimuth dial: click 0°, 90°, 180° or 270° to rotate"></svg>
       <div class="legend" id="lg"></div>
-      <div class="legend"><span><i style="border:2px solid #ef4444;background:none"></i>Pulsing border = observation</span><span><i style="background:#ef4444;border-radius:50%"></i>Marker on shell at stated angle</span></div>
+      <div class="legend"><span><i style="border:2px solid #ef4444;background:none"></i>Pulsing border = observation</span><span><i style="background:#ef4444;border-radius:50%"></i>Marker at stated azimuth (colour = severity)</span></div>
       <div id="sel" class="empty">Click any ring for details.</div>
     </div>
   </div>
@@ -213,15 +229,17 @@ header{flex-wrap:nowrap;gap:8px}
 <section class="glass"><h2>Ring-wise progress <small id="rn"></small></h2><div class="rings" id="rings"></div></section>
 
 <section class="g2">
-  <div class="glass"><h2>UT % heatmap <small>ring × stove</small></h2><div id="hm"></div></div>
+  <div class="glass" id="hmP"><h2>Ring × stove heatmap <small id="hmS"></small></h2><div class="met" id="met"><button class="btn on" data-m="ut">UT %</button><button class="btn" data-m="bf">Buffing %</button><button class="btn" data-m="rem">Remaining m</button><button class="btn" data-m="sev">Obs severity</button></div><div id="hm"></div></div>
   <div class="glass"><h2>Observations <small id="os"></small></h2>
     <div class="bar-f" style="margin-top:0"><input type="search" id="oQ" placeholder="Search observations" aria-label="Search observations"><select id="oS"><option value="All">All severity</option><option value="3">High (≥4 mm)</option><option value="2">Medium (2–4 mm)</option><option value="1">Low / unsized</option></select></div>
     <div class="obl" id="obl"></div></div>
 </section>
+<section class="g2" id="chs"><div class="glass"><h2>Defect map <small id="dmS"></small></h2><div id="dm"></div></div><div class="glass"><h2>Ring progress profile <small id="rpS"></small></h2><div id="rp"></div></div></section>
 
 </div>
 <div id="lgn"><form class="glass" id="lf"><h2 style="font-size:20px;margin:0">Admin sign-in</h2><small style="color:var(--mu)">Needed to edit data or upload a CSV. Viewing needs no login.</small><input id="lu" placeholder="User ID" autocomplete="username" required><input id="lp" type="password" placeholder="Password" autocomplete="current-password" required><div id="le"></div><div style="display:flex;gap:8px"><button class="btn on" type="submit" style="flex:1">Sign in</button><button class="btn" type="button" id="lc">Cancel</button></div></form></div>
 <div id="md" role="dialog" aria-modal="true"><div class="glass" id="mb"></div></div>
+<div id="tip"></div>
 <div id="toasts" aria-live="polite"></div>
 
 <script>
@@ -347,53 +365,95 @@ const esc = s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&
 function renderKPI(){const a=agg(scope());
   const k=[['Total rings',a.n,0,''],['Completed rings',a.done,0,''],['In progress rings',a.prog,0,''],['Pending rings',a.pend,0,''],['Observations',a.obs,0,'']];
   $('#kpis').innerHTML=k.map(x=>`<div class="glass kpi hv"><span>${x[0]}</span><b data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</b></div>`).join('');count($('#kpis'));}
-function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const a=agg(S.data.filter(r=>r.st===s)),R=42,C=2*Math.PI*R,r2=30,C2=2*Math.PI*r2;
+function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const rs=S.data.filter(r=>r.st===s),a=agg(rs),cnt=rs.reduce((c,r)=>(c[band(r.up)]++,c),[0,0,0,0,0,0]),R=42,C=2*Math.PI*R,r2=30,C2=2*Math.PI*r2;
   return `<div class="glass hv sc ${S.stove===s?'act':''}" data-s="${s}" tabindex="0"><svg viewBox="0 0 104 104"><g transform="rotate(-90 52 52)" fill="none" stroke-width="9" stroke-linecap="round"><circle cx="52" cy="52" r="${R}" stroke="rgba(127,127,170,.25)"/><circle cx="52" cy="52" r="${R}" stroke="#06B6D4" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C*(1-a.up/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/><circle cx="52" cy="52" r="${r2}" stroke="rgba(127,127,170,.25)" stroke-width="7"/><circle cx="52" cy="52" r="${r2}" stroke="#A855F7" stroke-width="7" stroke-dasharray="${C2}" stroke-dashoffset="${C2}" data-o="${C2*(1-a.bp/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/></g><text x="52" y="57" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">${f1(a.up)}%</text></svg>
-  <div><h2 style="margin:0">${s}</h2><p>Buffing <b>${f1(a.bp)}%</b> · UT <b>${f1(a.up)}%</b></p><p>Rings completed <b>${a.done}/${a.n}</b></p><p>Observations <b style="color:#ef4444">${a.obs}</b></p></div></div>`;}).join('');
+  <div><h2 style="margin:0">${s}</h2><p>Buffing <b>${f1(a.bp)}%</b> · UT <b>${f1(a.up)}%</b></p><p>Rings completed <b>${a.done}/${a.n}</b></p><p>Observations <b style="color:#ef4444">${a.obs}</b></p><div class="stack">${cnt.map((n,i)=>`<i title="${LBL[i]}: ${n} rings" style="width:${n/(rs.length||1)*100}%;background:${COL[i]}"></i>`).join('')}</div></div></div>`;}).join('');
   requestAnimationFrame(()=>requestAnimationFrame(()=>$$('.ring-a').forEach(c=>c.setAttribute('stroke-dashoffset',c.dataset.o))));}
 
 /* ================= Digital twin ================= */
-// Ring geometry: rings 1-16 = shaft rectangles, 17-22 = dome profile (widest at ring 18-21), ring 22 = cap
+// Ring geometry: perspective rims (ellipse arcs) give every ring a cylindrical, slightly top-down look.
+const RY=r=>5*r/90, SEV=['','#eab308','#f97316','#ef4444'];
 function geom(i){
-  if(i<=16){const y2=600-24*(i-1),y1=y2-24;return {d:`M60 ${y2}H240V${y1}H60Z`,y:(y1+y2)/2,h:24,hw:90};}
-  if(i===22)return {d:'M38 98C38 40 262 40 262 98Z',y:82,h:36,hw:105};
+  if(i<=16){const yb=600-24*(i-1),yt=yb-24,L=60,R=240;
+    return {d:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}L${R} ${yb}A90 5 0 0 1 ${L} ${yb}Z`,seam:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}`,y:(yt+yb)/2+3,h:24,hw:90};}
+  if(i===22)return {d:'M38 98C38 40 262 40 262 98A112 6.2 0 0 1 38 98Z',seam:'',y:82,h:36,hw:105};
   const [yb,wb,yt,wt]={17:[216,90,200,100],18:[200,100,164,118],19:[164,118,152,118],20:[152,118,138,118],21:[138,118,98,112]}[i];
-  const m=(yb+yt)/2,wm=(wb+wt)/2+(i===18||i===21?10:0);
-  return {d:`M${150-wb} ${yb}H${150+wb}Q${150+wm} ${m} ${150+wt} ${yt}H${150-wt}Q${150-wm} ${m} ${150-wb} ${yb}Z`,y:m,h:yb-yt,hw:wm};}
+  const m=(yb+yt)/2,wm=(wb+wt)/2+(i===18||i===21?10:0),c=150;
+  return {d:`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}Q${c+wm} ${m} ${c+wb} ${yb}A${wb} ${RY(wb)} 0 0 1 ${c-wb} ${yb}Q${c-wm} ${m} ${c-wt} ${yt}Z`,
+    seam:`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}`,y:m+3,h:yb-yt,hw:wm};}
+// Dark pill behind each ring label keeps text readable on every colour
 function pill(i,r,G){const fs=i<=16?11.5:Math.max(7.5,Math.min(11.5,G.h-5)),lab=`Ring-${i}${r.up?` · ${f1(r.up)}%`:''}`,tw=lab.length*fs*.58+12,ph=fs+5;
-  return `<rect x="${150-tw/2}" y="${G.y-ph/2}" width="${tw}" height="${ph}" rx="${ph/2}" fill="rgba(8,6,22,.84)" pointer-events="none"/><text x="150" y="${G.y+fs*.36}" text-anchor="middle" font-size="${fs}" font-weight="700" font-family="Segoe UI,system-ui,sans-serif" fill="#fff" pointer-events="none">${lab}</text>`;}
-function drawTwin(){
-  const rows=S.data.filter(r=>r.st===S.twin);let g='',mk='';
+  return `<rect x="${150-tw/2}" y="${G.y-ph/2}" width="${tw}" height="${ph}" rx="${ph/2}" fill="rgba(8,6,22,.84)"/><text x="150" y="${G.y+fs*.36}" text-anchor="middle" font-size="${fs}" font-weight="700" font-family="Segoe UI,system-ui,sans-serif" fill="#fff">${lab}</text>`;}
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function drawTwin(a){
+  const rows=S.data.filter(r=>r.st===S.twin),anim=a||S.drawn!==S.twin;S.drawn=S.twin;
+  let g='',lab='',mk='';
   for(let i=1;i<=22;i++){const r=rows.find(x=>x.ring===i)||{up:0,obs:[]},G=geom(i);
-    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${COL[band(r.up)]}" stroke="#0b0b14" stroke-width="1.2"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}${pill(i,r,G)}</g>`;
-    r.obs.forEach(o=>{mk+=`<circle class="mk" data-a="${o.angle??''}" data-hw="${G.hw}" r="5" cy="${G.y}" cx="150" fill="#ef4444" stroke="#fff" stroke-width="1.5" pointer-events="none"/>`;});}
-  $('#twin').innerHTML=`<defs><linearGradient id="cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop id="hl" offset=".5" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient></defs>
-  <rect x="48" y="600" width="204" height="12" rx="3" fill="#2a2540"/><g>${g}</g><g>${mk}</g>
-  <text transform="translate(22 150) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Dome (17–22)</text><text transform="translate(34 410) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Shaft (1–16)</text>`;
-  $('#tt').textContent=`${S.twin} · UT colour scale`;place(S.view);}
-function place(v){$$('#twin .mk').forEach(m=>{const a=m.dataset.a,hw=+m.dataset.hw;
-    if(a===''){m.setAttribute('cx',150+hw-7);m.style.opacity=1;return;}
-    const rel=(+a-v)*Math.PI/180,c=Math.cos(rel);m.setAttribute('cx',150+hw*.96*Math.sin(rel));m.style.opacity=c>.05?.3+.7*c:0;});
-  const h=$('#hl');if(h)h.setAttribute('offset',(.5+.38*Math.sin((v-90)*Math.PI/180)).toFixed(3));}
+    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${COL[band(r.up)]}"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${i>16?`<path d="${G.d}" fill="url(#dome)" pointer-events="none"/>`:''}${G.seam?`<path d="${G.seam}" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/>`:''}${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}</g>`;
+    lab+=pill(i,r,G);
+    r.obs.forEach(o=>{mk+=`<g class="mk" data-ring="${i}" data-a="${o.angle??''}" data-hw="${G.hw}" data-y="${G.y+(i<=16?7:0)}"><circle class="halo" r="6" fill="#ef4444" fill-opacity=".35"/><ellipse rx="5" ry="5" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1.5"/></g>`;});}
+  const mer=[0,90,180,270].map(t=>`<g class="mer" data-a="${t}" pointer-events="none"><line y1="222" y2="598" stroke="#fff" stroke-width=".9" stroke-dasharray="3 4"/><text y="636" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">${t}°</text></g>`).join('');
+  $('#twin').innerHTML=`<defs>
+  <linearGradient id="cyl" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".6"/><stop offset=".16" stop-color="#000" stop-opacity=".18"/><stop id="hl" offset=".42" stop-color="#fff" stop-opacity=".42"/><stop offset=".62" stop-color="#fff" stop-opacity=".05"/><stop offset=".86" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".68"/></linearGradient>
+  <radialGradient id="dome" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>
+  <radialGradient id="aura"><stop offset="0" stop-color="#7C3AED" stop-opacity=".4"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d92a8"/><stop offset="1" stop-color="#2b2d3d"/></linearGradient>
+  <linearGradient id="scanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#06B6D4" stop-opacity="0"/><stop offset=".5" stop-color="#06B6D4" stop-opacity=".55"/><stop offset="1" stop-color="#06B6D4" stop-opacity="0"/></linearGradient>
+  <pattern id="rung" width="6" height="9" patternUnits="userSpaceOnUse"><rect y="4" width="6" height="1.4" fill="#9aa0b8"/></pattern>
+  <filter id="ds" x="-20%" y="-10%" width="140%" height="125%"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000" flood-opacity=".5"/></filter></defs>
+  <ellipse class="aura" cx="150" cy="330" rx="170" ry="310" fill="url(#aura)" pointer-events="none"/>
+  <ellipse cx="150" cy="622" rx="128" ry="8" fill="rgba(0,0,0,.4)" pointer-events="none"/>
+  <g pointer-events="none"><rect x="44" y="222" width="6" height="376" fill="url(#rung)"/><line x1="44" x2="44" y1="222" y2="598" stroke="#9aa0b8"/><line x1="50" x2="50" y1="222" y2="598" stroke="#9aa0b8"/>
+  <rect x="236" y="262" width="40" height="18" fill="url(#steel)"/><rect x="272" y="257" width="7" height="28" rx="2" fill="#5b5f73"/><rect x="146" y="44" width="8" height="22" fill="url(#steel)"/></g>
+  <g filter="url(#ds)"><rect x="48" y="603" width="204" height="14" rx="3" fill="url(#steel)"/><rect x="40" y="615" width="220" height="6" rx="2" fill="#1f2130"/><g id="ringsG">${g}</g>
+  <path d="M60 600A90 5 0 0 0 240 600" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/><ellipse cx="150" cy="62" rx="16" ry="5" fill="url(#steel)" pointer-events="none"/></g>
+  <g>${mer}</g><g id="lab" pointer-events="none">${lab}</g>
+  <rect id="scan" x="52" y="0" width="196" height="26" fill="url(#scanG)" pointer-events="none"/>
+  <g id="mks">${mk}</g>
+  <text transform="translate(22 150) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Dome (17–22)</text><text transform="translate(30 410) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Shaft (1–16)</text>`;
+  $('#tt').textContent=`${S.twin} · UT colour scale`;
+  S.mk=$$('#twin .mk');S.mer=$$('#twin .mer');drawDial();place(S.view);
+  if(S.scan)S.scan.kill();
+  if(!RM){S.scan=gsap.fromTo('#scan',{y:600,opacity:.85},{y:70,duration:6,ease:'sine.inOut',repeat:-1,yoyo:true});
+    if(anim)gsap.from('#ringsG .rg',{opacity:0,y:10,duration:.45,stagger:.025,ease:'power2.out'});}}
+// Position markers + meridians for the current view angle v (exact azimuth: x = centre + radius·sin(angle − view))
+function place(v){const R=Math.PI/180;
+  for(const m of S.mk||[]){const a=m.dataset.a,hw=+m.dataset.hw,y=+m.dataset.y;let x,c=1;
+    if(a===''){x=150+hw-8;}else{const rel=(+a-v)*R;c=Math.cos(rel);x=150+hw*Math.sin(rel);}
+    m.setAttribute('transform',`translate(${x.toFixed(1)} ${y})`);m.style.opacity=c>.04?(.35+.65*c).toFixed(2):0;m.style.pointerEvents=c>.2?'auto':'none';m.lastChild.setAttribute('rx',(1.8+3.4*Math.max(0,c)).toFixed(2));}
+  for(const l of S.mer||[]){const rel=(+l.dataset.a-v)*R,c=Math.cos(rel);l.setAttribute('transform',`translate(${(150+90*Math.sin(rel)).toFixed(1)} 0)`);l.style.opacity=c>.05?(.15+.6*c).toFixed(2):0;}
+  const hl=$('#hl');if(hl)hl.setAttribute('offset',(.39+.2*Math.sin((v-90)*R)).toFixed(3));
+  const w=$('#vw');if(w)w.setAttribute('transform',`rotate(${180-v} 100 100)`);}
+// Top-view azimuth dial: 0° left, 90° front (bottom), 180° right, 270° back (top). Dots = observations (radius = ring number)
+function drawDial(){const rows=S.data.filter(r=>r.st===S.twin),R=70,pt=(t,r)=>[100-r*Math.cos(t*Math.PI/180),100+r*Math.sin(t*Math.PI/180)];
+  let s=`<circle cx="100" cy="100" r="${R}" fill="rgba(127,127,170,.08)" stroke="currentColor" stroke-opacity=".3"/>`+[20,45,70].map(r=>`<circle cx="100" cy="100" r="${r}" fill="none" stroke="currentColor" stroke-opacity=".15" stroke-dasharray="2 3"/>`).join('');
+  [0,90,180,270].forEach(t=>{const [x,y]=pt(t,R),[lx,ly]=pt(t,87);s+=`<line x1="100" y1="100" x2="${x}" y2="${y}" stroke="currentColor" stroke-opacity=".3"/><g class="dl" data-v="${t}" style="cursor:pointer"><circle cx="${lx}" cy="${ly}" r="11" fill="var(--bg2)" stroke="var(--s)"/><text x="${lx}" y="${ly+3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="currentColor">${t}°</text></g>`;});
+  s+=`<g id="vw"><path d="M100 100L160.6 65A70 70 0 0 1 160.6 135Z" fill="rgba(6,182,212,.28)" stroke="#06B6D4"/></g>`;
+  rows.forEach(r=>r.obs.forEach(o=>{if(o.angle===null)return;const [x,y]=pt(o.angle,20+(r.ring-1)*50/21);s+=`<circle class="od" data-ring="${r.ring}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${3+o.sev}" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1" style="cursor:pointer"><title>Ring-${r.ring} @ ${o.angle}°</title></circle>`;}));
+  s+=`<text x="100" y="97" text-anchor="middle" font-size="9" fill="currentColor" opacity=".7">${S.twin}</text><text x="100" y="108" text-anchor="middle" font-size="7" fill="currentColor" opacity=".5">top view</text>`;
+  $('#dial').innerHTML=s;}
+function ripple(i){if(RM)return;const G=geom(i),e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+  [['cx',150],['cy',G.y],['rx',20],['ry',5],['fill','none'],['stroke','#06B6D4'],['stroke-width',2],['pointer-events','none']].forEach(p=>e.setAttribute(p[0],p[1]));
+  $('#twin').append(e);gsap.to(e,{attr:{rx:130,ry:22},opacity:0,duration:.8,ease:'power2.out',onComplete:()=>e.remove()});}
 function rotate(t){const from=S.view,d=((t-from+540)%360)-180,o={v:from};S.view=t;
   $$('.cb').forEach(b=>b.classList.toggle('on',+b.dataset.v===t));
   $('#vl').textContent={0:'0° – Left view',90:'90° – Front view',180:'180° – Right view',270:'270° – Back view'}[t];
   gsap.to(o,{v:from+d,duration:.9,ease:'power2.inOut',onUpdate:()=>place(o.v)});}
 /* Zoom / pan: animate the SVG viewBox */
-const Z={x:0,y:0,w:300,h:620,k:1};
+const Z={x:0,y:0,w:300,h:640,k:1};
 function applyZ(){const s=$('#twin');s.setAttribute('viewBox',`${Z.x} ${Z.y} ${Z.w} ${Z.h}`);$('#zl').textContent=Math.round(Z.k*100)+'%';s.style.cursor=Z.k>1?'grab':'';s.style.touchAction=Z.k>1?'none':'pan-y';}
-function zoomTo(k,cx,cy){k=Math.min(4,Math.max(1,k));const w=300/k,h=620/k;cx=cx??Z.x+Z.w/2;cy=cy??Z.y+Z.h/2;
-  const x=Math.max(0,Math.min(300-w,cx-w/2)),y=Math.max(0,Math.min(620-h,cy-h/2));gsap.to(Z,{x,y,w,h,k,duration:.35,ease:'power2.out',onUpdate:applyZ});}
+function zoomTo(k,cx,cy){k=Math.min(4,Math.max(1,k));const w=300/k,h=640/k;cx=cx??Z.x+Z.w/2;cy=cy??Z.y+Z.h/2;
+  const x=Math.max(0,Math.min(300-w,cx-w/2)),y=Math.max(0,Math.min(640-h,cy-h/2));gsap.to(Z,{x,y,w,h,k,duration:.35,ease:'power2.out',onUpdate:applyZ});}
 $('#zi').onclick=()=>zoomTo(Z.k*1.4);$('#zo').onclick=()=>zoomTo(Z.k/1.4);$('#zr').onclick=()=>zoomTo(1);
 $('#twin').addEventListener('wheel',e=>{if(!(e.ctrlKey||e.metaKey))return;e.preventDefault();const s=$('#twin'),p=s.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(s.getScreenCTM().inverse());zoomTo(Z.k*(e.deltaY<0?1.2:1/1.2),q.x,q.y);},{passive:false});
 $('#twin').addEventListener('pointerdown',e=>{if(Z.k<=1)return;const s=$('#twin'),r=s.getBoundingClientRect(),sc=Math.min(r.width/Z.w,r.height/Z.h);let lx=e.clientX,ly=e.clientY,moved=0;
   const mv=ev=>{const dx=ev.clientX-lx,dy=ev.clientY-ly;moved+=Math.abs(dx)+Math.abs(dy);if(moved<6)return;lx=ev.clientX;ly=ev.clientY;gsap.killTweensOf(Z);
-    Z.x=Math.max(0,Math.min(300-Z.w,Z.x-dx/sc));Z.y=Math.max(0,Math.min(620-Z.h,Z.y-dy/sc));S.dragged=true;applyZ();};
+    Z.x=Math.max(0,Math.min(300-Z.w,Z.x-dx/sc));Z.y=Math.max(0,Math.min(640-Z.h,Z.y-dy/sc));S.dragged=true;applyZ();};
   const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);setTimeout(()=>{S.dragged=false;},0);};
   window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);});
-$('#twin').addEventListener('click',e=>{if(S.dragged)return;const g=e.target.closest('.rg');if(!g)return;const i=+g.dataset.ring;S.sel=i;
+$('#twin').addEventListener('click',e=>{if(S.dragged)return;const g=e.target.closest('.rg,.mk');if(!g)return;const i=+g.dataset.ring;S.sel=i;ripple(i);
   $$('#twin .rg').forEach(x=>x.classList.toggle('sel',+x.dataset.ring===i));
-  gsap.fromTo(g,{scale:1.05,svgOrigin:'150 '+geom(i).y},{scale:1,svgOrigin:'150 '+geom(i).y,duration:.5,ease:'back.out(3)'});
+  
   openModal(S.twin,i);});
 
 /* ================= Ring cards, observations ================= */
@@ -421,22 +481,46 @@ const closeModal=()=>{$('#md').style.display='none';};
 $('#md').addEventListener('click',e=>{if(e.target.id==='md'||e.target.id==='mx')closeModal();});
 
 /* ================= Charts (ApexCharts) ================= */
-function mk(id,o){if(CH[id])CH[id].destroy();const fc=S.theme==='dark'?'#c9c2e6':'#3b2f63';
-  o.chart=Object.assign({foreColor:fc,toolbar:{show:false},background:'transparent',fontFamily:'inherit',height:300},o.chart);
+// Create the chart once, then update in place (much cheaper than destroy/recreate)
+function mk(id,o){const el=$('#'+id);if(!el)return;const fc=S.theme==='dark'?'#c9c2e6':'#3b2f63',k=(o.chart.type)+S.theme+(o.key||'');delete o.key;
+  o.chart=Object.assign({foreColor:fc,toolbar:{show:false},background:'transparent',fontFamily:'inherit',height:300,animations:{enabled:!RM,speed:500}},o.chart);
   o.theme={mode:S.theme};o.grid=Object.assign({borderColor:'rgba(127,127,170,.2)'},o.grid);o.legend={labels:{colors:fc}};
-  CH[id]=new ApexCharts($('#'+id),o);CH[id].render();}
+  if(CH[id]&&CH[id].k===k)CH[id].updateOptions(o,true,true);
+  else{if(CH[id])CH[id].destroy();CH[id]=new ApexCharts(el,o);CH[id].k=k;CH[id].render();}}
+const UTR=[[0,0,'#7f1d1d','0%'],[.1,25,'#ef4444','1–25%'],[25.1,50,'#f97316','26–50%'],[50.1,75,'#eab308','51–75%'],[75.1,99.9,'#84cc16','76–99%'],[100,100,'#22c55e','100%']];
+const MET={ut:{n:'UT progress',v:r=>r?r.up:0,f:v=>f1(v)+'%',rg:UTR},bf:{n:'Buffing progress',v:r=>r?r.bp:0,f:v=>f1(v)+'%',rg:UTR},
+  rem:{n:'Remaining UT length',v:r=>r?r.rem:0,f:v=>v+' m',rg:[[0,0,'#22c55e','Done'],[.1,10,'#84cc16','≤10 m'],[10.1,20,'#eab308','10–20 m'],[20.1,30,'#f97316','20–30 m'],[30.1,999,'#ef4444','>30 m']]},
+  sev:{n:'Observation severity index',v:r=>r?r.obs.reduce((t,o)=>t+o.sev,0):0,f:v=>v+' pts',rg:[[0,0,'#334155','None'],[1,2,'#eab308','Low'],[3,4,'#f97316','Medium'],[5,99,'#ef4444','High']]}};
+function defectData(){const rows=S.data.filter(r=>r.st===S.twin),bins=[...Array(12).keys()].map(i=>i*30+'°').concat('n/a');
+  return Array.from({length:22},(_,k)=>{const r=rows.find(x=>x.ring===k+1),v=new Array(13).fill(0);
+    (r?r.obs:[]).forEach(o=>{const b=o.angle===null?12:Math.round(o.angle/30)%12;v[b]=Math.max(v[b],o.sev);});
+    return {name:'Ring-'+(k+1),data:bins.map((x,j)=>({x,y:v[j]}))};});}
 function renderCharts(){
-  // Heatmap: first series renders at the bottom, so Ring-1 sits at the bottom like the real stove
-  mk('hm',{chart:{type:'heatmap',height:560},series:Array.from({length:22},(_,i)=>({name:'Ring-'+(i+1),data:STOVES.map(s=>{const r=S.data.find(x=>x.st===s&&x.ring===i+1);return {x:s,y:r?+f1(r.up):0};})})),
-    dataLabels:{enabled:true,formatter:v=>v+'%',style:{fontSize:'10px'}},stroke:{width:2,colors:['#0b0b14']},
-    plotOptions:{heatmap:{radius:3,colorScale:{ranges:[{from:0,to:0,color:'#7f1d1d',name:'0%'},{from:.1,to:25,color:'#ef4444',name:'1–25%'},{from:25.1,to:50,color:'#f97316',name:'26–50%'},{from:50.1,to:75,color:'#eab308',name:'51–75%'},{from:75.1,to:99.9,color:'#84cc16',name:'76–99%'},{from:100,to:100,color:'#22c55e',name:'100%'}]}}},
-    tooltip:{y:{formatter:v=>v+'% UT complete'}},xaxis:{position:'top'}});
-}
+  const M=MET[S.met];$('#hmS').textContent=M.n;
+  // First series renders at the bottom, so Ring-1 sits at the bottom like the real stove
+  mk('hm',{key:S.met,chart:{type:'heatmap',height:560},series:Array.from({length:22},(_,i)=>({name:'Ring-'+(i+1),data:STOVES.map(s=>({x:s,y:+(+M.v(S.data.find(x=>x.st===s&&x.ring===i+1))).toFixed(1)}))})),
+    dataLabels:{enabled:true,formatter:v=>M.f(v),style:{fontSize:'10px'}},stroke:{width:2,colors:['#0b0b14']},
+    plotOptions:{heatmap:{radius:3,colorScale:{ranges:M.rg.map(r=>({from:r[0],to:r[1],color:r[2],name:r[3]}))}}},
+    tooltip:{y:{formatter:v=>M.f(v)}},xaxis:{position:'top'}});
+  $('#dmS').textContent=`${S.twin} · unrolled shell, azimuth × ring`;
+  mk('dm',{key:'dm',chart:{type:'heatmap',height:520},series:defectData(),dataLabels:{enabled:false},stroke:{width:1,colors:['transparent']},
+    plotOptions:{heatmap:{radius:2,colorScale:{ranges:[{from:0,to:0,color:S.theme==='dark'?'#241f45':'#e7e2f7',name:'None'},{from:1,to:1,color:'#eab308',name:'Low'},{from:2,to:2,color:'#f97316',name:'Medium'},{from:3,to:3,color:'#ef4444',name:'High'}]}}},
+    tooltip:{y:{formatter:v=>['None','Low','Medium','High'][v]||v}},xaxis:{position:'top',labels:{style:{fontSize:'10px'}}}});
+  const tr=S.data.filter(r=>r.st===S.twin).sort((a,b)=>a.ring-b.ring);$('#rpS').textContent=S.twin;
+  mk('rp',{key:'rp',chart:{type:'line',height:320},series:[{name:'Buffing %',type:'column',data:tr.map(r=>+f1(r.bp))},{name:'UT %',type:'line',data:tr.map(r=>+f1(r.up))}],
+    xaxis:{categories:tr.map(r=>r.ring),title:{text:'Ring'}},yaxis:{min:0,max:100,labels:{formatter:v=>v+'%'}},colors:['#A855F7','#06B6D4'],stroke:{width:[0,3],curve:'smooth'},
+    plotOptions:{bar:{borderRadius:3,columnWidth:'62%'}},markers:{size:[0,4]},dataLabels:{enabled:false},tooltip:{shared:true,y:{formatter:v=>v+'%'}}});}
+// Charts render lazily: only when their panels are near the viewport
+const vis=new Set(),io=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersecting?vis.add(e.target.id):vis.delete(e.target.id));if(vis.size&&S.cd){S.cd=false;renderCharts();}},{rootMargin:'500px'});
+function lazyCharts(){S.cd=true;if(vis.size){S.cd=false;renderCharts();}}
+const queue=()=>{if(S.q)return;S.q=requestAnimationFrame(()=>{S.q=0;render();});};
+const deb=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};};
+S.met='ut';
 /* ================= Render orchestration ================= */
 function render(){
   $$('#seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.s===S.stove));
   if(S.stove!=='All')S.twin=S.stove;
-  renderKPI();renderCmp();drawTwin();renderRings();renderObs();renderCharts();}
+  renderKPI();renderCmp();drawTwin();renderRings();renderObs();lazyCharts();}
 /* ================= Cloud (Supabase) + CSV data sources ================= */
 const SB_URL='https://lgyladuiyezqccyjxqgn.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxneWxhZHVpeWV6cWNjeWp4cWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDEyMTksImV4cCI6MjA3ODUxNzIxOX0.O-K3aJkcdvnj0k3ltu37AK3hrW2ibZCZbwVy9SDTBZg';
@@ -451,7 +535,7 @@ function compose(){let rows;
   else if(S.src==='csv')rows=S.csv;
   else{const m=new Map();S.cloud.concat(S.csv).forEach(r=>m.set(r.st+'|'+r.ring,r));rows=[...m.values()];} // CSV wins per ring
   if(!rows.length){S.fallback=true;return parseCSV(SAMPLE);}S.fallback=false;return rows;}
-function apply(msg){S.data=compose();buildHist();render();
+function apply(msg){S.data=compose();buildHist();queue();$('#lv').classList.toggle('off',!S.online);$('#lt').textContent=S.online?'LIVE':'OFFLINE';
   $('#cs').textContent=(S.online?'☁ Connected':'☁ Offline')+` · cloud ${S.cloud.length} · csv ${S.csv.length}`;
   if(msg)toast(S.fallback?'Selected source is empty – showing sample data':msg);}
 async function fetchCloud(){if(!sb){S.online=false;return;}
@@ -501,8 +585,8 @@ $('#aS').onchange=$('#aR').onchange=()=>fillForm($('#aS').value,+$('#aR').value)
 $('#src').onchange=e=>{S.src=e.target.value;apply('Source: '+e.target.selectedOptions[0].text.replace('Source: ',''));};
 
 /* ================= Exports ================= */
-function exportPNG(){const svg=$('#twin').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('width',600);svg.setAttribute('height',1240);
-  const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=600;c.height=1280;const x=c.getContext('2d');x.fillStyle='#090714';x.fillRect(0,0,600,1280);x.fillStyle='#fff';x.font='bold 22px Segoe UI,sans-serif';x.fillText(`${S.twin} – UT progress`,20,34);x.drawImage(img,0,40);
+function exportPNG(){const svg=$('#twin').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('viewBox','0 0 300 640');svg.setAttribute('width',600);svg.setAttribute('height',1280);
+  const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=600;c.height=1330;const x=c.getContext('2d');x.fillStyle='#090714';x.fillRect(0,0,600,1330);x.fillStyle='#fff';x.font='bold 22px Segoe UI,sans-serif';x.fillText(`${S.twin} – UT progress`,20,34);x.drawImage(img,0,40);
     c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`${S.twin}-snapshot.png`;a.click();toast('PNG snapshot saved');});};
   img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg).replace(/currentColor/g,'#ffffff'));}
 function exportCSV(){const rows=S.data.map(r=>({Stove:r.st,Ring:r.ring,Circumference:r.c,BuffingCompleted:r.b,UTCompleted:r.u,'Buffing%':f1(r.bp),'UT%':f1(r.up),Remaining:r.rem,Status:r.status,Observations:r.raw}));
@@ -510,7 +594,7 @@ function exportCSV(){const rows=S.data.map(r=>({Stove:r.st,Ring:r.ring,Circumfer
 function doExport(k){$('#xm').classList.remove('open');if(k==='png')exportPNG();else if(k==='csv')exportCSV();else{toast(k==='pdf'?'Choose "Save as PDF" in the print dialog':'Opening print view');setTimeout(()=>window.print(),400);}}
 
 /* ================= Theme, fullscreen, refresh ================= */
-function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;$('#bT').textContent=t==='dark'?'☀':'🌙';$('#bT').title=t==='dark'?'Switch to day mode (T)':'Switch to night mode (T)';if(S.data.length)renderCharts();}
+function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;$('#bT').textContent=t==='dark'?'☀':'🌙';$('#bT').title=t==='dark'?'Switch to day mode (T)':'Switch to night mode (T)';if(S.data.length)lazyCharts();}
 function fullscreen(){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(e){toast('Fullscreen not available here');}}
 async function refresh(silent){await fetchCloud();apply(silent?'':'Refreshed');if(!silent&&S.fallback===false&&S.online)toast('Cloud data refreshed');}
 
@@ -526,8 +610,8 @@ $('#fRing').onchange=e=>{S.f.ring=e.target.value;renderRings();};
 $('#fSt').onchange=e=>{S.f.st=e.target.value;renderRings();};
 $('#fOb').onchange=e=>{S.f.ob=e.target.value;renderRings();};
 $('#fMin').oninput=e=>{S.f.min=+e.target.value;$('#mv').textContent=e.target.value;renderRings();};
-$('#fQ').oninput=e=>{S.f.q=e.target.value.trim();renderRings();};
-$('#oQ').oninput=e=>{S.oq=e.target.value.trim();renderObs();};
+$('#fQ').oninput=deb(e=>{S.f.q=e.target.value.trim();renderRings();},120);
+$('#oQ').oninput=deb(e=>{S.oq=e.target.value.trim();renderObs();},120);
 $('#oS').onchange=e=>{S.os=e.target.value;renderObs();};
 $$('.cb').forEach(b=>b.onclick=()=>rotate(+b.dataset.v));
 $('#file').onchange=e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value='';};
@@ -551,6 +635,17 @@ document.addEventListener('keydown',e=>{const t=e.target.tagName;if(t==='INPUT'|
 setInterval(()=>{$('#clock').textContent=new Date().toLocaleString([], {dateStyle:'medium',timeStyle:'medium'});},1000);
 $('#clock').textContent=new Date().toLocaleString();
 
+/* ================= Twin tooltip, dial, heatmap metric ================= */
+const tip=$('#tip');
+$('#twin').addEventListener('pointermove',e=>{const g=e.target.closest('.rg,.mk');if(!g){tip.style.opacity=0;return;}
+  const i=+g.dataset.ring,r=S.data.find(x=>x.st===S.twin&&x.ring===i);if(!r)return;
+  tip.innerHTML=`<b>${S.twin} · Ring-${i}</b><br>UT ${f1(r.up)}% · Buffing ${f1(r.bp)}%<br>${r.status} · ${r.rem} m left${r.obs.length?`<br><span style="color:#f87171">⚠ ${r.obs.length} observation${r.obs.length>1?'s':''}</span>`:''}`;
+  tip.style.opacity=1;tip.style.left=Math.max(4,Math.min(innerWidth-250,e.clientX+14))+'px';tip.style.top=(e.clientY+14)+'px';});
+$('#twin').addEventListener('pointerleave',()=>{tip.style.opacity=0;});
+$('#dial').addEventListener('click',e=>{const d=e.target.closest('.dl'),o=e.target.closest('.od');if(d)rotate(+d.dataset.v);else if(o)openModal(S.twin,+o.dataset.ring);});
+$('#met').onclick=e=>{const b=e.target.closest('[data-m]');if(!b)return;S.met=b.dataset.m;$$('#met .btn').forEach(x=>x.classList.toggle('on',x===b));lazyCharts();};
+document.addEventListener('visibilitychange',()=>gsap.globalTimeline.paused(document.hidden));
+
 /* ================= Sidebar ================= */
 function toggleSB(){const b=document.body;if(innerWidth<=900)b.classList.toggle('mo');else{b.classList.toggle('col');try{localStorage.setItem('stoveSb',b.classList.contains('col')?'1':'0');}catch(e){}}
   setTimeout(()=>window.dispatchEvent(new Event('resize')),350);}
@@ -560,9 +655,11 @@ document.addEventListener('click',e=>{if(document.body.classList.contains('mo')&
 try{if(localStorage.getItem('stoveSb')==='1')document.body.classList.add('col');}catch(e){}
 
 /* ================= Boot ================= */
+['hmP','chs'].forEach(id=>io.observe($('#'+id)));
 S.data=parseCSV(SAMPLE);render();rotate(90);subscribe();
+if(!RM)gsap.from('.kpi,.sc',{opacity:0,y:16,duration:.6,stagger:.05,ease:'power2.out'});
 gsap.to('#ld',{opacity:0,delay:.7,duration:.5,onComplete:()=>$('#ld').remove()});
-const saved=sessionStorage.getItem('stoveUser');
+let saved=null;try{saved=sessionStorage.getItem('stoveUser');}catch(e){}
 setRole(saved&&USERS[saved]?saved:null);refresh(true);
 </script>
 </body>
