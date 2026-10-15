@@ -1,569 +1,505 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Market Terminal — Live Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blast Furnace Stove NDT Digital Tracker</title>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{
-  --bg:#0B0E14; --panel:#131A24; --panel-2:#1B2330; --border:#232B3A;
-  --text:#E6E8EB; --muted:#7A8699; --mint:#00D9A3; --coral:#FF5C5C; --amber:#FFB454;
-  --mint-dim: rgba(0,217,163,.12); --coral-dim: rgba(255,92,92,.12);
-}
-*{box-sizing:border-box; margin:0; padding:0;}
-body{
-  background:var(--bg); color:var(--text);
-  font-family:'Inter',sans-serif;
-  min-height:100vh;
-}
-h1,h2,h3,.display{ font-family:'Space Grotesk',sans-serif; }
-.num{ font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; }
-::selection{ background:var(--mint-dim); }
-
-/* ---- top bar ---- */
-.topbar{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 24px; border-bottom:1px solid var(--border);
-  position:sticky; top:0; background:rgba(11,14,20,.9); backdrop-filter:blur(10px);
-  z-index:50; flex-wrap:wrap; gap:10px;
-}
-.brand{ display:flex; align-items:center; gap:10px; }
-.brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--mint); box-shadow:0 0 10px var(--mint); }
-.brand h1{ font-size:17px; font-weight:600; letter-spacing:.2px; }
-.status-pill{ font-size:11px; padding:4px 10px; border-radius:99px; border:1px solid var(--border); color:var(--muted); }
-.status-pill.live{ color:var(--mint); border-color:rgba(0,217,163,.3); }
-.status-pill.closed{ color:var(--coral); border-color:rgba(255,92,92,.3); }
-.config-btn{
-  background:var(--panel-2); border:1px solid var(--border); color:var(--muted);
-  font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer; font-family:inherit;
-}
-.config-btn:hover{ color:var(--text); border-color:var(--mint); }
-
-/* ---- ticker strip ---- */
-.ticker-strip{
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:1px; background:var(--border); border-bottom:1px solid var(--border);
-}
-.ticker-card{ background:var(--panel); padding:16px 22px; }
-.ticker-card .label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-.ticker-card .value{ font-size:26px; font-weight:600; }
-.ticker-card .delta{ font-size:13px; margin-top:4px; }
-.up{ color:var(--mint); } .down{ color:var(--coral); } .flat{ color:var(--muted); }
-
-/* ---- nav ---- */
-.tabs{ display:flex; gap:4px; padding:0 24px; border-bottom:1px solid var(--border); overflow-x:auto; }
-.tab{
-  background:none; border:none; color:var(--muted); font-family:inherit; font-size:13px;
-  padding:14px 16px; cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap;
-}
-.tab.active{ color:var(--text); border-bottom-color:var(--mint); }
-.tab:hover{ color:var(--text); }
-
-main{ max-width:1280px; margin:0 auto; padding:22px 24px 60px; }
-.panel-view{ display:none; }
-.panel-view.active{ display:block; animation:fade .25s ease; }
-@keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
-
-.grid{ display:grid; gap:16px; }
-.grid-2{ grid-template-columns:1fr 1fr; }
-.grid-3{ grid-template-columns:repeat(3,1fr); }
-@media(max-width:820px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
-
-.card{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px; }
-.card h3{ font-size:13px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:14px; }
-
-table{ width:100%; border-collapse:collapse; font-size:13px; }
-th{ text-align:right; color:var(--muted); font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:.4px; padding:8px 10px; border-bottom:1px solid var(--border); }
-th:first-child, td:first-child{ text-align:left; }
-td{ text-align:right; padding:9px 10px; border-bottom:1px solid rgba(35,43,58,.5); font-family:'IBM Plex Mono',monospace; }
-tr:hover td{ background:var(--panel-2); }
-.strike-col{ color:var(--amber); font-weight:600; }
-
-.controls{ display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; align-items:center; }
-select, input[type=text]{
-  background:var(--panel-2); border:1px solid var(--border); color:var(--text);
-  padding:8px 12px; border-radius:8px; font-family:inherit; font-size:13px;
-}
-button.primary{
-  background:var(--mint); color:#04140F; border:none; font-weight:600;
-  padding:8px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-size:13px;
-}
-button.primary:hover{ filter:brightness(1.08); }
-
-.stat-row{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(35,43,58,.5); font-size:13px; }
-.stat-row:last-child{ border-bottom:none; }
-.stat-row .v{ font-family:'IBM Plex Mono',monospace; font-weight:600; }
-
-.gauge-wrap{ text-align:center; padding:10px 0; }
-.gauge-val{ font-size:34px; font-weight:700; font-family:'IBM Plex Mono',monospace; }
-.gauge-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
-.bar-track{ height:8px; background:var(--panel-2); border-radius:99px; overflow:hidden; margin-top:12px; }
-.bar-fill{ height:100%; background:linear-gradient(90deg,var(--coral),var(--amber),var(--mint)); }
-
-.breadth-bar{ display:flex; height:34px; border-radius:8px; overflow:hidden; margin:14px 0; }
-.breadth-bar div{ display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; font-family:'IBM Plex Mono',monospace; }
-
-.empty-state{ text-align:center; padding:50px 20px; color:var(--muted); }
-.empty-state .icon{ font-size:32px; margin-bottom:10px; }
-.empty-state code{ background:var(--panel-2); padding:2px 8px; border-radius:5px; color:var(--mint); }
-
-.gainer{ color:var(--mint); } .loser{ color:var(--coral); }
-
-.notice{
-  background:var(--panel-2); border:1px solid var(--border); border-left:3px solid var(--amber);
-  padding:12px 14px; border-radius:8px; font-size:12.5px; color:var(--muted); margin-bottom:16px; line-height:1.5;
-}
-
-.modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:100; }
-.modal-backdrop.open{ display:flex; }
-.modal{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:24px; width:min(480px,90vw); }
-.modal h3{ margin-bottom:6px; }
-.modal p{ font-size:12.5px; color:var(--muted); margin-bottom:14px; line-height:1.5; }
-.modal input{ width:100%; margin-bottom:12px; }
-.modal-actions{ display:flex; gap:8px; justify-content:flex-end; }
-.modal-actions button.ghost{ background:none; border:1px solid var(--border); color:var(--muted); padding:8px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-size:13px; }
-
-.loading-dot::after{ content:'···'; animation:blink 1.2s infinite; }
-@keyframes blink{ 0%,100%{opacity:.3;} 50%{opacity:1;} }
+/* ===== Theme tokens ===== */
+:root{--bg:#090714;--bg2:#1a103a;--glass:rgba(255,255,255,.08);--bd:rgba(255,255,255,.14);--tx:#f3f0ff;--mu:#a79fc7;--p:#7C3AED;--s:#A855F7;--a:#06B6D4;--sh:0 10px 34px rgba(0,0,0,.45);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=light]{--bg:#f1edfb;--bg2:#e2d9f8;--glass:rgba(255,255,255,.72);--bd:rgba(80,40,160,.18);--tx:#1d1238;--mu:#5d5380;--sh:0 8px 26px rgba(80,40,160,.15)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--tx);min-height:100%;background:radial-gradient(1200px 600px at 15% -10%,var(--bg2),transparent),radial-gradient(900px 500px at 100% 0,rgba(6,182,212,.12),transparent),var(--bg);background-attachment:fixed;padding:14px}
+.wrap{max-width:1800px;margin:auto}
+.glass{background:var(--glass);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid var(--bd);border-radius:18px;box-shadow:var(--sh);padding:16px;transition:transform .25s,border-color .25s}
+.glass.hv:hover{transform:translateY(-3px);border-color:var(--s)}
+h2{font-size:15px;font-weight:600;margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+h2 small{font-weight:400;color:var(--mu);font-size:12px}
+section{margin-top:14px}
+button,select,input{font:inherit;color:var(--tx)}
+button{cursor:pointer}
+.btn{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;transition:.2s}
+.btn:hover,.btn.on{background:linear-gradient(135deg,var(--p),var(--s));border-color:transparent;color:#fff}
+:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+select,input[type=search]{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;min-width:0}
+select option{color:#111}
+/* header */
+header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--p),var(--a));display:grid;place-items:center;box-shadow:0 0 24px rgba(124,58,237,.6)}
+.brand h1{font-size:clamp(16px,2.2vw,26px);line-height:1.15}
+.brand p{color:var(--mu);font-size:12px}
+.hb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:relative}
+#clock{font-variant-numeric:tabular-nums;color:var(--mu);font-size:13px;margin-right:6px}
+#xm{display:none;position:absolute;right:0;top:44px;z-index:30;flex-direction:column;gap:6px;min-width:190px}
+#xm.open{display:flex}
+.bar-f{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.seg{display:flex;gap:4px}
+input[type=range]{accent-color:var(--s);width:110px}
+/* grids */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.kpi{padding:14px}.kpi span{color:var(--mu);font-size:12px}.kpi b{display:block;font-size:clamp(20px,2.4vw,30px);margin-top:4px;background:linear-gradient(90deg,#fff,var(--s));-webkit-background-clip:text;background-clip:text;color:transparent}
+:root[data-theme=light] .kpi b{background:linear-gradient(90deg,var(--p),var(--s));-webkit-background-clip:text;background-clip:text}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
+.sc{display:flex;gap:14px;align-items:center;cursor:pointer}
+.sc.act{border-color:var(--a)}
+.sc svg{width:104px;height:104px;flex:none}
+.sc div p{font-size:13px;color:var(--mu);margin-top:3px}.sc div p b{color:var(--tx)}
+.twin{display:grid;grid-template-columns:minmax(280px,1.1fr) minmax(280px,1fr);gap:12px}
+#twin{width:100%;max-height:78vh;display:block;margin:auto}
+.rg{cursor:pointer;transition:filter .2s}.rg:hover{filter:brightness(1.35)}
+.rg.sel path:first-child{stroke:#fff;stroke-width:3}
+.pulse{animation:pl 1.2s ease-in-out infinite}
+.mk{animation:pl 1.2s ease-in-out infinite}
+@keyframes pl{50%{stroke-width:5;stroke:#fecaca}}
+.compass{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:330px;margin:6px auto}
+.compass .btn{padding:8px 4px;font-size:12px}.compass i{display:grid;place-items:center;color:var(--a);font-style:normal;font-size:20px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--mu);margin-top:10px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.rings{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;max-height:620px;overflow:auto;padding-right:4px}
+.rc{background:var(--glass);border:1px solid var(--bd);border-radius:14px;padding:12px;cursor:pointer;transition:.2s}
+.rc:hover{border-color:var(--a);transform:translateY(-2px)}
+.rt{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;font-size:13px}
+.chip{font-size:11px;padding:2px 8px;border-radius:20px;color:#fff}
+.ob{background:#ef4444}
+.lb{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin:6px 0 3px}
+.bar{height:11px;border-radius:9px;background:rgba(127,127,170,.25);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:9px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.bb i{background:linear-gradient(90deg,var(--p),#d8b4fe)}.ub i{background:linear-gradient(90deg,#0e7490,var(--a))}
+.obl{max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.oi{border-left:4px solid #ef4444;background:var(--glass);border-radius:10px;padding:9px 11px;font-size:13px;cursor:pointer}
+.oi small{color:var(--mu)}
+.prod{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:12px}
+.prod .glass b{font-size:22px;display:block;margin-top:4px}.prod span{font-size:12px;color:var(--mu)}
+#md{position:fixed;inset:0;background:rgba(5,3,15,.65);backdrop-filter:blur(6px);display:none;place-items:center;z-index:50;padding:16px}
+#md .glass{max-width:520px;width:100%;max-height:90vh;overflow:auto;background:var(--bg2)}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;font-size:13px}.kv div{background:var(--glass);padding:8px 10px;border-radius:10px}.kv small{display:block;color:var(--mu)}
+#toasts{position:fixed;right:14px;bottom:14px;display:flex;flex-direction:column;gap:8px;z-index:70}
+.toast{background:var(--bg2);border:1px solid var(--s);border-left:4px solid var(--a);padding:10px 14px;border-radius:12px;box-shadow:var(--sh);font-size:13px;max-width:320px}
+#ld{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:99}
+#ld div{width:54px;height:54px;border-radius:50%;border:4px solid rgba(168,85,247,.25);border-top-color:var(--a);animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+body[data-role=user] .adm{display:none!important}
+#lo{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:var(--bg);padding:16px}
+#lo form{width:100%;max-width:360px;display:flex;flex-direction:column;gap:10px}
+.ef{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end}
+.ef label,#lo label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mu)}.ef .w{grid-column:1/-1}
+textarea,input[type=number],input[type=text],input[type=password]{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;min-width:0;font:inherit;color:var(--tx);width:100%}
+.role{font-size:12px;padding:4px 10px;border-radius:20px;background:linear-gradient(135deg,var(--p),var(--s));color:#fff}
+.empty{color:var(--mu);font-size:13px;padding:14px;text-align:center}
+@media(max-width:900px){.twin{grid-template-columns:1fr}}
+@media(min-width:2200px){body{font-size:19px}.wrap{max-width:2400px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{body{background:#fff;color:#000;padding:0}.glass{box-shadow:none;backdrop-filter:none;background:#fff;border-color:#bbb;break-inside:avoid}.hb,.bar-f,#toasts,#md,#ld,.compass{display:none!important}.rings{max-height:none}.kpi b{color:#4c1d95;-webkit-text-fill-color:#4c1d95}}
 </style>
 </head>
 <body>
-
-<div class="topbar">
-  <div class="brand"><span class="dot"></span><h1>Market Terminal</h1></div>
-  <div style="display:flex; align-items:center; gap:10px;">
-    <span class="status-pill" id="marketStatusPill">checking…</span>
-    <span class="status-pill" id="lastUpdated">—</span>
-    <button class="config-btn" onclick="openConfig()">⚙ Data Source</button>
+<div id="ld"><div></div></div>
+<div class="wrap" id="app">
+<header class="glass">
+  <div class="brand"><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
+    <div><h1>Blast Furnace Stove NDT Digital Twin</h1><p>Buffing and UT progress · 3 hot blast stoves · 22 rings each</p></div></div>
+  <div class="hb"><span id="clock"></span>
+    <label class="btn">⬆ Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label>
+    <button class="btn" id="bR" title="Refresh (R)">⟳ Refresh</button>
+    <button class="btn" id="bX">⇩ Export</button>
+    <button class="btn" id="bT" title="Theme (T)">◐</button>
+    <button class="btn" id="bF" title="Fullscreen (F)">⛶</button>
+    <label class="btn"><input type="checkbox" id="auto"> Auto 30 s</label>
+    <select id="src" title="Data source" aria-label="Data source"><option value="merge">Source: Cloud + CSV</option><option value="cloud">Source: Cloud only</option><option value="csv">Source: CSV only</option></select>
+    <span class="chip" id="cs" style="background:#6b7280">☁ offline</span><span class="role" id="who"></span><button class="btn" id="bO">Sign out</button>
+    <div id="xm" class="glass"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="print">Print view</button></div>
   </div>
+</header>
+
+<div class="bar-f glass" role="search">
+  <div class="seg" id="seg"></div>
+  <select id="fRing" aria-label="Ring"></select>
+  <select id="fSt" aria-label="Progress status"><option>All</option><option>Pending</option><option>In Progress</option><option>Completed</option></select>
+  <select id="fOb" aria-label="Observation status"><option value="All">Observations: all</option><option value="With">With observation</option><option value="Without">Without observation</option></select>
+  <label style="font-size:12px;color:var(--mu)">UT ≥ <b id="mv">0</b>% <input type="range" id="fMin" min="0" max="100" step="5" value="0"></label>
+  <input type="search" id="fQ" placeholder="Search ring (/)" aria-label="Search ring">
 </div>
 
-<div class="ticker-strip" id="tickerStrip">
-  <div class="ticker-card"><div class="label">NIFTY 50</div><div class="value num" id="t-nifty">—</div><div class="delta" id="d-nifty">—</div></div>
-  <div class="ticker-card"><div class="label">Nifty Bank</div><div class="value num" id="t-banknifty">—</div><div class="delta" id="d-banknifty">—</div></div>
-  <div class="ticker-card"><div class="label">Sensex (BSE)</div><div class="value num" id="t-sensex">manual</div><div class="delta" id="d-sensex">not on NSE feed</div></div>
-  <div class="ticker-card"><div class="label">PCR (Nifty)</div><div class="value num" id="t-pcr">—</div><div class="delta" id="d-pcr">Put/Call OI ratio</div></div>
-</div>
+<div class="kpis" id="kpis"></div>
+<section><h2>Stove comparison <small>click a card to focus a stove</small></h2><div class="g3" id="cmp"></div></section>
 
-<div class="tabs">
-  <button class="tab active" data-view="overview">Overview</button>
-  <button class="tab" data-view="optionchain">Option Chain</button>
-  <button class="tab" data-view="movers">Gainers / Losers</button>
-  <button class="tab" data-view="breadth">Market Breadth</button>
-  <button class="tab" data-view="quote">Stock Quote</button>
-  <button class="tab" data-view="fiidii">FII / DII</button>
-</div>
-
-<main>
-
-  <!-- OVERVIEW -->
-  <section class="panel-view active" id="view-overview">
-    <div class="grid grid-3">
-      <div class="card">
-        <h3>Advances vs Declines — Nifty 50</h3>
-        <div class="breadth-bar" id="breadthBarMini"><div style="flex:1;background:var(--panel-2);color:var(--muted)">no data</div></div>
-        <div class="stat-row"><span>Advances</span><span class="v up" id="ov-adv">—</span></div>
-        <div class="stat-row"><span>Declines</span><span class="v down" id="ov-dec">—</span></div>
-        <div class="stat-row"><span>Unchanged</span><span class="v" id="ov-unc">—</span></div>
+<section class="glass"><h2>Furnace digital twin <small id="tt"></small></h2>
+  <div class="twin">
+    <div><svg id="twin" viewBox="0 0 300 620" role="img" aria-label="Stove with 22 rings"></svg></div>
+    <div>
+      <p style="font-size:13px;color:var(--mu);text-align:center">Orientation – rotates the shell and slides observation markers by their stated angle</p>
+      <div class="compass">
+        <span></span><button class="btn cb" data-v="270">270° Back View</button><span></span>
+        <button class="btn cb" data-v="0">0° Left View</button><i>✛</i><button class="btn cb" data-v="180">180° Right View</button>
+        <span></span><button class="btn cb" data-v="90">90° Front View</button><span></span>
       </div>
-      <div class="card">
-        <h3>Put/Call Ratio</h3>
-        <div class="gauge-wrap">
-          <div class="gauge-val" id="ov-pcr">—</div>
-          <div class="gauge-label" id="ov-pcr-read">awaiting data</div>
-          <div class="bar-track"><div class="bar-fill" id="ov-pcr-bar" style="width:50%"></div></div>
-        </div>
-      </div>
-      <div class="card">
-        <h3>Max Pain — Nifty</h3>
-        <div class="gauge-wrap">
-          <div class="gauge-val num" id="ov-maxpain">—</div>
-          <div class="gauge-label">strike with min. option-writer loss</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-2" style="margin-top:16px;">
-      <div class="card">
-        <h3>Top Gainers</h3>
-        <table><thead><tr><th>Symbol</th><th>LTP</th><th>Chg %</th></tr></thead>
-        <tbody id="ov-gainers"><tr><td colspan="3" style="text-align:center;color:var(--muted)">no data</td></tr></tbody></table>
-      </div>
-      <div class="card">
-        <h3>Top Losers</h3>
-        <table><thead><tr><th>Symbol</th><th>LTP</th><th>Chg %</th></tr></thead>
-        <tbody id="ov-losers"><tr><td colspan="3" style="text-align:center;color:var(--muted)">no data</td></tr></tbody></table>
-      </div>
-    </div>
-  </section>
-
-  <!-- OPTION CHAIN -->
-  <section class="panel-view" id="view-optionchain">
-    <div class="controls">
-      <select id="ocSymbol">
-        <option value="NIFTY">NIFTY</option>
-        <option value="BANKNIFTY">BANKNIFTY</option>
-        <option value="FINNIFTY">FINNIFTY</option>
-      </select>
-      <select id="ocExpiry"><option>—</option></select>
-      <button class="primary" onclick="loadOptionChain()">Refresh</button>
-      <span style="color:var(--muted);font-size:12px;">Underlying: <span class="num" id="ocUnderlying">—</span></span>
-    </div>
-    <div class="grid grid-3" style="margin-bottom:16px;">
-      <div class="card"><h3>PCR (OI)</h3><div class="gauge-val" id="oc-pcr">—</div></div>
-      <div class="card"><h3>Total Call OI</h3><div class="gauge-val num" id="oc-callOi" style="color:var(--coral)">—</div></div>
-      <div class="card"><h3>Total Put OI</h3><div class="gauge-val num" id="oc-putOi" style="color:var(--mint)">—</div></div>
-    </div>
-    <div class="card">
-      <h3>Chain (strikes near ATM) · Max Pain: <span class="num" id="oc-maxpain" style="color:var(--amber)">—</span></h3>
-      <table>
-        <thead><tr>
-          <th>Call OI</th><th>Call ΔOI</th><th>Call IV</th><th>Call LTP</th>
-          <th style="text-align:center">Strike</th>
-          <th>Put LTP</th><th>Put IV</th><th>Put ΔOI</th><th>Put OI</th>
-        </tr></thead>
-        <tbody id="oc-body"><tr><td colspan="9" style="text-align:center;color:var(--muted)">Configure a data source to load the chain</td></tr></tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- MOVERS -->
-  <section class="panel-view" id="view-movers">
-    <div class="controls">
-      <select id="moversIndex">
-        <option value="NIFTY 50">NIFTY 50</option>
-        <option value="NIFTY BANK">NIFTY BANK</option>
-        <option value="NIFTY MIDCAP 50">NIFTY MIDCAP 50</option>
-        <option value="NIFTY NEXT 50">NIFTY NEXT 50</option>
-      </select>
-      <button class="primary" onclick="loadMovers()">Refresh</button>
-    </div>
-    <div class="grid grid-2">
-      <div class="card">
-        <h3>Gainers</h3>
-        <table><thead><tr><th>Symbol</th><th>LTP</th><th>Chg</th><th>Chg %</th></tr></thead>
-        <tbody id="mv-gainers"></tbody></table>
-      </div>
-      <div class="card">
-        <h3>Losers</h3>
-        <table><thead><tr><th>Symbol</th><th>LTP</th><th>Chg</th><th>Chg %</th></tr></thead>
-        <tbody id="mv-losers"></tbody></table>
-      </div>
-    </div>
-  </section>
-
-  <!-- BREADTH -->
-  <section class="panel-view" id="view-breadth">
-    <div class="controls">
-      <select id="breadthIndex">
-        <option value="NIFTY 50">NIFTY 50</option>
-        <option value="NIFTY BANK">NIFTY BANK</option>
-        <option value="NIFTY 500">NIFTY 500</option>
-      </select>
-      <button class="primary" onclick="loadBreadth()">Refresh</button>
-    </div>
-    <div class="card">
-      <h3 id="breadthTitle">Market Breadth</h3>
-      <div class="breadth-bar" id="breadthBarFull"></div>
-      <div class="grid grid-3" style="margin-top:14px;">
-        <div class="stat-row"><span>Advances</span><span class="v up" id="br-adv">—</span></div>
-        <div class="stat-row"><span>Declines</span><span class="v down" id="br-dec">—</span></div>
-        <div class="stat-row"><span>Unchanged</span><span class="v" id="br-unc">—</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- QUOTE -->
-  <section class="panel-view" id="view-quote">
-    <div class="controls">
-      <input type="text" id="quoteSymbol" placeholder="e.g. RELIANCE, TCS, INFY" style="width:220px;">
-      <button class="primary" onclick="loadQuote()">Get Quote</button>
-    </div>
-    <div class="card" id="quoteCard">
-      <div class="empty-state"><div class="icon">📈</div>Search a symbol to see its live quote.</div>
-    </div>
-  </section>
-
-  <!-- FII/DII -->
-  <section class="panel-view" id="view-fiidii">
-    <div class="notice">
-      FII/DII cash-market activity isn't published on NSE's live API — it's released once daily (after market close) via NSE's reports section or NSDL/exchange bulletins, not as a free real-time endpoint. Log today's figures here manually; they're saved locally in this dashboard.
-    </div>
-    <div class="grid grid-2">
-      <div class="card">
-        <h3>Add Today's Figures (₹ Cr)</h3>
-        <div class="controls" style="flex-direction:column; align-items:stretch;">
-          <input type="text" id="fiiBuy" placeholder="FII Buy value">
-          <input type="text" id="fiiSell" placeholder="FII Sell value">
-          <input type="text" id="diiBuy" placeholder="DII Buy value">
-          <input type="text" id="diiSell" placeholder="DII Sell value">
-          <button class="primary" onclick="saveFiiDii()">Save Entry</button>
-        </div>
-      </div>
-      <div class="card">
-        <h3>Log</h3>
-        <table><thead><tr><th>Date</th><th>FII Net</th><th>DII Net</th></tr></thead>
-        <tbody id="fiiLog"><tr><td colspan="3" style="text-align:center;color:var(--muted)">no entries yet</td></tr></tbody></table>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<!-- Config modal -->
-<div class="modal-backdrop" id="configModal">
-  <div class="modal">
-    <h3>Connect your data source</h3>
-    <p>This dashboard needs a small proxy to pull NSE data (browsers can't call nseindia.com directly). Deploy the included <code>worker.js</code> to Cloudflare Workers (free) and paste its URL below. See the README for the 5-minute setup.</p>
-    <input type="text" id="workerUrlInput" placeholder="https://your-worker.workers.dev">
-    <div class="modal-actions">
-      <button class="ghost" onclick="closeConfig()">Cancel</button>
-      <button class="primary" onclick="saveConfig()">Save & Connect</button>
+      <p id="vl" style="text-align:center;font-size:13px;margin:6px 0"></p>
+      <div class="legend" id="lg"></div>
+      <div class="legend"><span><i style="border:2px solid #ef4444;background:none"></i>Pulsing border = observation</span><span><i style="background:#ef4444;border-radius:50%"></i>Marker on shell at stated angle</span></div>
+      <div id="sel" class="empty">Click any ring for details.</div>
     </div>
   </div>
+</section>
+
+<section class="glass adm" id="entry"><h2>Data entry <small>admin only · saves to Supabase</small></h2>
+  <form id="ef" class="ef"><label>Stove<select id="eS"></select></label><label>Ring<select id="eR"></select></label>
+  <label>Circumference (m)<input id="eC" type="number" min="0.1" step="any" required></label><label>Buffing completed (m)<input id="eB" type="number" min="0" step="any" required></label><label>UT completed (m)<input id="eU" type="number" min="0" step="any" required></label>
+  <label class="w">Observations (one per line, e.g. "Undercut observed 270° Side: Depth 4.5mm, length 50mm")<textarea id="eO" rows="3"></textarea></label>
+  <div class="w" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn on" type="submit">Save to cloud</button><button class="btn" type="button" id="pushCsv">Push loaded CSV to cloud</button></div></form></section>
+
+<section class="glass"><h2>Ring-wise progress <small id="rn"></small></h2><div class="rings" id="rings"></div></section>
+
+<section class="g2">
+  <div class="glass"><h2>UT % heatmap <small>ring × stove</small></h2><div id="hm"></div></div>
+  <div class="glass"><h2>Observations <small id="os"></small></h2>
+    <div class="bar-f" style="margin-top:0"><input type="search" id="oQ" placeholder="Search observations" aria-label="Search observations"><select id="oS"><option value="All">All severity</option><option value="3">High (≥4 mm)</option><option value="2">Medium (2–4 mm)</option><option value="1">Low / unsized</option></select></div>
+    <div class="obl" id="obl"></div></div>
+</section>
+
+<section><h2>Trend analytics <small id="hn"></small></h2>
+  <div class="g3"><div class="glass"><h2>Daily progress</h2><div id="c1"></div></div><div class="glass"><h2>Buffing vs UT trend</h2><div id="c2"></div></div><div class="glass"><h2>Completion forecast (days)</h2><div id="c3"></div></div></div></section>
+
+<section><h2>Productivity analytics</h2><div class="prod" id="prod"></div>
+  <div class="g2"><div class="glass"><h2>Work distribution across stoves</h2><div id="c4"></div></div><div class="glass"><h2>Observation severity index</h2><div id="c5"></div></div></div></section>
 </div>
+<div id="md" role="dialog" aria-modal="true"><div class="glass" id="mb"></div></div>
+<div id="lo"><form id="lf" class="glass"><h2 style="font-size:18px">Blast Furnace Stove NDT Digital Twin</h2><label>User ID<input id="lu" type="text" autocomplete="username" required></label><label>Password<input id="lp" type="password" autocomplete="current-password" required></label><button class="btn on" type="submit">Sign in</button><p id="le" style="color:#ef4444;font-size:12px"></p></form></div>
+<div id="toasts" aria-live="polite"></div>
 
 <script>
-let WORKER_URL = '';
-let refreshTimer = null;
+'use strict';
+/* ================= Config & state ================= */
+const SAMPLE = `Stove,Ring,Circumference,BuffingCompleted,UTCompleted,Observations
+Stove-1,1,33,33,25,
+Stove-1,2,33,33,23,
+Stove-1,3,33,33,26,"Undercut indiaction observed during UT inspection 270° Side: Depth 4.5mm, length 50mm.
+Undercut indiaction observed during UT inspection 180° Side: Depth 3.5mm, length 70mm
+"
+Stove-1,4,33,33,28,
+Stove-1,5,33,33,29,
+Stove-1,6,33,33,30,
+Stove-1,7,33,33,15,
+Stove-1,8,33,33,18,
+Stove-1,9,33,33,20,
+Stove-1,10,33,33,22,
+Stove-1,11,33,33,24,
+Stove-1,12,33,33,28,
+Stove-1,13,33,15,30,
+Stove-1,14,33,0,0,
+Stove-1,15,33,0,0,
+Stove-1,16,33,0,0,
+Stove-1,17,35,0,0,
+Stove-1,18,38,0,0,
+Stove-1,19,38,0,0,
+Stove-1,20,38,0,0,
+Stove-1,21,37,0,0,
+Stove-1,22,35,0,0,
+Stove-2,1,33,0,0,
+Stove-2,2,33,0,0,
+Stove-2,3,33,0,0,
+Stove-2,4,33,0,0,
+Stove-2,5,33,0,0,
+Stove-2,6,33,0,0,
+Stove-2,7,33,0,0,
+Stove-2,8,33,0,0,
+Stove-2,9,33,0,0,
+Stove-2,10,33,33,20,
+Stove-2,11,33,33,21,
+Stove-2,12,33,33,22,
+Stove-2,13,33,33,23,
+Stove-2,14,33,33,24,
+Stove-2,15,33,33,25,
+Stove-2,16,33,33,26,
+Stove-2,17,35,33,27,
+Stove-2,18,38,33,28,
+Stove-2,19,38,33,29,
+Stove-2,20,38,33,30,
+Stove-2,21,37,33,31,
+Stove-2,22,35,15,15,
+Stove-3,1,33,33,15,
+Stove-3,2,33,33,20,
+Stove-3,3,33,33,21,
+Stove-3,4,33,33,22,
+Stove-3,5,33,33,25,
+Stove-3,6,33,33,26,
+Stove-3,7,33,33,27,
+Stove-3,8,33,33,29,
+Stove-3,9,33,33,30,
+Stove-3,10,33,33,12,
+Stove-3,11,33,33,25,
+Stove-3,12,33,33,20,
+Stove-3,13,33,12,12,
+Stove-3,14,33,0,0,
+Stove-3,15,33,0,0,
+Stove-3,16,33,0,0,
+Stove-3,17,35,0,0,
+Stove-3,18,38,0,0,
+Stove-3,19,38,0,0,
+Stove-3,20,38,0,0,
+Stove-3,21,37,0,0,
+Stove-3,22,35,0,0,
+`;
+const STOVES = ['Stove-1','Stove-2','Stove-3'];
+const COL = ['#6b7280','#ef4444','#f97316','#eab308','#a855f7','#22c55e'];
+const LBL = ['0% – not started','1–25%','26–50%','51–75%','76–99%','100% – complete'];
+const S = {data:[],stove:'All',twin:'Stove-1',sel:null,view:90,f:{ring:'All',st:'All',ob:'All',min:0,q:''},oq:'',os:'All',hist:[],sim:true,file:null,theme:'dark',timer:null};
+const CH = {};
+S.cloud=[];S.csv=[];S.logs=[];S.src='merge';S.user=null;S.sample=[];
+const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const f1 = n=>(Math.round(n*10)/10).toFixed(1);
+const band = p=>p<=0?0:p<=25?1:p<=50?2:p<=75?3:p<100?4:5;
+const iso = d=>new Date(d).toISOString().slice(0,10);
 
-async function initConfig(){
-  try{
-    const stored = await window.storage.get('worker-url');
-    if(stored) WORKER_URL = stored.value;
-  }catch(e){ /* no key saved yet */ }
-  if(!WORKER_URL){ openConfig(); }
-  else{ startAutoRefresh(); }
-}
-function openConfig(){
-  document.getElementById('workerUrlInput').value = WORKER_URL;
-  document.getElementById('configModal').classList.add('open');
-}
-function closeConfig(){ document.getElementById('configModal').classList.remove('open'); }
-async function saveConfig(){
-  const val = document.getElementById('workerUrlInput').value.trim().replace(/\/$/,'');
-  if(!val) return;
-  WORKER_URL = val;
-  try{ await window.storage.set('worker-url', val); }catch(e){ console.error(e); }
-  closeConfig();
-  startAutoRefresh();
-}
+/* ================= Data layer ================= */
+// One observation line -> {angle, depth, length, severity}; angle comes from text such as "270°"
+function parseObs(t){return (t||'').split(/\n+/).map(s=>s.trim()).filter(Boolean).map(s=>{
+  const a=s.match(/(\d{1,3})\s*°/),d=s.match(/depth\s*([\d.]+)\s*mm/i),l=s.match(/length\s*([\d.]+)\s*mm/i),dep=d?+d[1]:null;
+  return {text:s,angle:a?(+a[1])%360:null,depth:dep,len:l?+l[1]:null,sev:dep>=4?3:dep>=2?2:1};});}
+function ingest(rows){const out=[];for(const r of rows){
+  const st=(r.Stove||'').trim(),ring=+r.Ring,c=+r.Circumference;
+  if(!st||!ring||!(c>0))continue;
+  const b=Math.min(+r.BuffingCompleted||0,c),u=Math.min(+r.UTCompleted||0,c),raw=(r.Observations||'').trim();
+  out.push({st,ring,c,b,u,bp:b/c*100,up:u/c*100,rem:c-u,raw,obs:parseObs(raw),status:u>=c?'Completed':u>0?'In Progress':'Pending'});}
+  return out;}
+const parseCSV = t=>ingest(Papa.parse(t,{header:true,skipEmptyLines:true}).data);
+const scope = ()=>S.data.filter(r=>S.stove==='All'||r.st===S.stove);
+function agg(rs){const a={n:rs.length,c:0,b:0,u:0,done:0,prog:0,pend:0,obs:0,orings:0};
+  rs.forEach(r=>{a.c+=r.c;a.b+=r.b;a.u+=r.u;a[r.status==='Completed'?'done':r.status==='Pending'?'pend':'prog']++;a.obs+=r.obs.length;a.orings+=r.obs.length?1:0;});
+  a.bp=a.c?a.b/a.c*100:0;a.up=a.c?a.u/a.c*100:0;a.rem=a.c-a.u;return a;}
+function filtered(){const f=S.f,q=f.q.toLowerCase();
+  return scope().filter(r=>(f.ring==='All'||r.ring==f.ring)&&(f.st==='All'||r.status===f.st)&&(f.ob==='All'||(f.ob==='With')===!!r.obs.length)&&r.up>=f.min&&(!q||`ring-${r.ring} ring ${r.ring} ${r.st}`.toLowerCase().includes(q)))
+  .sort((a,b)=>a.st.localeCompare(b.st)||a.ring-b.ring);}
+// Daily snapshots persist in localStorage; until 3 real days exist an illustrative 7-day back-cast is shown (flagged in UI)
+function buildHist(){let sn={};try{sn=JSON.parse(localStorage.getItem('stoveSnaps')||'{}')}catch(e){}
+  const cur=STOVES.map(s=>{const a=agg(S.data.filter(r=>r.st===s));return [a.b,a.u];});
+  sn[iso(Date.now())]=cur;try{localStorage.setItem('stoveSnaps',JSON.stringify(sn))}catch(e){}
+  const days=Object.keys(sn).sort();S.sim=days.length<3;
+  const lh=logHist();S.hist=lh?lh:S.sim?[6,5,4,3,2,1,0].map(k=>{const f=k?Math.max(0,1-k*.14+(k%2?.02:-.02)):1;return {d:iso(Date.now()-k*864e5),v:cur.map(x=>[Math.round(x[0]*f),Math.round(x[1]*f)])};}):days.map(d=>({d,v:sn[d]}));}
+// Real trend data: daily state rebuilt from the stove_ring_log table (needs >= 3 distinct days)
+function logHist(){if(S.src==='csv')return null;const days=[...new Set(S.logs.map(l=>l.recorded_on))].sort();if(days.length<3)return null;
+  const st=new Map(),h=[];days.forEach(d=>{S.logs.filter(l=>l.recorded_on===d).forEach(l=>st.set(l.stove+'|'+l.ring,[+l.buffing_completed,+l.ut_completed]));
+    h.push({d,v:STOVES.map(s=>{let b=0,u=0;st.forEach((x,k)=>{if(k.startsWith(s+'|')){b+=x[0];u+=x[1];}});return [b,u];})});});S.sim=false;return h;}
+const idx = ()=>S.stove==='All'?[0,1,2]:[STOVES.indexOf(S.stove)];
+const cum = k=>S.hist.map(h=>idx().reduce((s,i)=>s+h.v[i][k],0));
+const dlt = a=>a.map((v,i)=>i?Math.max(0,v-a[i-1]):0);
 
-function startAutoRefresh(){
-  refreshAll();
-  if(refreshTimer) clearInterval(refreshTimer);
-  refreshTimer = setInterval(refreshAll, 15000);
-}
-function refreshAll(){
-  loadIndices();
-  loadMarketStatus();
-  loadOptionChain();
-  loadMovers();
-  loadBreadth();
-  document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
-}
+/* ================= UI helpers ================= */
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;$('#toasts').append(t);gsap.from(t,{x:40,opacity:0,duration:.3});setTimeout(()=>gsap.to(t,{opacity:0,y:10,duration:.3,onComplete:()=>t.remove()}),3200);}
+function count(root){$$('[data-v]',root).forEach(e=>{const v=+e.dataset.v,d=+e.dataset.d||0,s=e.dataset.s||'',o={x:0};gsap.to(o,{x:v,duration:1,ease:'power2.out',onUpdate(){e.textContent=(d?o.x.toFixed(d):Math.round(o.x))+s;}});});}
+function fillBars(root){requestAnimationFrame(()=>requestAnimationFrame(()=>$$('.bar i[data-w]',root).forEach(i=>i.style.width=i.dataset.w+'%')));}
+const bars=(r)=>`<div class="lb"><span>Buffing</span><span>${r.b}/${r.c} m · ${f1(r.bp)}%</span></div><div class="bar bb"><i data-w="${r.bp}"></i></div><div class="lb"><span>UT</span><span>${r.u}/${r.c} m · ${f1(r.up)}%</span></div><div class="bar ub"><i data-w="${r.up}"></i></div>`;
+const esc = s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-async function apiGet(path){
-  if(!WORKER_URL) throw new Error('no worker configured');
-  const res = await fetch(WORKER_URL + path);
-  if(!res.ok) throw new Error('upstream error ' + res.status);
-  return res.json();
-}
+/* ================= KPIs & stove cards ================= */
+function renderKPI(){const a=agg(scope());
+  const k=[['Total rings',a.n,0,''],['Total circumference',a.c,0,' m'],['Buffing',a.bp,1,'%'],['UT',a.up,1,'%'],['Remaining length',a.rem,0,' m'],['Completed rings',a.done,0,''],['In progress rings',a.prog,0,''],['Pending rings',a.pend,0,''],['Observations',a.obs,0,'']];
+  $('#kpis').innerHTML=k.map(x=>`<div class="glass kpi hv"><span>${x[0]}</span><b data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</b></div>`).join('');count($('#kpis'));}
+function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const a=agg(S.data.filter(r=>r.st===s)),R=42,C=2*Math.PI*R,r2=30,C2=2*Math.PI*r2;
+  return `<div class="glass hv sc ${S.stove===s?'act':''}" data-s="${s}" tabindex="0"><svg viewBox="0 0 104 104"><g transform="rotate(-90 52 52)" fill="none" stroke-width="9" stroke-linecap="round"><circle cx="52" cy="52" r="${R}" stroke="rgba(127,127,170,.25)"/><circle cx="52" cy="52" r="${R}" stroke="#06B6D4" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C*(1-a.up/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/><circle cx="52" cy="52" r="${r2}" stroke="rgba(127,127,170,.25)" stroke-width="7"/><circle cx="52" cy="52" r="${r2}" stroke="#A855F7" stroke-width="7" stroke-dasharray="${C2}" stroke-dashoffset="${C2}" data-o="${C2*(1-a.bp/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/></g><text x="52" y="57" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">${f1(a.up)}%</text></svg>
+  <div><h2 style="margin:0">${s}</h2><p>Buffing <b>${f1(a.bp)}%</b> · UT <b>${f1(a.up)}%</b></p><p>Rings completed <b>${a.done}/${a.n}</b></p><p>Observations <b style="color:#ef4444">${a.obs}</b></p></div></div>`;}).join('');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>$$('.ring-a').forEach(c=>c.setAttribute('stroke-dashoffset',c.dataset.o))));}
 
-function fmtDelta(change, pChange){
-  const cls = change > 0 ? 'up' : change < 0 ? 'down' : 'flat';
-  const sign = change > 0 ? '+' : '';
-  return `<span class="${cls}">${sign}${change?.toFixed(2)} (${sign}${pChange?.toFixed(2)}%)</span>`;
-}
+/* ================= Digital twin ================= */
+// Ring geometry: rings 1-16 = shaft rectangles, 17-22 = dome profile (widest at ring 18-21), ring 22 = cap
+function geom(i){
+  if(i<=16){const y2=600-24*(i-1),y1=y2-24;return {d:`M60 ${y2}H240V${y1}H60Z`,y:(y1+y2)/2,h:24,hw:90};}
+  if(i===22)return {d:'M38 98C38 40 262 40 262 98Z',y:82,h:36,hw:105};
+  const [yb,wb,yt,wt]={17:[216,90,200,100],18:[200,100,164,118],19:[164,118,152,118],20:[152,118,138,118],21:[138,118,98,112]}[i];
+  const m=(yb+yt)/2,wm=(wb+wt)/2+(i===18||i===21?10:0);
+  return {d:`M${150-wb} ${yb}H${150+wb}Q${150+wm} ${m} ${150+wt} ${yt}H${150-wt}Q${150-wm} ${m} ${150-wb} ${yb}Z`,y:m,h:yb-yt,hw:wm};}
+function drawTwin(){
+  const rows=S.data.filter(r=>r.st===S.twin);let g='',mk='';
+  for(let i=1;i<=22;i++){const r=rows.find(x=>x.ring===i)||{up:0,obs:[]},G=geom(i);
+    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${COL[band(r.up)]}" stroke="#0b0b14" stroke-width="1.2"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}<text x="150" y="${G.y+3.5}" text-anchor="middle" font-size="${Math.min(10,G.h-3)}" font-weight="700" fill="#fff" stroke="#000" stroke-width=".35" pointer-events="none">Ring-${i}${r.up?` · ${f1(r.up)}%`:''}</text></g>`;
+    r.obs.forEach(o=>{mk+=`<circle class="mk" data-a="${o.angle??''}" data-hw="${G.hw}" r="5" cy="${G.y}" cx="150" fill="#ef4444" stroke="#fff" stroke-width="1.5" pointer-events="none"/>`;});}
+  $('#twin').innerHTML=`<defs><linearGradient id="cyl" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop id="hl" offset=".5" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient></defs>
+  <rect x="48" y="600" width="204" height="12" rx="3" fill="#2a2540"/><g>${g}</g><g>${mk}</g>
+  <text transform="translate(22 150) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Dome (17–22)</text><text transform="translate(34 410) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Shaft (1–16)</text>`;
+  $('#tt').textContent=`${S.twin} · UT colour scale`;place(S.view);}
+function place(v){$$('#twin .mk').forEach(m=>{const a=m.dataset.a,hw=+m.dataset.hw;
+    if(a===''){m.setAttribute('cx',150+hw-7);m.style.opacity=1;return;}
+    const rel=(+a-v)*Math.PI/180,c=Math.cos(rel);m.setAttribute('cx',150+hw*.96*Math.sin(rel));m.style.opacity=c>.05?.3+.7*c:0;});
+  const h=$('#hl');if(h)h.setAttribute('offset',(.5+.38*Math.sin((v-90)*Math.PI/180)).toFixed(3));}
+function rotate(t){const from=S.view,d=((t-from+540)%360)-180,o={v:from};S.view=t;
+  $$('.cb').forEach(b=>b.classList.toggle('on',+b.dataset.v===t));
+  $('#vl').textContent={0:'0° – Left view',90:'90° – Front view',180:'180° – Right view',270:'270° – Back view'}[t];
+  gsap.to(o,{v:from+d,duration:.9,ease:'power2.inOut',onUpdate:()=>place(o.v)});}
+$('#twin').addEventListener('click',e=>{const g=e.target.closest('.rg');if(!g)return;const i=+g.dataset.ring;S.sel=i;
+  $$('#twin .rg').forEach(x=>x.classList.toggle('sel',+x.dataset.ring===i));
+  gsap.fromTo(g,{scale:1.05,svgOrigin:'150 '+geom(i).y},{scale:1,svgOrigin:'150 '+geom(i).y,duration:.5,ease:'back.out(3)'});
+  openModal(S.twin,i);});
 
-async function loadMarketStatus(){
-  const pill = document.getElementById('marketStatusPill');
-  try{
-    const data = await apiGet('/api/market-status');
-    const state = (data?.marketState || []).find(m => m.market === 'Capital Market') || data?.marketState?.[0];
-    if(state && /open/i.test(state.marketStatus)){
-      pill.textContent = 'Market Open'; pill.className = 'status-pill live';
-    } else {
-      pill.textContent = state?.marketStatus || 'Market Closed'; pill.className = 'status-pill closed';
-    }
-  }catch(e){ pill.textContent = 'status unavailable'; pill.className='status-pill'; }
-}
+/* ================= Ring cards, observations ================= */
+function renderRings(){const rs=filtered();$('#rn').textContent=`${rs.length} rings shown`;
+  $('#rings').innerHTML=rs.length?rs.map(r=>`<div class="rc" data-s="${r.st}" data-r="${r.ring}" tabindex="0"><div class="rt"><b>${r.st} · Ring-${r.ring}</b><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${r.obs.length?`<span class="chip ob">⚠ ${r.obs.length}</span>`:''}</div>${bars(r)}</div>`).join(''):'<p class="empty">No rings match these filters.</p>';
+  fillBars($('#rings'));}
+function renderObs(){const q=S.oq.toLowerCase(),list=[];
+  scope().forEach(r=>r.obs.forEach(o=>list.push({r,o})));
+  const sh=list.filter(x=>(S.os==='All'||x.o.sev==+S.os)&&(!q||(x.o.text+' ring '+x.r.ring+' '+x.r.st).toLowerCase().includes(q)));
+  const c=[1,2,3].map(s=>list.filter(x=>x.o.sev===s).length);
+  $('#os').textContent=`${list.length} total · ${new Set(list.map(x=>x.r.st+x.r.ring)).size} rings · High ${c[2]} / Med ${c[1]} / Low ${c[0]}`;
+  $('#obl').innerHTML=sh.length?sh.map(x=>`<div class="oi" data-s="${x.r.st}" data-r="${x.r.ring}" tabindex="0"><span class="chip ob">⚠ ${['','Low','Medium','High'][x.o.sev]}</span> <b>${x.r.st} · Ring-${x.r.ring}</b>${x.o.angle!==null?` <small>@ ${x.o.angle}°</small>`:''}<br>${esc(x.o.text)}</div>`).join(''):'<p class="empty">No observations match.</p>';}
 
-async function loadIndices(){
-  try{
-    const rows = await apiGet('/api/indices');
-    const nifty = rows.find(r => r.index === 'NIFTY 50');
-    const bank = rows.find(r => r.index === 'NIFTY BANK');
-    if(nifty){
-      document.getElementById('t-nifty').textContent = nifty.last?.toLocaleString('en-IN');
-      document.getElementById('d-nifty').innerHTML = fmtDelta(nifty.change, nifty.pChange);
-      document.getElementById('ov-adv').textContent = nifty.advances ?? '—';
-      document.getElementById('ov-dec').textContent = nifty.declines ?? '—';
-      document.getElementById('ov-unc').textContent = nifty.unchanged ?? '—';
-      renderMiniBreadth(nifty.advances, nifty.declines, nifty.unchanged);
-    }
-    if(bank){
-      document.getElementById('t-banknifty').textContent = bank.last?.toLocaleString('en-IN');
-      document.getElementById('d-banknifty').innerHTML = fmtDelta(bank.change, bank.pChange);
-    }
-  }catch(e){ console.error('indices', e); }
-}
+/* ================= Modal ================= */
+function openModal(st,ring){const r=S.data.find(x=>x.st===st&&x.ring===ring);if(!r)return;
+  const circ=2*Math.PI*40;
+  $('#mb').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:20px">${st} · Ring-${ring}</h2><button class="btn" id="mx" aria-label="Close">✕</button></div>
+  <div style="display:flex;gap:14px;align-items:center;margin-top:10px"><svg width="110" height="110" viewBox="0 0 100 100"><g transform="rotate(-90 50 50)" fill="none" stroke-width="10" stroke-linecap="round"><circle cx="50" cy="50" r="40" stroke="rgba(127,127,170,.25)"/><circle id="mc" cx="50" cy="50" r="40" stroke="${COL[band(r.up)]}" stroke-dasharray="${circ}" stroke-dashoffset="${circ}"/></g><text x="50" y="55" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">${f1(r.up)}%</text></svg>
+  <div style="flex:1"><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${bars(r)}</div></div>
+  <div class="kv"><div><small>Circumference</small>${r.c} m</div><div><small>Remaining (UT)</small>${r.rem} m</div><div><small>Buffing length</small>${r.b} m</div><div><small>UT length</small>${r.u} m</div><div><small>Buffing %</small>${f1(r.bp)}%</div><div><small>UT %</small>${f1(r.up)}%</div></div>
+  <div class="adm" style="margin-bottom:10px"><button class="btn" id="me">✎ Edit this ring</button></div><h2>Observation</h2>${r.obs.length?r.obs.map(o=>`<div class="oi" style="cursor:default">${esc(o.text)}</div>`).join(''):'<p class="empty">No observation recorded.</p>'}`;
+  const m=$('#md');m.style.display='grid';gsap.fromTo('#mb',{y:30,opacity:0,scale:.96},{y:0,opacity:1,scale:1,duration:.35,ease:'power3.out'});
+  requestAnimationFrame(()=>{$('#mc').style.transition='stroke-dashoffset 1s';$('#mc').setAttribute('stroke-dashoffset',circ*(1-r.up/100));});fillBars($('#mb'));$('#mx').focus();$('#me').onclick=()=>{closeModal();fillForm(st,ring);$('#entry').scrollIntoView({behavior:'smooth'});};}
+const closeModal=()=>{$('#md').style.display='none';};
+$('#md').addEventListener('click',e=>{if(e.target.id==='md'||e.target.id==='mx')closeModal();});
 
-function renderMiniBreadth(adv, dec, unc){
-  const total = (adv||0)+(dec||0)+(unc||0);
-  const el = document.getElementById('breadthBarMini');
-  if(!total){ return; }
-  el.innerHTML = `
-    <div style="flex:${adv};background:var(--mint-dim);color:var(--mint)">${adv}</div>
-    <div style="flex:${dec};background:var(--coral-dim);color:var(--coral)">${dec}</div>
-    <div style="flex:${unc||1};background:var(--panel-2);color:var(--muted)">${unc}</div>`;
-}
+/* ================= Charts (ApexCharts) ================= */
+function mk(id,o){if(CH[id])CH[id].destroy();const fc=S.theme==='dark'?'#c9c2e6':'#3b2f63';
+  o.chart=Object.assign({foreColor:fc,toolbar:{show:false},background:'transparent',fontFamily:'inherit',height:300},o.chart);
+  o.theme={mode:S.theme};o.grid=Object.assign({borderColor:'rgba(127,127,170,.2)'},o.grid);o.legend={labels:{colors:fc}};
+  CH[id]=new ApexCharts($('#'+id),o);CH[id].render();}
+function renderCharts(){
+  // Heatmap: first series renders at the bottom, so Ring-1 sits at the bottom like the real stove
+  mk('hm',{chart:{type:'heatmap',height:560},series:Array.from({length:22},(_,i)=>({name:'Ring-'+(i+1),data:STOVES.map(s=>{const r=S.data.find(x=>x.st===s&&x.ring===i+1);return {x:s,y:r?+f1(r.up):0};})})),
+    dataLabels:{enabled:true,formatter:v=>v+'%',style:{fontSize:'10px'}},stroke:{width:2,colors:['#0b0b14']},
+    plotOptions:{heatmap:{radius:3,colorScale:{ranges:[{from:0,to:0,color:'#7f1d1d',name:'0%'},{from:.1,to:25,color:'#ef4444',name:'1–25%'},{from:25.1,to:50,color:'#f97316',name:'26–50%'},{from:50.1,to:75,color:'#eab308',name:'51–75%'},{from:75.1,to:99.9,color:'#84cc16',name:'76–99%'},{from:100,to:100,color:'#22c55e',name:'100%'}]}}},
+    tooltip:{y:{formatter:v=>v+'% UT complete'}},xaxis:{position:'top'}});
+  const lab=S.hist.map(h=>h.d.slice(5)),cb=cum(0),cu=cum(1),tot=scope().reduce((s,r)=>s+r.c,0)||1;
+  mk('c1',{chart:{type:'area'},series:[{name:'UT m/day',data:dlt(cu)},{name:'Buffing m/day',data:dlt(cb)}],xaxis:{categories:lab},colors:['#06B6D4','#A855F7'],stroke:{curve:'smooth',width:2},fill:{type:'gradient',gradient:{opacityFrom:.55,opacityTo:.05}},dataLabels:{enabled:false},yaxis:{title:{text:'metres'}}});
+  mk('c2',{chart:{type:'line'},series:[{name:'Buffing %',data:cb.map(v=>+f1(v/tot*100))},{name:'UT %',data:cu.map(v=>+f1(v/tot*100))}],xaxis:{categories:lab},colors:['#A855F7','#06B6D4'],stroke:{curve:'smooth',width:3},markers:{size:4},yaxis:{max:100,min:0}});
+  const fc=STOVES.map((s,i)=>{const u=S.hist.map(h=>h.v[i][1]),rate=Math.max((u[u.length-1]-u[0])/Math.max(1,u.length-1),.5),a=agg(S.data.filter(r=>r.st===s));return {rate,days:+(a.rem/rate).toFixed(1)};});
+  mk('c3',{chart:{type:'bar'},series:[{name:'Days to finish UT',data:fc.map(x=>x.days)}],xaxis:{categories:STOVES},colors:['#7C3AED'],plotOptions:{bar:{borderRadius:6,distributed:true,columnWidth:'50%'}},dataLabels:{enabled:true,formatter:v=>v+' d'},legend:{show:false}});
+  S.fc=fc;
+  const per=STOVES.map(s=>agg(S.data.filter(r=>r.st===s)));
+  mk('c4',{chart:{type:'donut',height:290},series:per.map(a=>a.u),labels:STOVES,colors:['#7C3AED','#06B6D4','#A855F7'],tooltip:{y:{formatter:v=>v+' m UT done'}},plotOptions:{pie:{donut:{labels:{show:true,total:{show:true,label:'UT metres',formatter:w=>w.globals.seriesTotals.reduce((x,y)=>x+y,0)}}}}}});
+  const sv=STOVES.map(s=>S.data.filter(r=>r.st===s).reduce((t,r)=>t+r.obs.reduce((x,o)=>x+o.sev,0),0));
+  mk('c5',{chart:{type:'bar',height:290},series:[{name:'Severity index',data:sv}],xaxis:{categories:STOVES},colors:['#ef4444'],plotOptions:{bar:{borderRadius:6,columnWidth:'45%'}},dataLabels:{enabled:true},tooltip:{y:{formatter:v=>v+' pts (High 3 · Medium 2 · Low 1)'}}});}
+function renderProd(){const a=agg(scope()),cu=cum(1),cb=cum(0),dU=dlt(cu).pop()||0,dB=dlt(cb).pop()||0,ix=idx(),
+  rate=ix.reduce((s,i)=>s+S.fc[i].rate,0),proj=Math.min(100,a.up+rate*7/(a.c||1)*100),eta=rate?iso(Date.now()+Math.ceil(a.rem/rate)*864e5):'–';
+  $('#hn').textContent=S.sim?'Illustrative 7-day back-cast – real daily snapshots build up as you upload a CSV each day':'Built from your daily CSV snapshots';
+  $('#prod').innerHTML=[['Daily UT metres',dU,0,' m'],['Daily buffing metres',dB,0,' m'],['Remaining UT metres',a.rem,0,' m'],['Projected UT in 7 days',proj,1,'%'],['Avg UT rate',rate,1,' m/day']].map(x=>`<div class="glass hv"><span>${x[0]}</span><b data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</b></div>`).join('')+`<div class="glass hv"><span>Estimated finish</span><b>${eta}</b></div>`;count($('#prod'));}
 
-async function loadOptionChain(){
-  const symbol = document.getElementById('ocSymbol').value;
-  try{
-    const data = await apiGet('/api/option-chain?symbol=' + symbol);
-    document.getElementById('ocUnderlying').textContent = data.underlyingValue;
-    document.getElementById('oc-pcr').textContent = data.pcr ?? '—';
-    document.getElementById('oc-callOi').textContent = data.totalCallOI?.toLocaleString('en-IN');
-    document.getElementById('oc-putOi').textContent = data.totalPutOI?.toLocaleString('en-IN');
-    document.getElementById('oc-maxpain').textContent = data.maxPain ?? '—';
-    document.getElementById('t-pcr').textContent = data.pcr ?? '—';
-    document.getElementById('ov-pcr').textContent = data.pcr ?? '—';
-    document.getElementById('ov-maxpain').textContent = data.maxPain ?? '—';
-    if(data.pcr != null){
-      const pct = Math.min(100, (data.pcr/2)*100);
-      document.getElementById('ov-pcr-bar').style.width = pct + '%';
-      document.getElementById('ov-pcr-read').textContent = data.pcr > 1.2 ? 'Oversold bias (put-heavy)' : data.pcr < 0.7 ? 'Overbought bias (call-heavy)' : 'Neutral zone';
-    }
+/* ================= Render orchestration ================= */
+function render(){
+  $$('#seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.s===S.stove));
+  if(S.stove!=='All')S.twin=S.stove;
+  renderKPI();renderCmp();drawTwin();renderRings();renderObs();renderCharts();renderProd();}
+function compose(){const m=new Map(),add=a=>a.forEach(r=>m.set(r.st+'|'+r.ring,r));
+  if(S.src!=='csv')add(S.cloud);if(S.src!=='cloud')add(S.csv);
+  return m.size?[...m.values()]:S.sample;}  // sample data only when no cloud / CSV rows exist
+function refreshAll(){S.data=compose();buildHist();render();}
+function setData(rows,msg){if(!rows.length){toast('No valid rows. Expected: Stove, Ring, Circumference, BuffingCompleted, UTCompleted, Observations');return;}
+  S.csv=rows;S.src=S.cloud.length?'merge':'csv';$('#src').value=S.src;refreshAll();toast(msg);}
+function _old(rows,msg){}
+function loadFile(f,silent){S.file=f;Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>setData(ingest(r.data),silent?'Auto-refreshed from file':`Loaded ${f.name}`),error:()=>toast('Could not read the CSV file')});}
 
-    // expiry dropdown
-    const expSel = document.getElementById('ocExpiry');
-    if(data.expiryDates?.length){
-      expSel.innerHTML = data.expiryDates.slice(0,6).map(d => `<option>${d}</option>`).join('');
-    }
-    const nearestExpiry = expSel.value || data.expiryDates?.[0];
+/* ================= Exports ================= */
+function exportPNG(){const svg=$('#twin').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('width',600);svg.setAttribute('height',1240);
+  const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=600;c.height=1280;const x=c.getContext('2d');x.fillStyle='#090714';x.fillRect(0,0,600,1280);x.fillStyle='#fff';x.font='bold 22px Segoe UI,sans-serif';x.fillText(`${S.twin} – UT progress`,20,34);x.drawImage(img,0,40);
+    c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`${S.twin}-snapshot.png`;a.click();toast('PNG snapshot saved');});};
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg).replace(/currentColor/g,'#ffffff'));}
+function exportCSV(){const rows=S.data.map(r=>({Stove:r.st,Ring:r.ring,Circumference:r.c,BuffingCompleted:r.b,UTCompleted:r.u,'Buffing%':f1(r.bp),'UT%':f1(r.up),Remaining:r.rem,Status:r.status,Observations:r.raw}));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([Papa.unparse(rows)],{type:'text/csv'}));a.download='stove-ndt-summary.csv';a.click();toast('Summary CSV exported');}
+function doExport(k){$('#xm').classList.remove('open');if(k==='png')exportPNG();else if(k==='csv')exportCSV();else{toast(k==='pdf'?'Choose "Save as PDF" in the print dialog':'Opening print view');setTimeout(()=>window.print(),400);}}
 
-    // filter near-ATM strikes (10 above/below) for the nearest expiry
-    const rowsForExpiry = data.rows.filter(r => r.expiryDate === nearestExpiry);
-    const atmIndex = rowsForExpiry.reduce((best,r,i) =>
-      Math.abs(r.strikePrice - data.underlyingValue) < Math.abs(rowsForExpiry[best].strikePrice - data.underlyingValue) ? i : best, 0);
-    const windowRows = rowsForExpiry.slice(Math.max(0, atmIndex-10), atmIndex+10);
+/* ================= Theme, fullscreen, refresh ================= */
+function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;if(S.data.length)renderCharts();}
+function fullscreen(){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(e){toast('Fullscreen not available here');}}
+function refresh(silent){if(S.file)loadFile(S.file,silent);if(S.user)loadCloud(silent);if(!S.file&&!S.user){refreshAll();if(!silent)toast('Refreshed');}}
 
-    document.getElementById('oc-body').innerHTML = windowRows.map(r => `
-      <tr>
-        <td>${r.CE?.oi?.toLocaleString('en-IN') ?? '—'}</td>
-        <td class="${r.CE?.changeOi>0?'up':'down'}">${r.CE?.changeOi?.toLocaleString('en-IN') ?? '—'}</td>
-        <td>${r.CE?.iv ?? '—'}</td>
-        <td>${r.CE?.ltp ?? '—'}</td>
-        <td class="strike-col" style="text-align:center">${r.strikePrice}</td>
-        <td>${r.PE?.ltp ?? '—'}</td>
-        <td>${r.PE?.iv ?? '—'}</td>
-        <td class="${r.PE?.changeOi>0?'up':'down'}">${r.PE?.changeOi?.toLocaleString('en-IN') ?? '—'}</td>
-        <td>${r.PE?.oi?.toLocaleString('en-IN') ?? '—'}</td>
-      </tr>`).join('');
-  }catch(e){ console.error('option chain', e); }
-}
+/* ================= Wiring ================= */
+$('#seg').innerHTML=['All',...STOVES].map(s=>`<button class="btn" data-s="${s}">${s}</button>`).join('');
+$('#fRing').innerHTML='<option value="All">All rings</option>'+Array.from({length:22},(_,i)=>`<option value="${i+1}">Ring-${i+1}</option>`).join('');
+$('#lg').innerHTML=COL.map((c,i)=>`<span><i style="background:${c}"></i>${LBL[i]}</span>`).join('');
+$('#seg').onclick=e=>{const b=e.target.closest('.btn');if(b){S.stove=b.dataset.s;render();}};
+$('#cmp').onclick=e=>{const c=e.target.closest('.sc');if(c){S.stove=S.stove===c.dataset.s?'All':c.dataset.s;render();}};
+const rowOpen=e=>{const c=e.target.closest('[data-r]');if(c)openModal(c.dataset.s,+c.dataset.r);};
+$('#rings').onclick=rowOpen;$('#obl').onclick=rowOpen;
+$('#fRing').onchange=e=>{S.f.ring=e.target.value;renderRings();};
+$('#fSt').onchange=e=>{S.f.st=e.target.value;renderRings();};
+$('#fOb').onchange=e=>{S.f.ob=e.target.value;renderRings();};
+$('#fMin').oninput=e=>{S.f.min=+e.target.value;$('#mv').textContent=e.target.value;renderRings();};
+$('#fQ').oninput=e=>{S.f.q=e.target.value.trim();renderRings();};
+$('#oQ').oninput=e=>{S.oq=e.target.value.trim();renderObs();};
+$('#oS').onchange=e=>{S.os=e.target.value;renderObs();};
+$$('.cb').forEach(b=>b.onclick=()=>rotate(+b.dataset.v));
+$('#file').onchange=e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value='';};
+$('#bR').onclick=()=>{refresh(false);};
+$('#bX').onclick=()=>$('#xm').classList.toggle('open');
+$('#xm').onclick=e=>{const b=e.target.closest('[data-x]');if(b)doExport(b.dataset.x);};
+$('#bT').onclick=()=>setTheme(S.theme==='dark'?'light':'dark');
+$('#bF').onclick=fullscreen;
+$('#auto').onchange=e=>{clearInterval(S.timer);if(e.target.checked){S.timer=setInterval(()=>refresh(true),30000);toast('Auto refresh on (30 s)');}else toast('Auto refresh off');};
+document.addEventListener('keydown',e=>{const t=e.target.tagName;if(t==='INPUT'||t==='SELECT')return;if(e.key==='Escape')return closeModal();
+  const k=e.key.toLowerCase();
+  if(k==='/'){e.preventDefault();$('#fQ').focus();}
+  else if('123'.includes(k)&&k)S.stove='Stove-'+k,render();
+  else if(k==='0'||k==='a'){S.stove='All';render();}
+  else if(e.key==='ArrowRight')rotate((S.view+90)%360);
+  else if(e.key==='ArrowLeft')rotate((S.view+270)%360);
+  else if(k==='t')setTheme(S.theme==='dark'?'light':'dark');
+  else if(k==='f')fullscreen();else if(k==='r')refresh(false);else if(k==='p')window.print();
+  else if(k==='?')toast('Keys: 1/2/3 stove · A all · ←/→ rotate · T theme · F fullscreen · R refresh · P print · / search');});
+setInterval(()=>{$('#clock').textContent=new Date().toLocaleString([], {dateStyle:'medium',timeStyle:'medium'});},1000);
+$('#clock').textContent=new Date().toLocaleString();
 
-async function loadMovers(){
-  const index = document.getElementById('moversIndex').value;
-  try{
-    const data = await apiGet('/api/gainers-losers?index=' + encodeURIComponent(index));
-    const rowHtml = s => `<tr><td>${s.symbol}</td><td>${s.ltp}</td><td class="${s.change>0?'gainer':'loser'}">${s.change}</td><td class="${s.pChange>0?'gainer':'loser'}">${s.pChange}%</td></tr>`;
-    document.getElementById('mv-gainers').innerHTML = data.gainers.map(rowHtml).join('');
-    document.getElementById('mv-losers').innerHTML = data.losers.map(rowHtml).join('');
-    document.getElementById('ov-gainers').innerHTML = data.gainers.slice(0,5).map(s => `<tr><td>${s.symbol}</td><td>${s.ltp}</td><td class="gainer">${s.pChange}%</td></tr>`).join('');
-    document.getElementById('ov-losers').innerHTML = data.losers.slice(0,5).map(s => `<tr><td>${s.symbol}</td><td>${s.ltp}</td><td class="loser">${s.pChange}%</td></tr>`).join('');
-  }catch(e){ console.error('movers', e); }
-}
+/* ================= Boot ================= */
+S.sample=parseCSV(SAMPLE);refreshAll();rotate(90);
+gsap.to('#ld',{opacity:0,delay:.7,duration:.5,onComplete:()=>$('#ld').remove()});
 
-async function loadBreadth(){
-  const index = document.getElementById('breadthIndex').value;
-  try{
-    const data = await apiGet('/api/breadth?index=' + encodeURIComponent(index));
-    document.getElementById('breadthTitle').textContent = 'Market Breadth — ' + data.index;
-    document.getElementById('br-adv').textContent = data.advances;
-    document.getElementById('br-dec').textContent = data.declines;
-    document.getElementById('br-unc').textContent = data.unchanged;
-    const total = (data.advances||0)+(data.declines||0)+(data.unchanged||0) || 1;
-    document.getElementById('breadthBarFull').innerHTML = `
-      <div style="flex:${data.advances};background:var(--mint-dim);color:var(--mint)">${data.advances} Adv</div>
-      <div style="flex:${data.declines};background:var(--coral-dim);color:var(--coral)">${data.declines} Dec</div>
-      <div style="flex:${data.unchanged||1};background:var(--panel-2);color:var(--muted)">${data.unchanged} Unch</div>`;
-  }catch(e){ console.error('breadth', e); }
-}
+/* ================= Supabase (cloud) ================= */
+const SB_URL='https://lgyladuiyezqccyjxqgn.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxneWxhZHVpeWV6cWNjeWp4cWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDEyMTksImV4cCI6MjA3ODUxNzIxOX0.O-K3aJkcdvnj0k3ltu37AK3hrW2ibZCZbwVy9SDTBZg';
+let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY);}catch(e){}
+const setCloud=(t,c)=>{const e=$('#cs');e.textContent='☁ '+t;e.style.background=c;};
+async function loadCloud(silent){
+  if(!sb){setCloud('library blocked','#ef4444');return toast('Supabase library did not load (check internet / network policy)');}
+  const a=await sb.from('stove_rings').select('*');
+  if(a.error){setCloud('error','#ef4444');return toast('Cloud: '+a.error.message);}
+  const l=await sb.from('stove_ring_log').select('stove,ring,buffing_completed,ut_completed,recorded_on').order('id');
+  S.cloud=ingest(a.data.map(d=>({Stove:d.stove,Ring:d.ring,Circumference:d.circumference,BuffingCompleted:d.buffing_completed,UTCompleted:d.ut_completed,Observations:d.observations})));
+  S.logs=l.data||[];setCloud(`connected · ${S.cloud.length} rings`,'#16a34a');refreshAll();if(!silent)toast(`Cloud loaded: ${S.cloud.length} rings`);}
+function startRealtime(){if(!sb||S.rt)return;S.rt=sb.channel('stove-live').on('postgres_changes',{event:'*',schema:'public',table:'stove_rings'},()=>loadCloud(true)).subscribe();}
+// Upsert current values + append an audit/trend row to the log table
+async function writeRows(rows){const now=new Date().toISOString(),by=S.user.name,day=iso(Date.now());
+  const main=rows.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw,updated_by:by,updated_at:now}));
+  const log=rows.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw,recorded_by:by,recorded_on:day}));
+  for(let i=0;i<main.length;i+=100){
+    let e=(await sb.from('stove_rings').upsert(main.slice(i,i+100),{onConflict:'stove,ring'})).error;if(e)throw e;
+    e=(await sb.from('stove_ring_log').insert(log.slice(i,i+100))).error;if(e)throw e;}}
+function fillForm(st,ring){$('#eS').value=st;$('#eR').value=ring;const r=S.data.find(x=>x.st===st&&x.ring===+ring);
+  $('#eC').value=r?r.c:'';$('#eB').value=r?r.b:'';$('#eU').value=r?r.u:'';$('#eO').value=r?r.raw:'';}
+$('#eS').innerHTML=STOVES.map(s=>`<option>${s}</option>`).join('');
+$('#eR').innerHTML=Array.from({length:22},(_,i)=>`<option value="${i+1}">Ring-${i+1}</option>`).join('');
+$('#eS').onchange=$('#eR').onchange=()=>fillForm($('#eS').value,$('#eR').value);
+$('#ef').onsubmit=async e=>{e.preventDefault();if(S.user?.role!=='admin')return toast('Only admin can save data');
+  const c=+$('#eC').value,b=+$('#eB').value,u=+$('#eU').value;
+  if(!(c>0)||b<0||u<0||b>c||u>c)return toast('Buffing and UT must be between 0 and the circumference');
+  const raw=$('#eO').value.trim(),row=ingest([{Stove:$('#eS').value,Ring:$('#eR').value,Circumference:c,BuffingCompleted:b,UTCompleted:u,Observations:raw}]);
+  try{await writeRows(row);toast(`${row[0].st} Ring-${row[0].ring} saved`);await loadCloud(true);}catch(er){toast('Save failed: '+(er.message||er));}};
+$('#pushCsv').onclick=async()=>{if(S.user?.role!=='admin')return;if(!S.csv.length)return toast('Upload a CSV first');
+  if(!confirm(`Push ${S.csv.length} CSV rows to the cloud? Existing rings will be overwritten.`))return;
+  try{await writeRows(S.csv);toast('CSV pushed to cloud');await loadCloud(true);}catch(er){toast('Push failed: '+(er.message||er));}};
+$('#src').onchange=e=>{S.src=e.target.value;refreshAll();};
 
-async function loadQuote(){
-  const symbol = document.getElementById('quoteSymbol').value.trim().toUpperCase();
-  if(!symbol) return;
-  const card = document.getElementById('quoteCard');
-  card.innerHTML = '<div class="empty-state loading-dot">Loading</div>';
-  try{
-    const q = await apiGet('/api/quote?symbol=' + encodeURIComponent(symbol));
-    const cls = q.change > 0 ? 'up' : q.change < 0 ? 'down' : 'flat';
-    card.innerHTML = `
-      <h3 style="text-transform:none;color:var(--text);font-size:16px;">${q.companyName || q.symbol} <span style="color:var(--muted);font-size:12px;">${q.symbol}</span></h3>
-      <div class="gauge-val num" style="margin:10px 0;">₹${q.last} <span class="${cls}" style="font-size:16px;">${q.change>0?'+':''}${q.change} (${q.pChange}%)</span></div>
-      <div class="grid grid-3">
-        <div class="stat-row"><span>Open</span><span class="v">${q.open}</span></div>
-        <div class="stat-row"><span>Day High</span><span class="v">${q.dayHigh}</span></div>
-        <div class="stat-row"><span>Day Low</span><span class="v">${q.dayLow}</span></div>
-        <div class="stat-row"><span>Prev Close</span><span class="v">${q.prevClose}</span></div>
-        <div class="stat-row"><span>52w High</span><span class="v">${q.yearHigh}</span></div>
-        <div class="stat-row"><span>52w Low</span><span class="v">${q.yearLow}</span></div>
-      </div>`;
-  }catch(e){ card.innerHTML = `<div class="empty-state">Couldn't fetch ${symbol}. Check the symbol or your data source connection.</div>`; }
-}
-
-async function loadFiiDiiLog(){
-  try{
-    const listRes = await window.storage.list('fiidii:', false);
-    const keys = listRes?.keys || [];
-    if(!keys.length) return;
-    const entries = [];
-    for(const k of keys){
-      const r = await window.storage.get(k.key || k, false);
-      if(r) entries.push(JSON.parse(r.value));
-    }
-    entries.sort((a,b) => b.date.localeCompare(a.date));
-    document.getElementById('fiiLog').innerHTML = entries.map(e => `
-      <tr><td>${e.date}</td>
-      <td class="${e.fiiNet>=0?'gainer':'loser'}">${e.fiiNet.toFixed(0)}</td>
-      <td class="${e.diiNet>=0?'gainer':'loser'}">${e.diiNet.toFixed(0)}</td></tr>`).join('');
-  }catch(e){ /* nothing saved yet */ }
-}
-async function saveFiiDii(){
-  const fb = parseFloat(document.getElementById('fiiBuy').value) || 0;
-  const fs = parseFloat(document.getElementById('fiiSell').value) || 0;
-  const db = parseFloat(document.getElementById('diiBuy').value) || 0;
-  const ds = parseFloat(document.getElementById('diiSell').value) || 0;
-  const date = new Date().toISOString().slice(0,10);
-  const entry = { date, fiiNet: fb-fs, diiNet: db-ds };
-  try{
-    await window.storage.set('fiidii:' + date, JSON.stringify(entry), false);
-    loadFiiDiiLog();
-    ['fiiBuy','fiiSell','diiBuy','diiSell'].forEach(id => document.getElementById(id).value = '');
-  }catch(e){ console.error(e); }
-}
-
-// tab switching
-document.querySelectorAll('.tab').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.panel-view').forEach(v => v.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('view-' + btn.dataset.view).classList.add('active');
-  });
-});
-
-document.getElementById('ocSymbol').addEventListener('change', loadOptionChain);
-document.getElementById('moversIndex').addEventListener('change', loadMovers);
-document.getElementById('breadthIndex').addEventListener('change', loadBreadth);
-
-initConfig();
-loadFiiDiiLog();
+/* ================= Login (hard-coded, UI-level access control) ================= */
+const USERS=[{u:'admin',p:'Admin@123',role:'admin',name:'Admin'},{u:'user',p:'User@123',role:'user',name:'Viewer'}];
+function enter(usr){S.user=usr;document.body.dataset.role=usr.role;$('#who').textContent=usr.role==='admin'?'Admin':'Viewer (read-only)';
+  try{sessionStorage.setItem('stoveUser',usr.u);}catch(e){}
+  gsap.to('#lo',{opacity:0,duration:.3,onComplete:()=>$('#lo').style.display='none'});loadCloud(true);startRealtime();fillForm('Stove-1',1);}
+$('#lf').onsubmit=e=>{e.preventDefault();const m=USERS.find(x=>x.u===$('#lu').value.trim()&&x.p===$('#lp').value);
+  if(m)enter(m);else $('#le').textContent='Invalid user ID or password';};
+$('#bO').onclick=()=>{try{sessionStorage.removeItem('stoveUser');}catch(e){}location.reload();};
+document.body.dataset.role='user';
+{let k=null;try{k=sessionStorage.getItem('stoveUser');}catch(e){}const m=USERS.find(x=>x.u===k);if(m){$('#lo').style.display='none';enter(m);}}
 </script>
 </body>
 </html>
