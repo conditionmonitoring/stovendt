@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -161,6 +160,29 @@ header{flex-wrap:nowrap;gap:8px}
 .sc svg{width:76px;height:76px}
 .g3,.g2{gap:8px}
 }
+/* ---- vertical joints ---- */
+.kpi em{display:block;font-style:normal;font-size:10.5px;color:var(--mu);margin-top:3px;line-height:1.3}
+.legend i.ln{width:18px;height:4px;border-radius:3px;vertical-align:2px;box-shadow:0 0 0 1.5px rgba(255,255,255,.85)}
+.legend .lh{color:var(--tx);font-weight:600}
+.lay{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:0 0 8px;font-size:12px;color:var(--mu)}
+.lay label{display:flex;gap:6px;align-items:center;cursor:pointer}.lay input{accent-color:var(--s)}
+.vjs{display:flex;gap:4px;align-items:center;margin-top:10px;font-size:11px;color:var(--mu)}
+.vjs i{display:block;flex:1;height:6px;border-radius:4px}.vjs span{margin-left:6px;white-space:nowrap}
+.vjmg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-bottom:12px}
+.vjm,.vjr{background:var(--glass);border:1px solid var(--bd);border-radius:14px;padding:10px 12px;border-top:3px solid var(--vc,var(--bd))}
+.vjh{display:flex;gap:7px;align-items:center;flex-wrap:wrap;font-size:13px;margin-bottom:4px}.vjh small{color:var(--mu);font-size:11px}
+.vjd{width:10px;height:10px;border-radius:3px;background:var(--vc,#64748b);flex:none}
+.atab{margin:2px 0 4px}.atab .btn{padding:8px 14px}.atab small{opacity:.8;font-size:.82em}
+.vjt{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.vjt b{font-size:14px;display:block}.vjt small{color:var(--mu);font-size:12px}
+.vjq{display:flex;gap:6px;flex-wrap:wrap}.vjq .btn{padding:6px 11px;font-size:12px}
+.vjg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.vjr{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+.vjr .vjh{grid-column:1/-1;margin:0}
+.vjr label{font-size:12px;color:var(--mu);display:flex;flex-direction:column;gap:4px;min-width:0}
+.vjr input{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;width:100%;min-width:0}
+.vjin{display:flex;gap:4px}.vjin .btn{padding:4px 9px;font-size:11px;flex:none}
+@media(max-width:700px){.kpi em{font-size:9.5px}.vjg{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -169,14 +191,14 @@ header{flex-wrap:nowrap;gap:8px}
   <div class="sbh"><button class="btn" id="sbt" aria-label="Collapse or expand menu">☰</button><b>Menu</b></div>
   <div class="si"><div class="ic">⇄</div><div class="sl"><small>Data source</small><select id="src" aria-label="Data source"><option value="cloud">Cloud</option><option value="csv">CSV</option><option value="merge">Cloud + CSV</option></select><small id="cs"></small></div></div>
   <div class="si" id="upl"><div class="ic">⬆</div><div class="sl"><small id="uls">🔒 Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
-  <div class="si"><div class="ic">⇩</div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
+  <div class="si"><div class="ic">⇩</div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="vjcsv">Vertical joints CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
   <div class="si"><div class="ic">⛶</div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
-  <div class="sbf"><span><b>Copyright © 2025 Condition Monitoring</b>Developed by Sourav Biswal</span><em>CMC</em></div>
+  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>CMC</em></div>
 </aside>
 <div class="wrap" id="app">
 <header class="glass">
   <div class="brand"><button class="btn" id="mm" aria-label="Menu">☰</button><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
-    <div><h1>Blast Furnace Stove NDT Digital Tracker</h1><p>Buffing and UT progress · 3 hot blast stoves · 22 rings each</p></div></div>
+    <div><h1>Blast Furnace Stove NDT Digital Tracker</h1><p>Buffing and UT progress · 3 hot blast stoves · 22 rings each · 4 vertical joints per ring</p></div></div>
   <div class="hb"><span class="live" id="lv" title="Cloud status"><i></i><span id="lt">LIVE</span></span><span id="clock"></span>
     <button class="btn ib" id="bR" title="Refresh (R)" aria-label="Refresh">⟳</button>
     <button class="btn ib" id="bT" title="Switch to night mode (T)" aria-label="Day or night mode">🌙</button>
@@ -198,7 +220,8 @@ header{flex-wrap:nowrap;gap:8px}
 
 <section class="glass"><h2>Furnace digital twin <small id="tt"></small></h2>
   <div class="twin">
-    <div><div class="zc"><button class="btn" id="zi" aria-label="Zoom in">＋</button><button class="btn" id="zo" aria-label="Zoom out">－</button><button class="btn" id="zr">Reset</button><b id="zl">100%</b><small>Ctrl + scroll to zoom · drag to pan · keys + / −</small></div><svg id="twin" viewBox="0 0 300 640" role="img" aria-label="Stove with 22 rings"></svg></div>
+    <div><div class="zc"><button class="btn" id="zi" aria-label="Zoom in">＋</button><button class="btn" id="zo" aria-label="Zoom out">－</button><button class="btn" id="zr">Reset</button><b id="zl">100%</b><small>Ctrl + scroll to zoom · drag to pan · keys + / −</small></div>
+      <div class="lay"><label><input type="checkbox" id="tgJ" checked> Vertical joints (VJ-1…4)</label><label><input type="checkbox" id="tgL" checked> Ring labels</label></div><svg id="twin" viewBox="0 0 300 640" role="img" aria-label="Stove with 22 rings"></svg></div>
     <div>
       <p style="font-size:13px;color:var(--mu);text-align:center">Orientation – rotates the shell and slides observation markers by their stated angle</p>
       <div class="compass">
@@ -209,27 +232,37 @@ header{flex-wrap:nowrap;gap:8px}
       <p id="vl" style="text-align:center;font-size:13px;margin:6px 0"></p>
       <svg id="dial" class="dial" viewBox="0 0 200 200" role="img" aria-label="Top view azimuth dial: click 0°, 90°, 180° or 270° to rotate"></svg>
       <div class="legend" id="lg"></div>
+      <div class="legend" id="lgJ"></div>
       <div class="legend"><span><i style="border:2px solid #ef4444;background:none"></i>Pulsing border = observation</span><span><i style="background:#ef4444;border-radius:50%"></i>Marker at stated azimuth (colour = severity)</span></div>
       <div id="sel" class="empty">Click any ring for details.</div>
     </div>
   </div>
 </section>
 
-<section class="glass" id="adm"><h2>Admin · post / update ring data <small>saves to Supabase table stove_rings</small></h2>
+<section class="glass" id="adm"><h2>Admin · post / update data <small>saves to Supabase tables stove_rings and stove_vjoints</small></h2>
   <div id="alock" class="empty">🔒 Editing is restricted to the admin. <button class="btn on" id="alb" type="button">Admin login</button></div>
-  <form id="af" class="afm" hidden>
+  <form id="af" class="afm" hidden novalidate>
     <label>Stove<select id="aS"></select></label><label>Ring<select id="aR"></select></label>
-    <label>Circumference (m)<input id="aC" type="number" min="1" step="any" required></label>
-    <label>Buffing completed (m)<input id="aB" type="number" min="0" step="any" required></label>
-    <label>UT completed (m)<input id="aU" type="number" min="0" step="any" required></label>
-    <label class="wide">Observation (one finding per line, e.g. "Undercut at 270° Side: Depth 4.5mm, length 50mm")<textarea id="aO"></textarea></label>
-    <div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn on" type="submit">Save to cloud</button><button class="btn" type="button" id="aP">Push loaded CSV to cloud</button><span id="am" style="font-size:12px;color:var(--mu);align-self:center"></span></div>
+    <div class="seg atab wide" id="atab" role="tablist"><button type="button" class="btn on" data-t="ring" role="tab" aria-selected="true">Ring (circumferential)</button><button type="button" class="btn" data-t="vj" role="tab" aria-selected="false">Vertical joints <small>4 × 2.2 m</small></button></div>
+    <div class="wide afm" id="pRing" role="tabpanel">
+      <label>Circumference (m)<input id="aC" type="number" min="1" step="any"></label>
+      <label>Buffing completed (m)<input id="aB" type="number" min="0" step="any"></label>
+      <label>UT completed (m)<input id="aU" type="number" min="0" step="any"></label>
+      <label class="wide">Observation (one finding per line, e.g. "Undercut at 270° Side: Depth 4.5mm, length 50mm")<textarea id="aO"></textarea></label>
+      <div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn on" type="submit">Save to cloud</button><button class="btn" type="button" id="aP">Push loaded CSV to cloud</button><span id="am" style="font-size:12px;color:var(--mu);align-self:center"></span></div>
+    </div>
+    <div class="wide" id="pVJ" role="tabpanel" hidden>
+      <div class="vjt"><div><b id="vjT">Vertical joints</b><small id="vjS"></small></div>
+        <div class="vjq"><button type="button" class="btn" data-q="b">All buffed</button><button type="button" class="btn" data-q="u">All UT done</button><button type="button" class="btn" data-q="z">Clear all</button></div></div>
+      <div class="vjg" id="vjg"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center"><button class="btn on" type="submit">Save vertical joints</button><span id="vm" style="font-size:12px;color:var(--mu)">Joints sit at 0° · 90° · 180° · 270°, 2.2 m each by default.</span></div>
+    </div>
   </form></section>
 
 <section class="glass"><h2>Ring-wise progress <small id="rn"></small></h2><div class="rings" id="rings"></div></section>
 
 <section class="g2">
-  <div class="glass" id="hmP"><h2>Ring × stove heatmap <small id="hmS"></small></h2><div class="met" id="met"><button class="btn on" data-m="ut">UT %</button><button class="btn" data-m="bf">Buffing %</button><button class="btn" data-m="rem">Remaining m</button><button class="btn" data-m="sev">Obs severity</button></div><div id="hm"></div></div>
+  <div class="glass" id="hmP"><h2>Ring × stove heatmap <small id="hmS"></small></h2><div class="met" id="met"><button class="btn on" data-m="ut">UT %</button><button class="btn" data-m="bf">Buffing %</button><button class="btn" data-m="rem">Remaining m</button><button class="btn" data-m="vj">Joints UT</button><button class="btn" data-m="sev">Obs severity</button></div><div id="hm"></div></div>
   <div class="glass"><h2>Observations <small id="os"></small></h2>
     <div class="bar-f" style="margin-top:0"><input type="search" id="oQ" placeholder="Search observations" aria-label="Search observations"><select id="oS"><option value="All">All severity</option><option value="3">High (≥4 mm)</option><option value="2">Medium (2–4 mm)</option><option value="1">Low / unsized</option></select></div>
     <div class="obl" id="obl"></div></div>
@@ -318,7 +351,7 @@ Stove-3,22,35,0,0,
 const STOVES = ['Stove-1','Stove-2','Stove-3'];
 const COL = ['#6b7280','#ef4444','#f97316','#eab308','#a855f7','#22c55e'];
 const LBL = ['0% – not started','1–25%','26–50%','51–75%','76–99%','100% – complete'];
-const S = {data:[],stove:'All',twin:'Stove-1',sel:null,view:90,f:{ring:'All',st:'All',ob:'All',min:0,q:''},oq:'',os:'All',hist:[],sim:true,file:null,theme:'light',timer:null};
+const S = {data:[],stove:'All',twin:'Stove-1',sel:null,view:90,f:{ring:'All',st:'All',ob:'All',min:0,q:''},oq:'',os:'All',hist:[],sim:true,file:null,theme:'light',timer:null,vjs:{},vjOk:true,showJ:true,showL:true,atab:'ring'};
 const CH = {};
 const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>[...r.querySelectorAll(s)];
 const f1 = n=>(Math.round(n*10)/10).toFixed(1);
@@ -330,11 +363,20 @@ const iso = d=>new Date(d).toISOString().slice(0,10);
 function parseObs(t){return (t||'').split(/\n+/).map(s=>s.trim()).filter(Boolean).map(s=>{
   const a=s.match(/(\d{1,3})\s*°/),d=s.match(/depth\s*([\d.]+)\s*mm/i),l=s.match(/length\s*([\d.]+)\s*mm/i),dep=d?+d[1]:null;
   return {text:s,angle:a?(+a[1])%360:null,depth:dep,len:l?+l[1]:null,sev:dep>=4?3:dep>=2?2:1};});}
+// Vertical joints: 4 per ring, equally spaced round 360° (0/90/180/270), 2.2 m each; buffing & UT tracked per joint
+const JLEN=2.2,JANG=[0,90,180,270],JVIEW={0:'Left',90:'Front',180:'Right',270:'Back'},EPS=1e-9;
+const JST=[{n:'Not started',c:'#64748b'},{n:'Buffing in progress',c:'#f59e0b'},{n:'Buffed · UT pending',c:'#06B6D4'},{n:'UT complete',c:'#16a34a'}];
+const jStage=(b,u,l)=>u>=l-EPS?3:b>=l-EPS?2:(b>0||u>0)?1:0;
+function attachVJ(r){r.vj=JANG.map((a,k)=>{const d=S.vjs[r.st+'|'+r.ring+'|'+(k+1)]||{},len=+d.len>0?+d.len:JLEN,b=Math.min(+d.b||0,len),u=Math.min(+d.u||0,len),st=jStage(b,u,len);
+  return {j:k+1,a,len,b,u,bp:b/len*100,up:u/len*100,raw:d.raw||'',st,sn:JST[st].n,c:JST[st].c};});return r;}
+function aggVJ(rs){const a={n:0,len:0,b:0,u:0,bm:0,um:0};
+  rs.forEach(r=>r.vj.forEach(j=>{a.n++;a.len+=j.len;a.bm+=j.b;a.um+=j.u;if(j.b>=j.len-EPS)a.b++;if(j.u>=j.len-EPS)a.u++;}));
+  a.bp=a.len?a.bm/a.len*100:0;a.up=a.len?a.um/a.len*100:0;return a;}
 function ingest(rows){const out=[];for(const r of rows){
   const st=(r.Stove||'').trim(),ring=+r.Ring,c=+r.Circumference;
   if(!st||!ring||!(c>0))continue;
   const b=Math.min(+r.BuffingCompleted||0,c),u=Math.min(+r.UTCompleted||0,c),raw=(r.Observations||'').trim();
-  out.push({st,ring,c,b,u,bp:b/c*100,up:u/c*100,rem:c-u,raw,obs:parseObs(raw),status:u>=c?'Completed':u>0?'In Progress':'Pending'});}
+  out.push(attachVJ({st,ring,c,b,u,bp:b/c*100,up:u/c*100,rem:c-u,raw,obs:parseObs(raw),status:u>=c?'Completed':u>0?'In Progress':'Pending'}));}
   return out;}
 const parseCSV = t=>ingest(Papa.parse(t,{header:true,skipEmptyLines:true}).data);
 const scope = ()=>S.data.filter(r=>S.stove==='All'||r.st===S.stove);
@@ -362,12 +404,13 @@ const bars=(r)=>`<div class="lb"><span>Buffing</span><span>${r.b}/${r.c} m · ${
 const esc = s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 /* ================= KPIs & stove cards ================= */
-function renderKPI(){const a=agg(scope());
-  const bd=scope().filter(r=>r.b>=r.c).length,k=[['Total rings',a.n,0,''],['Buffing completed rings',bd,0,'',a.bp],['UT completed rings',a.done,0,'',a.up],['Completed rings',a.done,0,''],['In progress rings',a.prog,0,''],['Pending rings',a.pend,0,''],['Observations',a.obs,0,'']];
-  $('#kpis').innerHTML=k.map(x=>`<div class="glass kpi hv"><span>${x[0]}</span><b><i data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</i>${x[4]===undefined?'':` <small>(<i data-v="${x[4]}" data-d="1" data-s="%">0</i>)</small>`}</b></div>`).join('');count($('#kpis'));}
-function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const rs=S.data.filter(r=>r.st===s),a=agg(rs),cnt=rs.reduce((c,r)=>(c[band(r.up)]++,c),[0,0,0,0,0,0]),R=42,C=2*Math.PI*R,r2=30,C2=2*Math.PI*r2;
+function renderKPI(){const a=agg(scope()),va=aggVJ(scope());
+  const bd=scope().filter(r=>r.b>=r.c).length,k=[['Total rings',a.n,0,''],['Buffing completed rings',bd,0,'',a.bp],['UT completed rings',a.done,0,'',a.up],['Completed rings',a.done,0,''],['In progress rings',a.prog,0,''],['Pending rings',a.pend,0,''],['Observations',a.obs,0,''],
+    ['Vertical joints buffed',va.b,0,'',va.bp,`of ${va.n} joints · ${f1(va.bm)} / ${f1(va.len)} m`],['Vertical joints UT done',va.u,0,'',va.up,`of ${va.n} joints · ${f1(va.um)} / ${f1(va.len)} m`]];
+  $('#kpis').innerHTML=k.map(x=>`<div class="glass kpi hv"><span>${x[0]}</span><b><i data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</i>${x[4]===undefined?'':` <small>(<i data-v="${x[4]}" data-d="1" data-s="%">0</i>)</small>`}</b>${x[5]?`<em>${x[5]}</em>`:''}</div>`).join('');count($('#kpis'));}
+function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const rs=S.data.filter(r=>r.st===s),a=agg(rs),va=aggVJ(rs),cnt=rs.reduce((c,r)=>(c[band(r.up)]++,c),[0,0,0,0,0,0]),R=42,C=2*Math.PI*R,r2=30,C2=2*Math.PI*r2;
   return `<div class="glass hv sc ${S.stove===s?'act':''}" data-s="${s}" tabindex="0"><svg viewBox="0 0 104 104"><g transform="rotate(-90 52 52)" fill="none" stroke-width="9" stroke-linecap="round"><circle cx="52" cy="52" r="${R}" stroke="rgba(127,127,170,.25)"/><circle cx="52" cy="52" r="${R}" stroke="#06B6D4" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C*(1-a.up/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/><circle cx="52" cy="52" r="${r2}" stroke="rgba(127,127,170,.25)" stroke-width="7"/><circle cx="52" cy="52" r="${r2}" stroke="#A855F7" stroke-width="7" stroke-dasharray="${C2}" stroke-dashoffset="${C2}" data-o="${C2*(1-a.bp/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/></g><text x="52" y="57" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">${f1(a.up)}%</text></svg>
-  <div><h2 style="margin:0">${s}</h2><p>Buffing <b>${f1(a.bp)}%</b> · UT <b>${f1(a.up)}%</b></p><p>Rings completed <b>${a.done}/${a.n}</b></p><p>Observations <b style="color:#ef4444">${a.obs}</b></p><div class="stack">${cnt.map((n,i)=>`<i title="${LBL[i]}: ${n} rings" style="width:${n/(rs.length||1)*100}%;background:${COL[i]}"></i>`).join('')}</div></div></div>`;}).join('');
+  <div><h2 style="margin:0">${s}</h2><p>Buffing <b>${f1(a.bp)}%</b> · UT <b>${f1(a.up)}%</b></p><p>Rings completed <b>${a.done}/${a.n}</b></p><p>Vertical joints · Buffed <b>${va.b}/${va.n}</b> · UT <b>${va.u}/${va.n}</b></p><p>Observations <b style="color:#ef4444">${a.obs}</b></p><div class="stack">${cnt.map((n,i)=>`<i title="${LBL[i]}: ${n} rings" style="width:${n/(rs.length||1)*100}%;background:${COL[i]}"></i>`).join('')}</div></div></div>`;}).join('');
   requestAnimationFrame(()=>requestAnimationFrame(()=>$$('.ring-a').forEach(c=>c.setAttribute('stroke-dashoffset',c.dataset.o))));}
 
 /* ================= Digital twin ================= */
@@ -375,24 +418,25 @@ function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const rs=S.data.filter(r
 const RY=r=>5*r/90, SEV=['','#eab308','#f97316','#ef4444'];
 function geom(i){
   if(i<=16){const yb=600-24*(i-1),yt=yb-24,L=60,R=240;
-    return {d:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}L${R} ${yb}A90 5 0 0 1 ${L} ${yb}Z`,seam:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}`,y:(yt+yb)/2+3,h:24,hw:90};}
-  if(i===22)return {d:'M38 98C38 40 262 40 262 98A112 6.2 0 0 1 38 98Z',seam:'',y:82,h:36,hw:105};
+    return {d:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}L${R} ${yb}A90 5 0 0 1 ${L} ${yb}Z`,seam:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}`,y:(yt+yb)/2+3,h:24,hw:90,jg:[yt,yb,90,90,90,5,5]};}
+  if(i===22)return {d:'M38 98C38 40 262 40 262 98A112 6.2 0 0 1 38 98Z',seam:'',y:82,h:36,hw:105,jg:[56,98,20,112,100,1,6.2]};
   const [yb,wb,yt,wt]={17:[216,90,200,100],18:[200,100,164,118],19:[164,118,152,118],20:[152,118,138,118],21:[138,118,98,112]}[i];
   const m=(yb+yt)/2,wm=(wb+wt)/2+(i===18||i===21?10:0),c=150;
   return {d:`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}Q${c+wm} ${m} ${c+wb} ${yb}A${wb} ${RY(wb)} 0 0 1 ${c-wb} ${yb}Q${c-wm} ${m} ${c-wt} ${yt}Z`,
-    seam:`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}`,y:m+3,h:yb-yt,hw:wm};}
+    seam:`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}`,y:m+3,h:yb-yt,hw:wm,jg:[yt,yb,wt,wb,wm,RY(wt),RY(wb)]};}
 // Dark pill behind each ring label keeps text readable on every colour
 function pill(i,r,G){const fs=i<=16?11.5:Math.max(7.5,Math.min(11.5,G.h-5)),lab=`Ring-${i}${r.up?` · ${f1(r.up)}%`:''}`,tw=lab.length*fs*.58+12,ph=fs+5;
   return `<rect x="${150-tw/2}" y="${G.y-ph/2}" width="${tw}" height="${ph}" rx="${ph/2}" fill="rgba(8,6,22,.84)"/><text x="150" y="${G.y+fs*.36}" text-anchor="middle" font-size="${fs}" font-weight="700" font-family="Segoe UI,system-ui,sans-serif" fill="#fff">${lab}</text>`;}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function drawTwin(a){
   const rows=S.data.filter(r=>r.st===S.twin),anim=a||S.drawn!==S.twin;S.drawn=S.twin;
-  let g='',lab='',mk='';
+  let g='',lab='',mk='',vjs='';
   for(let i=1;i<=22;i++){const r=rows.find(x=>x.ring===i)||{up:0,obs:[]},G=geom(i);
     g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${COL[band(r.up)]}"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${i>16?`<path d="${G.d}" fill="url(#dome)" pointer-events="none"/>`:''}${G.seam?`<path d="${G.seam}" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/>`:''}${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}</g>`;
     lab+=pill(i,r,G);
+    (r.vj||attachVJ({st:S.twin,ring:i}).vj).forEach(j=>{vjs+=`<g class="vj" data-ring="${i}" data-j="${j.j}" data-a="${j.a}" data-g="${G.jg.join(',')}"><path fill="none" stroke="transparent" stroke-width="9" stroke-linecap="round"/><path fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="4.4" stroke-linecap="round" pointer-events="none"/><path fill="none" stroke="${j.c}" stroke-width="2.4" stroke-linecap="round"${j.st===0?' stroke-dasharray="3.2 2.6"':''} pointer-events="none"/></g>`;});
     r.obs.forEach(o=>{mk+=`<g class="mk" data-ring="${i}" data-a="${o.angle??''}" data-hw="${G.hw}" data-y="${G.y+(i<=16?7:0)}"><circle class="halo" r="6" fill="#ef4444" fill-opacity=".35"/><ellipse rx="5" ry="5" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1.5"/></g>`;});}
-  const mer=[0,90,180,270].map(t=>`<g class="mer" data-a="${t}" pointer-events="none"><line y1="222" y2="598" stroke="#fff" stroke-width=".9" stroke-dasharray="3 4"/><text y="636" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">${t}°</text></g>`).join('');
+  const mer=[0,90,180,270].map((t,k)=>`<g class="mer" data-a="${t}" pointer-events="none"><text y="636" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">VJ-${k+1} · ${t}°</text></g>`).join('');
   $('#twin').innerHTML=`<defs>
   <linearGradient id="cyl" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".6"/><stop offset=".16" stop-color="#000" stop-opacity=".18"/><stop id="hl" offset=".42" stop-color="#fff" stop-opacity=".42"/><stop offset=".62" stop-color="#fff" stop-opacity=".05"/><stop offset=".86" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".68"/></linearGradient>
   <radialGradient id="dome" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>
@@ -407,17 +451,25 @@ function drawTwin(a){
   <rect x="236" y="262" width="40" height="18" fill="url(#steel)"/><rect x="272" y="257" width="7" height="28" rx="2" fill="#5b5f73"/><rect x="146" y="44" width="8" height="22" fill="url(#steel)"/></g>
   <g filter="url(#ds)"><rect x="48" y="603" width="204" height="14" rx="3" fill="url(#steel)"/><rect x="40" y="615" width="220" height="6" rx="2" fill="#1f2130"/><g id="ringsG">${g}</g>
   <path d="M60 600A90 5 0 0 0 240 600" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/><ellipse cx="150" cy="62" rx="16" ry="5" fill="url(#steel)" pointer-events="none"/></g>
-  <g>${mer}</g><g id="lab" pointer-events="none">${lab}</g>
+  <g id="vjG">${vjs}</g><g>${mer}</g><g id="lab" pointer-events="none">${lab}</g>
   <rect id="scan" x="52" y="0" width="196" height="26" fill="url(#scanG)" pointer-events="none"/>
   <g id="mks">${mk}</g>
   <text transform="translate(22 150) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Dome (17–22)</text><text transform="translate(30 410) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Shaft (1–16)</text>`;
   $('#tt').textContent=`${S.twin} · UT colour scale`;
-  S.mk=$$('#twin .mk');S.mer=$$('#twin .mer');drawDial();place(S.view);
+  S.mk=$$('#twin .mk');S.mer=$$('#twin .mer');
+  S.vj=$$('#twin .vj');S.vj.forEach(e=>{e._g=e.dataset.g.split(',').map(Number);e._a=+e.dataset.a;e._p=[...e.children];});applyLayers();
+  drawDial();place(S.view);
   if(S.scan)S.scan.kill();
   if(!RM){S.scan=gsap.fromTo('#scan',{y:600,opacity:.85},{y:70,duration:6,ease:'sine.inOut',repeat:-1,yoyo:true});
     if(anim)gsap.from('#ringsG .rg',{opacity:0,y:10,duration:.45,stagger:.025,ease:'power2.out'});}}
 // Position markers + meridians for the current view angle v (exact azimuth: x = centre + radius·sin(angle − view))
+function applyLayers(){const j=$('#vjG'),l=$('#lab');if(j)j.style.display=S.showJ?'':'none';if(l)l.style.display=S.showL?'':'none';}
 function place(v){const R=Math.PI/180;
+  // Vertical joints: a line down each ring at its own azimuth; follows the cylinder perspective while rotating
+  for(const e of S.vj||[]){const [yt,yb,wt,wb,wm,rt,rb]=e._g,rel=(e._a-v)*R,s=Math.sin(rel),c=Math.cos(rel),
+    x1=150+wt*s,y1=yt+rt*c,x2=150+wb*s,y2=yb+rb*c,d=`M${x1.toFixed(1)} ${y1.toFixed(1)}Q${(150+wm*s).toFixed(1)} ${((y1+y2)/2).toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+    for(const p of e._p)p.setAttribute('d',d);
+    e.style.opacity=c>.04?(.4+.6*c).toFixed(2):0;e.style.pointerEvents=c>.25?'auto':'none';}
   for(const m of S.mk||[]){const a=m.dataset.a,hw=+m.dataset.hw,y=+m.dataset.y;let x,c=1;
     if(a===''){x=150+hw-8;}else{const rel=(+a-v)*R;c=Math.cos(rel);x=150+hw*Math.sin(rel);}
     m.setAttribute('transform',`translate(${x.toFixed(1)} ${y})`);m.style.opacity=c>.04?(.35+.65*c).toFixed(2):0;m.style.pointerEvents=c>.2?'auto':'none';m.lastChild.setAttribute('rx',(1.8+3.4*Math.max(0,c)).toFixed(2));}
@@ -451,14 +503,14 @@ $('#twin').addEventListener('pointerdown',e=>{if(Z.k<=1)return;const s=$('#twin'
     Z.x=Math.max(0,Math.min(300-Z.w,Z.x-dx/sc));Z.y=Math.max(0,Math.min(640-Z.h,Z.y-dy/sc));S.dragged=true;applyZ();};
   const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);setTimeout(()=>{S.dragged=false;},0);};
   window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);});
-$('#twin').addEventListener('click',e=>{if(S.dragged)return;const g=e.target.closest('.rg,.mk');if(!g)return;const i=+g.dataset.ring;S.sel=i;ripple(i);
+$('#twin').addEventListener('click',e=>{if(S.dragged)return;const g=e.target.closest('.rg,.mk,.vj');if(!g)return;const i=+g.dataset.ring;S.sel=i;ripple(i);
   $$('#twin .rg').forEach(x=>x.classList.toggle('sel',+x.dataset.ring===i));
   
   openModal(S.twin,i);});
 
 /* ================= Ring cards, observations ================= */
 function renderRings(){const rs=filtered();$('#rn').textContent=`${rs.length} rings shown`;
-  $('#rings').innerHTML=rs.length?rs.map(r=>`<div class="rc" data-s="${r.st}" data-r="${r.ring}" tabindex="0"><div class="rt"><b>${r.st} · Ring-${r.ring}</b><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${r.obs.length?`<span class="chip ob">⚠ ${r.obs.length}</span>`:''}</div>${bars(r)}</div>`).join(''):'<p class="empty">No rings match these filters.</p>';
+  $('#rings').innerHTML=rs.length?rs.map(r=>`<div class="rc" data-s="${r.st}" data-r="${r.ring}" tabindex="0"><div class="rt"><b>${r.st} · Ring-${r.ring}</b><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${r.obs.length?`<span class="chip ob">⚠ ${r.obs.length}</span>`:''}</div>${bars(r)}<div class="vjs">VJ ${r.vj.map(j=>`<i title="VJ-${j.j} @ ${j.a}° · ${j.sn} · Buffing ${f1(j.b)}/${j.len} m · UT ${f1(j.u)}/${j.len} m" style="background:${j.c}"></i>`).join('')}<span>${r.vj.filter(j=>j.st===3).length}/4 UT</span></div></div>`).join(''):'<p class="empty">No rings match these filters.</p>';
   fillBars($('#rings'));}
 function renderObs(){const q=S.oq.toLowerCase(),list=[];
   scope().forEach(r=>r.obs.forEach(o=>list.push({r,o})));
@@ -474,6 +526,7 @@ function openModal(st,ring){const r=S.data.find(x=>x.st===st&&x.ring===ring);if(
   <div style="display:flex;gap:14px;align-items:center;margin-top:10px"><svg width="110" height="110" viewBox="0 0 100 100"><g transform="rotate(-90 50 50)" fill="none" stroke-width="10" stroke-linecap="round"><circle cx="50" cy="50" r="40" stroke="rgba(127,127,170,.25)"/><circle id="mc" cx="50" cy="50" r="40" stroke="${COL[band(r.up)]}" stroke-dasharray="${circ}" stroke-dashoffset="${circ}"/></g><text x="50" y="55" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">${f1(r.up)}%</text></svg>
   <div style="flex:1"><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${bars(r)}</div></div><button class="btn" id="me" style="margin-top:10px">✎ Edit${S.role==='admin'?' in admin form':' (admin login)'}</button>
   <div class="kv"><div><small>Circumference</small>${r.c} m</div><div><small>Remaining (UT)</small>${r.rem} m</div><div><small>Buffing length</small>${r.b} m</div><div><small>UT length</small>${r.u} m</div><div><small>Buffing %</small>${f1(r.bp)}%</div><div><small>UT %</small>${f1(r.up)}%</div></div>
+  <h2>Vertical joints <small>4 × 2.2 m · UT complete ${r.vj.filter(j=>j.st===3).length}/4</small></h2><div class="vjmg">${r.vj.map(j=>`<div class="vjm" style="--vc:${j.c}"><div class="vjh"><i class="vjd"></i><b>VJ-${j.j}</b><small>${j.a}° · ${JVIEW[j.a]} · ${j.len} m</small><span class="chip" style="background:${j.c}">${j.sn}</span></div><div class="lb"><span>Buffing</span><span>${f1(j.b)}/${j.len} m</span></div><div class="bar bb"><i data-w="${j.bp}"></i></div><div class="lb"><span>UT</span><span>${f1(j.u)}/${j.len} m</span></div><div class="bar ub"><i data-w="${j.up}"></i></div>${j.raw?`<div class="oi" style="cursor:default;margin-top:6px">${esc(j.raw)}</div>`:''}</div>`).join('')}</div>
   <h2>Observation</h2>${r.obs.length?r.obs.map(o=>`<div class="oi" style="cursor:default">${esc(o.text)}</div>`).join(''):'<p class="empty">No observation recorded.</p>'}`;
   const m=$('#md');m.style.display='grid';gsap.fromTo('#mb',{y:30,opacity:0,scale:.96},{y:0,opacity:1,scale:1,duration:.35,ease:'power3.out'});
   requestAnimationFrame(()=>{$('#mc').style.transition='stroke-dashoffset 1s';$('#mc').setAttribute('stroke-dashoffset',circ*(1-r.up/100));});fillBars($('#mb'));$('#mx').focus();$('#me').onclick=()=>{closeModal();const go=()=>{fillForm(st,ring);$('#adm').scrollIntoView({behavior:'smooth'});};S.role==='admin'?go():askLogin(go);};}
@@ -488,7 +541,7 @@ function mk(id,o){const el=$('#'+id);if(!el)return;const fc=S.theme==='dark'?'#c
   if(CH[id]&&CH[id].k===k)CH[id].updateOptions(o,true,true);
   else{if(CH[id])CH[id].destroy();CH[id]=new ApexCharts(el,o);CH[id].k=k;CH[id].render();}}
 const UTR=[[0,0,'#7f1d1d','0%'],[.1,25,'#ef4444','1–25%'],[25.1,50,'#f97316','26–50%'],[50.1,75,'#eab308','51–75%'],[75.1,99.9,'#84cc16','76–99%'],[100,100,'#22c55e','100%']];
-const MET={ut:{n:'UT progress',v:r=>r?r.up:0,f:v=>f1(v)+'%',rg:UTR},bf:{n:'Buffing progress',v:r=>r?r.bp:0,f:v=>f1(v)+'%',rg:UTR},
+const MET={vj:{n:'Vertical joints UT complete (of 4)',v:r=>r?r.vj.filter(j=>j.u>=j.len-EPS).length:0,f:v=>v+'/4',rg:[[0,0,'#7f1d1d','0 of 4'],[1,1,'#ef4444','1 of 4'],[2,2,'#f97316','2 of 4'],[3,3,'#eab308','3 of 4'],[4,4,'#22c55e','4 of 4']]},ut:{n:'UT progress',v:r=>r?r.up:0,f:v=>f1(v)+'%',rg:UTR},bf:{n:'Buffing progress',v:r=>r?r.bp:0,f:v=>f1(v)+'%',rg:UTR},
   rem:{n:'Remaining UT length',v:r=>r?r.rem:0,f:v=>v+' m',rg:[[0,0,'#22c55e','Done'],[.1,10,'#84cc16','≤10 m'],[10.1,20,'#eab308','10–20 m'],[20.1,30,'#f97316','20–30 m'],[30.1,999,'#ef4444','>30 m']]},
   sev:{n:'Observation severity index',v:r=>r?r.obs.reduce((t,o)=>t+o.sev,0):0,f:v=>v+' pts',rg:[[0,0,'#334155','None'],[1,2,'#eab308','Low'],[3,4,'#f97316','Medium'],[5,99,'#ef4444','High']]}};
 function defectData(){const rows=S.data.filter(r=>r.st===S.twin),bins=[...Array(12).keys()].map(i=>i*30+'°').concat('n/a');
@@ -524,7 +577,7 @@ function render(){
 /* ================= Cloud (Supabase) + CSV data sources ================= */
 const SB_URL='https://lgyladuiyezqccyjxqgn.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxneWxhZHVpeWV6cWNjeWp4cWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDEyMTksImV4cCI6MjA3ODUxNzIxOX0.O-K3aJkcdvnj0k3ltu37AK3hrW2ibZCZbwVy9SDTBZg';
-const TABLE='stove_rings';
+const TABLE='stove_rings',VT='stove_vjoints';
 // Hard-coded logins (change here). Visible to anyone who opens the file source – see notes.
 const USERS={admin:{pw:'Admin@123',role:'admin'},user:{pw:'User@123',role:'viewer'}};
 let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY);}catch(e){}
@@ -534,24 +587,58 @@ function compose(){let rows;
   if(S.src==='cloud')rows=S.cloud;
   else if(S.src==='csv')rows=S.csv;
   else{const m=new Map();S.cloud.concat(S.csv).forEach(r=>m.set(r.st+'|'+r.ring,r));rows=[...m.values()];} // CSV wins per ring
-  if(!rows.length){S.fallback=true;return parseCSV(SAMPLE);}S.fallback=false;return rows;}
+  if(!rows.length){S.fallback=true;return parseCSV(SAMPLE);}S.fallback=false;rows.forEach(attachVJ);return rows;}
 function apply(msg){S.data=compose();buildHist();queue();$('#lv').classList.toggle('off',!S.online);$('#lt').textContent=S.online?'LIVE':'OFFLINE';
   $('#cs').textContent=(S.online?'☁ Connected':'☁ Offline')+` · cloud ${S.cloud.length} · csv ${S.csv.length}`;
   if(msg)toast(S.fallback?'Selected source is empty – showing sample data':msg);}
 async function fetchCloud(){if(!sb){S.online=false;return;}
   const {data,error}=await sb.from(TABLE).select('*').order('stove').order('ring');
   if(error){S.online=false;toast('Cloud error: '+error.message);return;}
-  S.online=true;S.cloud=ingest(fromDB(data));}
+  S.online=true;
+  const v=await sb.from(VT).select('*');   // vertical joints (separate table; the app keeps working if it is not created yet)
+  if(v.error){S.vjOk=false;if(!S.vjWarned){S.vjWarned=1;toast('Vertical joints table not found – run stove_vjoints_setup.sql in Supabase');}}
+  else{S.vjOk=true;S.vjs={};v.data.forEach(x=>{S.vjs[x.stove+'|'+x.ring+'|'+x.joint]={len:x.length_m,b:x.buffing_completed,u:x.ut_completed,raw:x.observations||''};});}
+  S.cloud=ingest(fromDB(data));}
 function loadFile(f){if(S.role!=='admin')return toast('Only admin can upload a CSV');Papa.parse(f,{header:true,skipEmptyLines:true,complete:r=>{const rows=ingest(r.data);
   if(!rows.length)return toast('No valid rows. Expected: Stove, Ring, Circumference, BuffingCompleted, UTCompleted, Observations');
   S.csv=rows;S.src='csv';$('#src').value='csv';apply(`Loaded ${f.name} (view only until an admin pushes it to cloud)`);},error:()=>toast('Could not read the CSV file')});}
-function subscribe(){if(!sb)return;try{sb.channel('stove-rt').on('postgres_changes',{event:'*',schema:'public',table:TABLE},()=>{clearTimeout(S.rt);S.rt=setTimeout(async()=>{await fetchCloud();apply('Cloud data updated');},600);}).subscribe();}catch(e){}}
+function subscribe(){if(!sb)return;try{const h=()=>{clearTimeout(S.rt);S.rt=setTimeout(async()=>{await fetchCloud();apply('Cloud data updated');},600);};
+  sb.channel('stove-rt').on('postgres_changes',{event:'*',schema:'public',table:TABLE},h).on('postgres_changes',{event:'*',schema:'public',table:VT},h).subscribe();}catch(e){}}
 
 /* ================= Admin form ================= */
 function fillForm(st,ring){$('#aS').value=st;$('#aR').value=ring;const r=S.data.find(x=>x.st===st&&x.ring===ring);
-  $('#aC').value=r?r.c:'';$('#aB').value=r?r.b:0;$('#aU').value=r?r.u:0;$('#aO').value=r?r.raw:'';$('#am').textContent=r?'Existing values loaded':'New record';}
+  $('#aC').value=r?r.c:'';$('#aB').value=r?r.b:0;$('#aU').value=r?r.u:0;$('#aO').value=r?r.raw:'';$('#am').textContent=r?'Existing values loaded':'New record';fillVJ(st,ring,r);}
+/* ---- vertical joints form ---- */
+function vjRow(j){return `<div class="vjr" data-j="${j.j}"><div class="vjh"><i class="vjd"></i><b>VJ-${j.j}</b><small>${j.a}° · ${JVIEW[j.a]}</small><span class="chip vjc"></span></div>
+  <label>Buffing done (m)<span class="vjin"><input class="vB" type="number" min="0" step="any" inputmode="decimal" value="${j.b}"><button type="button" class="btn" data-f="B" title="Set to full joint length">Full</button></span></label>
+  <label>UT done (m)<span class="vjin"><input class="vU" type="number" min="0" step="any" inputmode="decimal" value="${j.u}"><button type="button" class="btn" data-f="U" title="Set to full joint length">Full</button></span></label>
+  <label>Length (m)<input class="vL" type="number" min="0.1" step="any" inputmode="decimal" value="${j.len}"></label>
+  <label>Observation / note<input class="vO" type="text" maxlength="300" placeholder="optional" value="${esc(j.raw)}"></label></div>`;}
+function updVJ(row){if(!row)return;const q=s=>row.querySelector(s),len=+q('.vL').value,b=+q('.vB').value||0,u=+q('.vU').value||0,chip=q('.vjc');
+  const bad=!(len>0)||b>len+EPS||u>len+EPS||b<0||u<0,st=bad?0:jStage(b,u,len),warn=bad?'⚠ Check values':(u>b+EPS&&st<3?'⚠ UT ahead of buffing':JST[st].n),col=bad?'#ef4444':JST[st].c;
+  row.style.setProperty('--vc',col);chip.textContent=warn;chip.style.background=bad||warn[0]==='⚠'?'#ef4444':col;
+  const rows=$$('#vjg .vjr'),n=f=>rows.filter(f).length,V=x=>[+x.querySelector('.vL').value,+x.querySelector('.vB').value||0,+x.querySelector('.vU').value||0],
+    tot=rows.reduce((t,x)=>t+(V(x)[0]||0),0);
+  $('#vjS').textContent=`Buffed ${n(x=>{const v=V(x);return v[0]>0&&v[1]>=v[0]-EPS})}/4 · UT complete ${n(x=>{const v=V(x);return v[0]>0&&v[2]>=v[0]-EPS})}/4 · ${f1(tot)} m of vertical joint`;}
+function fillVJ(st,ring,r){const vj=(r||attachVJ({st,ring})).vj;$('#vjT').textContent=`${st} · Ring-${ring} · vertical joints`;
+  $('#vjg').innerHTML=vj.map(vjRow).join('');$$('#vjg .vjr').forEach(updVJ);}
+function setTab(t){S.atab=t;$$('#atab .btn').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$('#pRing').hidden=t!=='ring';$('#pVJ').hidden=t!=='vj';}
+async function saveVJ(e){e.preventDefault();if(S.role!=='admin')return toast('Only admin can save');if(!sb)return toast('Supabase not available');
+  const st=$('#aS').value,ring=+$('#aR').value,rows=[];
+  for(const el of $$('#vjg .vjr')){const q=s=>el.querySelector(s),j=+el.dataset.j,len=+q('.vL').value,b=+q('.vB').value||0,u=+q('.vU').value||0;
+    if(!(len>0))return toast(`VJ-${j}: length must be greater than 0`);
+    if(b<0||u<0)return toast(`VJ-${j}: values cannot be negative`);
+    if(b>len+EPS||u>len+EPS)return toast(`VJ-${j}: buffing and UT cannot exceed the joint length (${len} m)`);
+    rows.push({stove:st,ring,joint:j,length_m:len,buffing_completed:b,ut_completed:u,observations:q('.vO').value.trim(),updated_by:S.user});}
+  const {error}=await sb.from(VT).upsert(rows,{onConflict:'stove,ring,joint'});
+  if(error)return toast('Save failed: '+error.message+(S.vjOk?'':' – run stove_vjoints_setup.sql first'));
+  await fetchCloud();S.src='cloud';$('#src').value='cloud';apply(`Saved vertical joints of ${st} Ring-${ring}`);fillVJ(st,ring,S.data.find(x=>x.st===st&&x.ring===ring));}
+function vjAction(q){const rows=$$('#vjg .vjr');rows.forEach(r=>{const L=r.querySelector('.vL').value;
+  if(q==='b')r.querySelector('.vB').value=L;else if(q==='u')r.querySelector('.vU').value=L;else{r.querySelector('.vB').value=0;r.querySelector('.vU').value=0;}updVJ(r);});}
 async function saveRing(e){e.preventDefault();if(S.role!=='admin')return toast('Only admin can save');if(!sb)return toast('Supabase not available');
   const c=+$('#aC').value,b=+$('#aB').value,u=+$('#aU').value;
+  if(!(c>0))return toast('Enter the circumference');
+  if(b<0||u<0)return toast('Values cannot be negative');
   if(b>c||u>c)return toast('Buffing and UT cannot exceed the circumference');
   const row={stove:$('#aS').value,ring:+$('#aR').value,circumference:c,buffing_completed:b,ut_completed:u,observations:$('#aO').value.trim(),updated_by:S.user};
   const {error}=await sb.from(TABLE).upsert(row,{onConflict:'stove,ring'});
@@ -578,7 +665,12 @@ $('#alb').onclick=()=>askLogin();$('#lc').onclick=closeLogin;
 $('#lgn').addEventListener('click',e=>{if(e.target.id==='lgn')closeLogin();});
 $('#lgn').addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin();});
 $('#file').addEventListener('click',e=>{if(S.role!=='admin'){e.preventDefault();askLogin(()=>$('#file').click());}});
-$('#af').onsubmit=saveRing;$('#aP').onclick=pushCSV;
+$('#af').onsubmit=e=>S.atab==='vj'?saveVJ(e):saveRing(e);$('#aP').onclick=pushCSV;
+$('#atab').onclick=e=>{const b=e.target.closest('.btn');if(b)setTab(b.dataset.t);};
+$('#vjg').addEventListener('input',e=>updVJ(e.target.closest('.vjr')));
+$('#pVJ').addEventListener('click',e=>{const q=e.target.closest('[data-q]'),f=e.target.closest('[data-f]');
+  if(q)vjAction(q.dataset.q);else if(f){const r=f.closest('.vjr');r.querySelector(f.dataset.f==='B'?'.vB':'.vU').value=r.querySelector('.vL').value;updVJ(r);}});
+$('#tgJ').onchange=e=>{S.showJ=e.target.checked;applyLayers();};$('#tgL').onchange=e=>{S.showL=e.target.checked;applyLayers();};
 $('#aS').innerHTML=STOVES.map(s=>`<option>${s}</option>`).join('');
 $('#aR').innerHTML=Array.from({length:22},(_,i)=>`<option value="${i+1}">Ring-${i+1}</option>`).join('');
 $('#aS').onchange=$('#aR').onchange=()=>fillForm($('#aS').value,+$('#aR').value);
@@ -591,7 +683,9 @@ function exportPNG(){const svg=$('#twin').cloneNode(true);svg.setAttribute('xmln
   img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg).replace(/currentColor/g,'#ffffff'));}
 function exportCSV(){const rows=S.data.map(r=>({Stove:r.st,Ring:r.ring,Circumference:r.c,BuffingCompleted:r.b,UTCompleted:r.u,'Buffing%':f1(r.bp),'UT%':f1(r.up),Remaining:r.rem,Status:r.status,Observations:r.raw}));
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([Papa.unparse(rows)],{type:'text/csv'}));a.download='stove-ndt-summary.csv';a.click();toast('Summary CSV exported');}
-function doExport(k){$('#xm').classList.remove('open');if(k==='png')exportPNG();else if(k==='csv')exportCSV();else{toast(k==='pdf'?'Choose "Save as PDF" in the print dialog':'Opening print view');setTimeout(()=>window.print(),400);}}
+function exportVJ(){const rows=[];S.data.slice().sort((a,b)=>a.st.localeCompare(b.st)||a.ring-b.ring).forEach(r=>r.vj.forEach(j=>rows.push({Stove:r.st,Ring:r.ring,Joint:'VJ-'+j.j,'Angle(deg)':j.a,'Length(m)':j.len,'BuffingCompleted(m)':j.b,'UTCompleted(m)':j.u,'Buffing%':f1(j.bp),'UT%':f1(j.up),Status:j.sn,Observation:j.raw})));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([Papa.unparse(rows)],{type:'text/csv'}));a.download='stove-vertical-joints.csv';a.click();toast('Vertical joints CSV exported');}
+function doExport(k){$('#xm').classList.remove('open');if(k==='png')exportPNG();else if(k==='csv')exportCSV();else if(k==='vjcsv')exportVJ();else{toast(k==='pdf'?'Choose "Save as PDF" in the print dialog':'Opening print view');setTimeout(()=>window.print(),400);}}
 
 /* ================= Theme, fullscreen, refresh ================= */
 function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;$('#bT').textContent=t==='dark'?'☀':'🌙';$('#bT').title=t==='dark'?'Switch to day mode (T)':'Switch to night mode (T)';if(S.data.length)lazyCharts();}
@@ -602,6 +696,8 @@ async function refresh(silent){await fetchCloud();apply(silent?'':'Refreshed');i
 $('#seg').innerHTML=['All',...STOVES].map(s=>`<button class="btn" data-s="${s}">${s}</button>`).join('');
 $('#fRing').innerHTML='<option value="All">All rings</option>'+Array.from({length:22},(_,i)=>`<option value="${i+1}">Ring-${i+1}</option>`).join('');
 $('#lg').innerHTML=COL.map((c,i)=>`<span><i style="background:${c}"></i>${LBL[i]}</span>`).join('');
+$('#lgJ').innerHTML='<span class="lh">Vertical joints</span>'+JST.map(s=>`<span><i class="ln" style="background:${s.c}"></i>${s.n}</span>`).join('');
+fillVJ('Stove-1',1);
 $('#seg').onclick=e=>{const b=e.target.closest('.btn');if(b){S.stove=b.dataset.s;render();}};
 $('#cmp').onclick=e=>{const c=e.target.closest('.sc');if(c){S.stove=S.stove===c.dataset.s?'All':c.dataset.s;render();}};
 const rowOpen=e=>{const c=e.target.closest('[data-r]');if(c)openModal(c.dataset.s,+c.dataset.r);};
@@ -637,9 +733,11 @@ $('#clock').textContent=new Date().toLocaleString();
 
 /* ================= Twin tooltip, dial, heatmap metric ================= */
 const tip=$('#tip');
-$('#twin').addEventListener('pointermove',e=>{const g=e.target.closest('.rg,.mk');if(!g){tip.style.opacity=0;return;}
+$('#twin').addEventListener('pointermove',e=>{const g=e.target.closest('.rg,.mk,.vj');if(!g){tip.style.opacity=0;return;}
   const i=+g.dataset.ring,r=S.data.find(x=>x.st===S.twin&&x.ring===i);if(!r)return;
-  tip.innerHTML=`<b>${S.twin} · Ring-${i}</b><br>UT ${f1(r.up)}% · Buffing ${f1(r.bp)}%<br>${r.status} · ${r.rem} m left${r.obs.length?`<br><span style="color:#f87171">⚠ ${r.obs.length} observation${r.obs.length>1?'s':''}</span>`:''}`;
+  if(g.classList.contains('vj')){const j=r.vj[+g.dataset.j-1];
+    tip.innerHTML=`<b>${S.twin} · Ring-${i} · VJ-${j.j}</b> <small>${j.a}° ${JVIEW[j.a]}</small><br><span style="color:${j.c}">●</span> ${j.sn}<br>Buffing ${f1(j.b)}/${j.len} m · UT ${f1(j.u)}/${j.len} m${j.raw?`<br><span style="color:#f87171">⚠ ${esc(j.raw)}</span>`:''}`;}
+  else tip.innerHTML=`<b>${S.twin} · Ring-${i}</b><br>UT ${f1(r.up)}% · Buffing ${f1(r.bp)}%<br>${r.status} · ${r.rem} m left${r.obs.length?`<br><span style="color:#f87171">⚠ ${r.obs.length} observation${r.obs.length>1?'s':''}</span>`:''}`;
   tip.style.opacity=1;tip.style.left=Math.max(4,Math.min(innerWidth-250,e.clientX+14))+'px';tip.style.top=(e.clientY+14)+'px';});
 $('#twin').addEventListener('pointerleave',()=>{tip.style.opacity=0;});
 $('#dial').addEventListener('click',e=>{const d=e.target.closest('.dl'),o=e.target.closest('.od');if(d)rotate(+d.dataset.v);else if(o)openModal(S.twin,+o.dataset.ring);});
