@@ -419,13 +419,17 @@ const RY=r=>5*r/90, SEV=['','#eab308','#f97316','#ef4444'];
 function geom(i){
   if(i<=16){const yb=600-24*(i-1),yt=yb-24,L=60,R=240;
     return {d:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}L${R} ${yb}A90 5 0 0 1 ${L} ${yb}Z`,seam:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}`,y:(yt+yb)/2+3,h:24,hw:90,jg:[yt,yb,90,90,90,5,5]};}
-  if(i===22)return {d:'M38 98C38 40 262 40 262 98A112 6.2 0 0 1 38 98Z',seam:'',y:82,h:36,hw:105,jg:[56,98,20,112,100,1,6.2]};
-  const [yb,wb,yt,wt]={17:[216,90,200,100],18:[200,100,164,118],19:[164,118,152,118],20:[152,118,138,118],21:[138,118,98,112]}[i];
-  const m=(yb+yt)/2,wm=(wb+wt)/2+(i===18||i===21?10:0),c=150;
-  return {d:`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}Q${c+wm} ${m} ${c+wb} ${yb}A${wb} ${RY(wb)} 0 0 1 ${c-wb} ${yb}Q${c-wm} ${m} ${c-wt} ${yt}Z`,
-    seam:`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}`,y:m+3,h:yb-yt,hw:wm,jg:[yt,yb,wt,wb,wm,RY(wt),RY(wb)]};}
+  // Dome traced from the drawing (shaft half-width 90 = 209 px there): neck flares out, widest ~1.14x shaft, hemispherical cap (R = widest half-width)
+  const c=150,DC=150.1,DR=102.5,DY=[216,203.1,173.8,161.3,150.1,101.9],DW=[90,90.9,99.9,102.1,102.5,90.5];
+  if(i===22){const w=DW[5],yb=DY[5];
+    return {d:`M${c-w} ${yb}A${DR} ${DR} 0 0 1 ${c+w} ${yb}A${w} ${RY(w)} 0 0 1 ${c-w} ${yb}Z`,seam:'',y:84,h:36,hw:78,jg:[DC-DR,yb,0,w,93.8,0,RY(w)]};}
+  const k=i-17,yb=DY[k],wb=DW[k],yt=DY[k+1],wt=DW[k+1],m=(yb+yt)/2,top=`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}`;
+  let right,left,wm;
+  if(i===21){right=`A${DR} ${DR} 0 0 1 ${c+wb} ${yb}`;left=`A${DR} ${DR} 0 0 1 ${c-wt} ${yt}`;wm=102.7;}
+  else{const q=(yb-yt)*.45;right=`C${c+wt} ${yt+q} ${c+wb} ${yb-q} ${c+wb} ${yb}`;left=`C${c-wb} ${yb-q} ${c-wt} ${yt+q} ${c-wt} ${yt}`;wm=(wb+wt)/2;}
+  return {d:`${top}${right}A${wb} ${RY(wb)} 0 0 1 ${c-wb} ${yb}${left}Z`,seam:top,y:m+3,h:yb-yt,hw:wm,jg:[yt,yb,wt,wb,wm,RY(wt),RY(wb)]};}
 // Dark pill behind each ring label keeps text readable on every colour
-function pill(i,r,G){const fs=i<=16?11.5:Math.max(7.5,Math.min(11.5,G.h-5)),lab=`Ring-${i}${r.up?` · ${f1(r.up)}%`:''}`,tw=lab.length*fs*.58+12,ph=fs+5;
+function pill(i,r,G){const fs=i<=16?11.5:Math.max(7,Math.min(11.5,G.h-4.5)),lab=`Ring-${i}${r.up?` · ${f1(r.up)}%`:''}`,tw=lab.length*fs*.58+12,ph=fs+(G.h<14?3.5:5);
   return `<rect x="${150-tw/2}" y="${G.y-ph/2}" width="${tw}" height="${ph}" rx="${ph/2}" fill="rgba(8,6,22,.84)"/><text x="150" y="${G.y+fs*.36}" text-anchor="middle" font-size="${fs}" font-weight="700" font-family="Segoe UI,system-ui,sans-serif" fill="#fff">${lab}</text>`;}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function drawTwin(a){
@@ -448,9 +452,9 @@ function drawTwin(a){
   <ellipse class="aura" cx="150" cy="330" rx="170" ry="310" fill="url(#aura)" pointer-events="none"/>
   <ellipse cx="150" cy="622" rx="128" ry="8" fill="rgba(0,0,0,.4)" pointer-events="none"/>
   <g pointer-events="none"><rect x="44" y="222" width="6" height="376" fill="url(#rung)"/><line x1="44" x2="44" y1="222" y2="598" stroke="#9aa0b8"/><line x1="50" x2="50" y1="222" y2="598" stroke="#9aa0b8"/>
-  <rect x="236" y="262" width="40" height="18" fill="url(#steel)"/><rect x="272" y="257" width="7" height="28" rx="2" fill="#5b5f73"/><rect x="146" y="44" width="8" height="22" fill="url(#steel)"/></g>
+  <rect x="236" y="262" width="40" height="18" fill="url(#steel)"/><rect x="272" y="257" width="7" height="28" rx="2" fill="#5b5f73"/><rect x="147" y="36" width="6" height="18" fill="url(#steel)"/></g>
   <g filter="url(#ds)"><rect x="48" y="603" width="204" height="14" rx="3" fill="url(#steel)"/><rect x="40" y="615" width="220" height="6" rx="2" fill="#1f2130"/><g id="ringsG">${g}</g>
-  <path d="M60 600A90 5 0 0 0 240 600" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/><ellipse cx="150" cy="62" rx="16" ry="5" fill="url(#steel)" pointer-events="none"/></g>
+  <path d="M60 600A90 5 0 0 0 240 600" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/><ellipse cx="150" cy="53" rx="11" ry="3.4" fill="url(#steel)" pointer-events="none"/></g>
   <g id="vjG">${vjs}</g><g>${mer}</g><g id="lab" pointer-events="none">${lab}</g>
   <rect id="scan" x="52" y="0" width="196" height="26" fill="url(#scanG)" pointer-events="none"/>
   <g id="mks">${mk}</g>
@@ -580,7 +584,8 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const TABLE='stove_rings',VT='stove_vjoints';
 // Hard-coded logins (change here). Visible to anyone who opens the file source – see notes.
 const USERS={admin:{pw:'Admin@123',role:'admin'},user:{pw:'User@123',role:'viewer'}};
-let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY);}catch(e){}
+// Always act as the public (anon) role: never pick up a Supabase login saved in this browser by another app
+let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});}catch(e){}
 Object.assign(S,{cloud:[],csv:[],src:'cloud',role:null,user:null,online:false});
 const fromDB=d=>d.map(x=>({Stove:x.stove,Ring:x.ring,Circumference:x.circumference,BuffingCompleted:x.buffing_completed,UTCompleted:x.ut_completed,Observations:x.observations}));
 function compose(){let rows;
