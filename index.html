@@ -10,28 +10,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
 /* ===== Theme tokens ===== */
-:root{--bg:#090714;--bg2:#1a103a;--glass:rgba(255,255,255,.08);--bd:rgba(255,255,255,.14);--tx:#f3f0ff;--mu:#a79fc7;--p:#7C3AED;--s:#A855F7;--a:#06B6D4;--sh:0 10px 34px rgba(0,0,0,.45);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-:root[data-theme=light]{--bg:#f1edfb;--bg2:#e2d9f8;--glass:rgba(255,255,255,.72);--bd:rgba(80,40,160,.18);--tx:#1d1238;--mu:#5d5380;--sh:0 8px 26px rgba(80,40,160,.15)}
+:root{--bg:#0e1020;--bg2:#171a2e;--glass:rgba(255,255,255,.05);--bd:rgba(255,255,255,.12);--tx:#eceef7;--mu:#9aa0b8;--p:#6d5be0;--s:#8b7cf0;--a:#06B6D4;--sh:0 4px 16px rgba(0,0,0,.35);--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--r:14px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=light]{--bg:#f4f5fa;--bg2:#e8eaf4;--glass:rgba(255,255,255,.9);--bd:rgba(40,50,100,.16);--tx:#1b1e33;--mu:#5a6080;--sh:0 2px 10px rgba(30,40,90,.10)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
-body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--tx);min-height:100%;background:radial-gradient(1200px 600px at 15% -10%,var(--bg2),transparent),radial-gradient(900px 500px at 100% 0,rgba(6,182,212,.12),transparent),var(--bg);background-attachment:fixed;padding:14px}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--tx);min-height:100%;background:var(--bg);padding:14px}
 .wrap{max-width:1800px;margin:auto}
-.glass{background:var(--glass);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid var(--bd);border-radius:18px;box-shadow:var(--sh);padding:16px;transition:transform .25s,border-color .25s}
-.glass.hv:hover{transform:translateY(-3px);border-color:var(--s)}
+.glass{background:var(--glass);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);padding:var(--s4);transition:transform .25s,border-color .25s}
+.glass.hv:hover{transform:translateY(-1px);border-color:var(--s)}
 h2{font-size:15px;font-weight:600;margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 h2 small{font-weight:400;color:var(--mu);font-size:12px}
-section{margin-top:14px}
+section{margin-top:var(--s4)}
 button,select,input{font:inherit;color:var(--tx)}
 button{cursor:pointer}
 .btn{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;transition:.2s}
-.btn:hover,.btn.on{background:linear-gradient(135deg,var(--p),var(--s));border-color:transparent;color:#fff}
+.btn:hover,.btn.on{background:var(--p);border-color:transparent;color:#fff}
 :focus-visible{outline:2px solid var(--a);outline-offset:2px}
 select,input[type=search]{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;min-width:0}
 select option{color:#111}
 /* header */
 header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
 .brand{display:flex;gap:12px;align-items:center}
-.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--p),var(--a));display:grid;place-items:center;box-shadow:0 0 24px rgba(124,58,237,.6)}
+.logo{width:46px;height:46px;border-radius:12px;background:var(--p);display:grid;place-items:center}
 .brand h1{font-size:clamp(16px,2.2vw,26px);line-height:1.15}
 .brand p{color:var(--mu);font-size:12px}
 .hb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:relative}
@@ -43,8 +43,8 @@ header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:s
 input[type=range]{accent-color:var(--s);width:110px}
 /* grids */
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
-.kpi{padding:14px}.kpi span{color:var(--mu);font-size:12px}.kpi i{font-style:normal}.kpi small{font-size:.58em;font-weight:600}.kpi b{display:block;font-size:clamp(20px,2.4vw,30px);margin-top:4px;background:linear-gradient(90deg,#fff,var(--s));-webkit-background-clip:text;background-clip:text;color:transparent}
-:root[data-theme=light] .kpi b{background:linear-gradient(90deg,var(--p),var(--s));-webkit-background-clip:text;background-clip:text}
+.kpi{padding:14px}.kpi span{color:var(--mu);font-size:12px}.kpi i{font-style:normal}.kpi small{font-size:.58em;font-weight:600}.kpi b{display:block;font-size:clamp(20px,2.4vw,30px);margin-top:4px;color:var(--tx)}
+
 .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
 .g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
 .sc{display:flex;gap:14px;align-items:center;cursor:pointer}
@@ -71,7 +71,7 @@ input[type=range]{accent-color:var(--s);width:110px}
 .lb{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin:6px 0 3px}
 .bar{height:11px;border-radius:9px;background:rgba(127,127,170,.25);overflow:hidden}
 .bar i{display:block;height:100%;width:0;border-radius:9px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
-.bb i{background:linear-gradient(90deg,var(--p),#d8b4fe)}.ub i{background:linear-gradient(90deg,#0e7490,var(--a))}
+.bb i{background:var(--s)}.ub i{background:var(--a)}
 .obl{max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .oi{border-left:4px solid #ef4444;background:var(--glass);border-radius:10px;padding:9px 11px;font-size:13px;cursor:pointer}
 .oi small{color:var(--mu)}
@@ -109,7 +109,7 @@ body.col{--sw:68px}
 #mm{display:none}
 .usr{display:flex;gap:8px;align-items:center;padding:4px 4px 4px 6px;border:1px solid var(--bd);border-radius:14px;background:var(--glass)}
 .usr div{display:flex;flex-direction:column;line-height:1.15;font-size:13px}.usr small{color:var(--mu);font-size:11px}
-.av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));color:#fff;display:grid;place-items:center;font-weight:700;text-transform:uppercase}
+.av{width:32px;height:32px;border-radius:50%;background:var(--p);color:#fff;display:grid;place-items:center;font-weight:700;text-transform:uppercase}
 .ib{width:38px;height:38px;padding:0;display:grid;place-items:center;font-size:17px}
 .av{font-size:16px}
 .zc{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px}.zc .btn{padding:5px 11px}.zc small{color:var(--mu);font-size:11px}
@@ -122,21 +122,77 @@ body.col{--sw:68px}
 @media print{body{background:#fff;color:#000;padding:0}.glass{box-shadow:none;backdrop-filter:none;background:#fff;border-color:#bbb;break-inside:avoid}.hb,.bar-f,#toasts,#md,#ld,.compass{display:none!important}.rings{max-height:none}.kpi b{color:#4c1d95;-webkit-text-fill-color:#4c1d95}}
 /* ---- enterprise polish ---- */
 :root{--grid:rgba(168,85,247,.08)}:root[data-theme=light]{--grid:rgba(80,40,160,.07)}
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse at 50% 15%,#000 15%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 15%,#000 15%,transparent 75%)}
-header.glass{background:linear-gradient(120deg,var(--glass),rgba(124,58,237,.14))}
+header.glass{background:var(--glass)}
 .live{display:inline-flex;gap:7px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.05em;padding:6px 11px;border:1px solid var(--bd);border-radius:20px;background:var(--glass);color:var(--mu)}
 .live i{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:lv 2s infinite}.live.off i{background:#f59e0b;animation:none}
 @keyframes lv{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%,100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
-.kpi{position:relative;overflow:hidden}.kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--p),var(--a))}
+.kpi{position:relative;overflow:hidden}.kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--p)}
 #tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .15s;background:var(--bg2);border:1px solid var(--s);border-radius:12px;padding:9px 12px;font-size:12px;box-shadow:var(--sh);max-width:240px;line-height:1.5}
 .stack{display:flex;height:7px;border-radius:6px;overflow:hidden;margin-top:9px;background:rgba(127,127,170,.2)}.stack i{display:block;height:100%}
 .rc{content-visibility:auto;contain-intrinsic-size:auto 118px}
 .dial{display:block;margin:4px auto;width:200px;max-width:62%;color:var(--tx)}
 .met{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}.met .btn{padding:5px 10px;font-size:12px}
-#twin{filter:drop-shadow(0 12px 22px rgba(0,0,0,.25))}
+#twin{filter:drop-shadow(0 6px 10px rgba(0,0,0,.2))}
 @media(max-width:700px){.live span{display:none}.live{padding:8px}}
+/* ---- tabs ---- */
+.i{display:block}.ic .i,.ib .i{margin:auto}
+.tabs{display:flex;gap:2px;margin-top:var(--s4);border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:10px 16px;color:var(--mu);font-weight:600;font-size:13px;white-space:nowrap}
+.tabs button{display:inline-flex;align-items:center;gap:8px}
+.tabs button .i{flex:none;opacity:.85}
+.tabs button:hover{color:var(--tx)}
+.tabs button[aria-selected=true]{color:var(--tx);border-bottom-color:var(--p)}
+.rbtn{display:flex;gap:var(--s2);flex-wrap:wrap}
+.mode{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 8px}
+.mode .btn{padding:6px 12px;font-size:12px}
+.mode label{font-size:12px;color:var(--mu);display:flex;gap:6px;align-items:center}
+.mode [hidden]{display:none!important}
+.mode input[type=number]{width:84px;background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:6px 8px;color:var(--tx);font:inherit}
+#wnote{font-size:12px;color:var(--mu);margin:0 0 8px}#wnote:empty{display:none}
+#rform input[type=text]{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;width:100%;color:var(--tx);font:inherit}
+.rpt-grid{display:grid;grid-template-columns:minmax(240px,320px) 1fr;gap:16px;align-items:start}
+.paper{background:#e9ebf3;border:1px solid var(--bd);border-radius:10px;padding:12px;overflow:auto;max-height:78vh}
+.paper .rep{min-width:560px;max-width:820px;margin:0 auto;padding:18px 20px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+@media(max-width:900px){.rpt-grid{grid-template-columns:1fr}}
+/* ---- inspection report (screen preview + print) ---- */
+.rep{font:11px/1.45 system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep *{box-sizing:border-box}
+.rep h1{font-size:19px;margin:2px 0;color:#111;display:block;font-weight:700}
+.rep h2{font-size:12.5px;margin:14px 0 6px;padding-bottom:3px;border-bottom:2px solid #6d5be0;color:#111;display:block;font-weight:700}
+.rep .hd{display:flex;gap:14px;align-items:center;border-bottom:3px solid #6d5be0;padding-bottom:10px}
+.rep .hd img{max-height:54px;max-width:150px;object-fit:contain}
+.rep .pl{font-size:11.5px;color:#444}
+.rep .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}
+.rep .meta div{border:1px solid #cfd3e3;padding:4px 6px;min-height:34px}
+.rep .meta small{display:block;color:#666;font-size:8.5px;text-transform:uppercase;letter-spacing:.05em}
+.rep table{width:100%;border-collapse:collapse;font-size:10px}
+.rep th{background:#eef0f7;text-align:left;color:#111}
+.rep th,.rep td{border:1px solid #cfd3e3;padding:3px 5px;vertical-align:top}
+.rep tr{break-inside:avoid}
+.rep .pg{break-before:page}
+.rep .fig{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rep .fig figure{margin:0;text-align:center;break-inside:avoid}
+.rep figcaption{font-weight:700;margin-bottom:2px}
+.rep .lgd{display:flex;gap:4px 12px;flex-wrap:wrap;font-size:10px;margin:8px 0}
+.rep .sw{display:inline-block;width:10px;height:10px;border:1px solid #777;margin-right:4px;vertical-align:-1px}
+.rep .warn{background:#fff3cd;border:1px solid #e0b100;padding:6px 8px;margin:8px 0;font-weight:600}
+.rep .note{color:#555;font-size:9.5px;margin-top:6px}
+.rep .sign{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.rep .sign>div{border:1px solid #9aa0b8;padding:8px;break-inside:avoid}
+.rep .sign b{display:block;margin-bottom:2px}
+.rep .ln{border-bottom:1px solid #444;height:24px;margin-top:6px;font-size:9px;color:#555;display:flex;align-items:flex-end}
+.rep .sev3{color:#b91c1c;font-weight:700}.rep .sev2{color:#c2410c;font-weight:700}
+.azs{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:12px;color:var(--mu);margin:8px 0}
+.azs select{max-width:100%;font-size:12px}
+.ft{cursor:help}
+#repPrint{display:none}
+@page{size:A4;margin:12mm 10mm 14mm}
+@page{@bottom-right{content:"Page " counter(page) " of " counter(pages);font:9px sans-serif;color:#555}}
+@media print{body.rep-mode>*:not(#repPrint){display:none!important}body.rep-mode #repPrint{display:block;padding:0}body.rep-mode{background:#fff;padding:0}}
 /* ---- compact phone layout ---- */
 @media(max-width:700px){
+.tabs button{padding:9px 12px}
 body{padding:8px}
 .glass{padding:10px;border-radius:14px}
 section{margin-top:10px}
@@ -188,23 +244,24 @@ header{flex-wrap:nowrap;gap:8px}
 <body>
 <div id="ld"><div></div></div>
 <aside id="sb" aria-label="Menu">
-  <div class="sbh"><button class="btn" id="sbt" aria-label="Collapse or expand menu">☰</button><b>Menu</b></div>
-  <div class="si"><div class="ic">⇄</div><div class="sl"><small>Data source</small><select id="src" aria-label="Data source"><option value="cloud">Cloud</option><option value="csv">CSV</option><option value="merge">Cloud + CSV</option></select><small id="cs"></small></div></div>
-  <div class="si" id="upl"><div class="ic">⬆</div><div class="sl"><small id="uls">🔒 Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
-  <div class="si"><div class="ic">⇩</div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="vjcsv">Vertical joints CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
-  <div class="si"><div class="ic">⛶</div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
+  <div class="sbh"><button class="btn" id="sbt" aria-label="Collapse or expand menu"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><b>Menu</b></div>
+  <div class="si"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg></div><div class="sl"><small>Data source</small><select id="src" aria-label="Data source"><option value="cloud">Cloud</option><option value="csv">CSV</option><option value="merge">Cloud + CSV</option></select><small id="cs"></small></div></div>
+  <div class="si" id="upl"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg></div><div class="sl"><small id="uls">Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
+  <div class="si"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="vjcsv">Vertical joints CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
+  <div class="si"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
   <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>CMC</em></div>
 </aside>
 <div class="wrap" id="app">
 <header class="glass">
-  <div class="brand"><button class="btn" id="mm" aria-label="Menu">☰</button><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
+  <div class="brand"><button class="btn" id="mm" aria-label="Menu"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 26V11C8 4 20 4 20 11V26Z" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 14H20M8 19H20" stroke="#fff" stroke-width="1.5"/></svg></div>
     <div><h1>Blast Furnace Stove NDT Digital Tracker</h1><p>Buffing and UT progress · 3 hot blast stoves · 22 rings each · 4 vertical joints per ring</p></div></div>
   <div class="hb"><span class="live" id="lv" title="Cloud status"><i></i><span id="lt">LIVE</span></span><span id="clock"></span>
-    <button class="btn ib" id="bR" title="Refresh (R)" aria-label="Refresh">⟳</button>
-    <button class="btn ib" id="bT" title="Switch to night mode (T)" aria-label="Day or night mode">🌙</button>
+    <button class="btn ib" id="bR" title="Refresh (R)" aria-label="Refresh"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></button>
+    <button class="btn ib" id="bT" title="Switch to night mode (T)" aria-label="Day or night mode"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
     <div class="usr"><span class="av" id="av"></span><button class="btn ib" id="bL" aria-label="Admin login"></button></div>
   </div>
 </header>
+<nav class="tabs" id="tabs" role="tablist" aria-label="Sections"><button data-go="ov" role="tab" aria-selected="true"><svg class="i" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Overview</span></button><button data-go="tw" role="tab" aria-selected="false"><svg class="i" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 21V10a5 5 0 0 1 10 0v11"/><path d="M5 21h14M7 14h10M7 17.5h10M12 2v3"/></svg><span>Digital twin</span></button><button data-go="jt" role="tab" aria-selected="false"><svg class="i" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span>Rings &amp; joints</span></button><button data-go="adm" role="tab" aria-selected="false"><svg class="i" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Admin</span></button><button data-go="ob" role="tab" aria-selected="false"><svg class="i" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg><span>Observations</span></button><button data-go="rpt" role="tab" aria-selected="false"><svg class="i" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><span>Reports &amp; data</span></button></nav>
 
 <div class="bar-f glass" role="search">
   <div class="seg" id="seg"></div>
@@ -215,15 +272,17 @@ header{flex-wrap:nowrap;gap:8px}
   <input type="search" id="fQ" placeholder="Search ring (/)" aria-label="Search ring">
 </div>
 
-<div class="kpis" id="kpis"></div>
-<section><h2>Stove comparison <small>click a card to focus a stove</small></h2><div class="g3" id="cmp"></div></section>
+<div class="kpis" id="kpis" data-tab="ov"></div>
+<section data-tab="ov"><h2>Stove comparison <small>click a card to focus a stove</small></h2><div class="g3" id="cmp"></div></section>
 
-<section class="glass"><h2>Furnace digital twin <small id="tt"></small></h2>
+<section class="glass" data-tab="tw"><h2>Furnace digital twin <small id="tt"></small></h2>
   <div class="twin">
     <div><div class="zc"><button class="btn" id="zi" aria-label="Zoom in">＋</button><button class="btn" id="zo" aria-label="Zoom out">－</button><button class="btn" id="zr">Reset</button><b id="zl">100%</b><small>Ctrl + scroll to zoom · drag to pan · keys + / −</small></div>
-      <div class="lay"><label><input type="checkbox" id="tgJ" checked> Vertical joints (VJ-1…4)</label><label><input type="checkbox" id="tgL" checked> Ring labels</label></div><svg id="twin" viewBox="0 0 300 640" role="img" aria-label="Stove with 22 rings"></svg></div>
+      <div class="mode" id="cmode"><b style="font-size:12px;color:var(--mu)">Colour by</b><button class="btn on" data-cm="ut">UT progress</button><button class="btn" data-cm="wall">Wall thickness</button><button class="btn" data-cm="def">Defect severity</button><label id="nomw" hidden>Nominal wall (mm) <input id="nom" type="number" min="1" step="0.1" placeholder="auto"></label></div><p id="wnote"></p>
+      <div class="lay"><label><input type="checkbox" id="tgJ" checked> Vertical joints (VJ-1…4)</label><label><input type="checkbox" id="tgL" checked> Ring labels</label></div><svg id="twin" viewBox="-95 0 495 880" role="img" aria-label="Stove with 22 rings"></svg></div>
     <div>
       <p style="font-size:13px;color:var(--mu);text-align:center">Orientation – rotates the shell and slides observation markers by their stated angle</p>
+      <label class="azs">Angle convention <select id="azS" aria-label="Angle convention"><option value="dwg">Plant drawing · 0° front, 90° left, 180° back, 270° right</option><option value="old">Previous · 0° left, 90° front, 180° right, 270° back</option></select></label>
       <div class="compass">
         <span></span><button class="btn cb" data-v="270">270° Back View</button><span></span>
         <button class="btn cb" data-v="0">0° Left View</button><i>✛</i><button class="btn cb" data-v="180">180° Right View</button>
@@ -239,8 +298,26 @@ header{flex-wrap:nowrap;gap:8px}
   </div>
 </section>
 
-<section class="glass" id="adm"><h2>Admin · post / update data <small>saves to Supabase tables stove_rings and stove_vjoints</small></h2>
-  <div id="alock" class="empty">🔒 Editing is restricted to the admin. <button class="btn on" id="alb" type="button">Admin login</button></div>
+<section class="glass" data-tab="rpt"><h2>Inspection report <small>A4 · opens the print dialog, choose “Save as PDF”</small></h2>
+  <div class="rpt-grid">
+    <form id="rform" class="afm" onsubmit="return false">
+      <label class="wide">Plant / site name<input id="rpPlant" type="text" maxlength="80" placeholder="e.g. your plant name"></label>
+      <label class="wide">Report title<input id="rpTitle" type="text" maxlength="90"></label>
+      <label class="wide">Report no.<input id="rpNo" type="text" maxlength="40" placeholder="auto: NDT-yyyymmdd"></label>
+      <label class="wide">Prepared by<input id="rpBy" type="text" maxlength="60" placeholder="defaults to the signed-in user"></label>
+      <label class="wide">Reviewed by<input id="rpRev" type="text" maxlength="60"></label>
+      <label class="wide">Approved by<input id="rpApp" type="text" maxlength="60"></label>
+      <label class="wide">Logo (image under 400 KB)<input id="rpLogo" type="file" accept="image/*"></label>
+      <div class="wide rbtn"><button type="button" class="btn on" id="rpPrint">Save as PDF / print report</button><button type="button" class="btn" id="rpClr">Remove logo</button></div>
+      <small class="wide" style="color:var(--mu)">Settings are kept in this browser only. The preview updates as you type.</small>
+    </form>
+    <div class="paper" id="repPrev"></div>
+  </div></section>
+
+<section class="glass" data-tab="rpt"><h2>Data exports</h2><div class="rbtn" id="rx"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">Dashboard to PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="vjcsv">Vertical joints CSV</button><button class="btn" data-x="print">Print view</button></div></section>
+
+<section class="glass" data-tab="adm" id="adm"><h2>Admin · post / update data <small>saves to Supabase tables stove_rings and stove_vjoints</small></h2>
+  <div id="alock" class="empty">Editing is restricted to the admin. <button class="btn on" id="alb" type="button">Admin login</button></div>
   <form id="af" class="afm" hidden novalidate>
     <label>Stove<select id="aS"></select></label><label>Ring<select id="aR"></select></label>
     <div class="seg atab wide" id="atab" role="tablist"><button type="button" class="btn on" data-t="ring" role="tab" aria-selected="true">Ring (circumferential)</button><button type="button" class="btn" data-t="vj" role="tab" aria-selected="false">Vertical joints <small>4 × 2.2 m</small></button></div>
@@ -248,6 +325,7 @@ header{flex-wrap:nowrap;gap:8px}
       <label>Circumference (m)<input id="aC" type="number" min="1" step="any"></label>
       <label>Buffing completed (m)<input id="aB" type="number" min="0" step="any"></label>
       <label>UT completed (m)<input id="aU" type="number" min="0" step="any"></label>
+      <label>Min wall thickness (mm)<input id="aW" type="number" min="0" step="any" placeholder="optional"></label>
       <label class="wide">Observation (one finding per line, e.g. "Undercut at 270° Side: Depth 4.5mm, length 50mm")<textarea id="aO"></textarea></label>
       <div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn on" type="submit">Save to cloud</button><button class="btn" type="button" id="aP">Push loaded CSV to cloud</button><span id="am" style="font-size:12px;color:var(--mu);align-self:center"></span></div>
     </div>
@@ -259,15 +337,17 @@ header{flex-wrap:nowrap;gap:8px}
     </div>
   </form></section>
 
-<section class="glass"><h2>Ring-wise progress <small id="rn"></small></h2><div class="rings" id="rings"></div></section>
+<section class="glass" data-tab="jt"><h2>Ring-wise progress <small id="rn"></small></h2><div class="rings" id="rings"></div></section>
 
-<section class="g2">
+<section data-tab="ov">
   <div class="glass" id="hmP"><h2>Ring × stove heatmap <small id="hmS"></small></h2><div class="met" id="met"><button class="btn on" data-m="ut">UT %</button><button class="btn" data-m="bf">Buffing %</button><button class="btn" data-m="rem">Remaining m</button><button class="btn" data-m="vj">Joints UT</button><button class="btn" data-m="sev">Obs severity</button></div><div id="hm"></div></div>
+</section>
+<section data-tab="ob">
   <div class="glass"><h2>Observations <small id="os"></small></h2>
     <div class="bar-f" style="margin-top:0"><input type="search" id="oQ" placeholder="Search observations" aria-label="Search observations"><select id="oS"><option value="All">All severity</option><option value="3">High (≥4 mm)</option><option value="2">Medium (2–4 mm)</option><option value="1">Low / unsized</option></select></div>
     <div class="obl" id="obl"></div></div>
 </section>
-<section class="g2" id="chs"><div class="glass"><h2>Defect map <small id="dmS"></small></h2><div id="dm"></div></div><div class="glass"><h2>Ring progress profile <small id="rpS"></small></h2><div id="rp"></div></div></section>
+<section class="g2" id="chs" data-tab="tw"><div class="glass"><h2>Defect map <small id="dmS"></small></h2><div id="dm"></div></div><div class="glass"><h2>Ring progress profile <small id="rpS"></small></h2><div id="rp"></div></div></section>
 
 </div>
 <div id="lgn"><form class="glass" id="lf"><h2 style="font-size:20px;margin:0">Admin sign-in</h2><small style="color:var(--mu)">Needed to edit data or upload a CSV. Viewing needs no login.</small><input id="lu" placeholder="User ID" autocomplete="username" required><input id="lp" type="password" placeholder="Password" autocomplete="current-password" required><div id="le"></div><div style="display:flex;gap:8px"><button class="btn on" type="submit" style="flex:1">Sign in</button><button class="btn" type="button" id="lc">Cancel</button></div></form></div>
@@ -353,6 +433,7 @@ const COL = ['#6b7280','#ef4444','#f97316','#eab308','#a855f7','#22c55e'];
 const LBL = ['0% – not started','1–25%','26–50%','51–75%','76–99%','100% – complete'];
 const S = {data:[],stove:'All',twin:'Stove-1',sel:null,view:90,f:{ring:'All',st:'All',ob:'All',min:0,q:''},oq:'',os:'All',hist:[],sim:true,file:null,theme:'light',timer:null,vjs:{},vjOk:true,showJ:true,showL:true,atab:'ring'};
 const CH = {};
+const IC = {moon:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`,sun:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`,lock:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`,out:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>`,shield:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>`,user:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>`,swap:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg>`,up:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg>`,down:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg>`,expand:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>`,refresh:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg>`,menu:`<svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`};
 const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>[...r.querySelectorAll(s)];
 const f1 = n=>(Math.round(n*10)/10).toFixed(1);
 const band = p=>p<=0?0:p<=25?1:p<=50?2:p<=75?3:p<100?4:5;
@@ -365,6 +446,14 @@ function parseObs(t){return (t||'').split(/\n+/).map(s=>s.trim()).filter(Boolean
   return {text:s,angle:a?(+a[1])%360:null,depth:dep,len:l?+l[1]:null,sev:dep>=4?3:dep>=2?2:1};});}
 // Vertical joints: 4 per ring, equally spaced round 360° (0/90/180/270), 2.2 m each; buffing & UT tracked per joint
 const JLEN=2.2,JANG=[0,90,180,270],JVIEW={0:'Left',90:'Front',180:'Right',270:'Back'},EPS=1e-9;
+/* Angle conventions. Internal angle L: 0 = left, 90 = front, 180 = right, 270 = back (as seen in the default view).
+   'dwg' (plant drawing) labels the same positions 90 = left, 0 = front, 270 = right, 180 = back, i.e. label = (90 - L) mod 360. */
+const cv=a=>S.az==='dwg'?(((90-a)%360)+360)%360:a,VIEWN={0:'Left',90:'Front',180:'Right',270:'Back'};
+function setAzUI(){Object.assign(JVIEW,S.az==='dwg'?{0:'Front',90:'Left',180:'Back',270:'Right'}:{0:'Left',90:'Front',180:'Right',270:'Back'});
+  $$('.cb').forEach(b=>{const q=+b.dataset.v;b.textContent=`${cv(q)}° ${VIEWN[q]} View`;});
+  const s=$('#azS');if(s)s.value=S.az;
+  $$('#vjg .vjr').forEach(r=>{const a=JANG[+r.dataset.j-1],e=r.querySelector('.vjh small');if(e)e.textContent=`${a}° · ${JVIEW[a]}`;});
+  const v=$('#vl');if(v)v.textContent=`${cv(S.view)}° – ${VIEWN[S.view]} view`;}
 const JST=[{n:'Not started',c:'#64748b'},{n:'Buffing in progress',c:'#f59e0b'},{n:'Buffed · UT pending',c:'#06B6D4'},{n:'UT complete',c:'#16a34a'}];
 const jStage=(b,u,l)=>u>=l-EPS?3:b>=l-EPS?2:(b>0||u>0)?1:0;
 function attachVJ(r){r.vj=JANG.map((a,k)=>{const d=S.vjs[r.st+'|'+r.ring+'|'+(k+1)]||{},len=+d.len>0?+d.len:JLEN,b=Math.min(+d.b||0,len),u=Math.min(+d.u||0,len),st=jStage(b,u,len);
@@ -372,11 +461,12 @@ function attachVJ(r){r.vj=JANG.map((a,k)=>{const d=S.vjs[r.st+'|'+r.ring+'|'+(k+
 function aggVJ(rs){const a={n:0,len:0,b:0,u:0,bm:0,um:0};
   rs.forEach(r=>r.vj.forEach(j=>{a.n++;a.len+=j.len;a.bm+=j.b;a.um+=j.u;if(j.b>=j.len-EPS)a.b++;if(j.u>=j.len-EPS)a.u++;}));
   a.bp=a.len?a.bm/a.len*100:0;a.up=a.len?a.um/a.len*100:0;return a;}
+const num=v=>{if(v===undefined||v===null||String(v).trim()==='')return null;const n=+v;return n>0?n:null;};
 function ingest(rows){const out=[];for(const r of rows){
   const st=(r.Stove||'').trim(),ring=+r.Ring,c=+r.Circumference;
   if(!st||!ring||!(c>0))continue;
   const b=Math.min(+r.BuffingCompleted||0,c),u=Math.min(+r.UTCompleted||0,c),raw=(r.Observations||'').trim();
-  out.push(attachVJ({st,ring,c,b,u,bp:b/c*100,up:u/c*100,rem:c-u,raw,obs:parseObs(raw),status:u>=c?'Completed':u>0?'In Progress':'Pending'}));}
+  out.push(attachVJ({st,ring,c,b,u,bp:b/c*100,up:u/c*100,rem:c-u,raw,wall:num(r.WallMM),obs:parseObs(raw),status:u>=c?'Completed':u>0?'In Progress':'Pending'}));}
   return out;}
 const parseCSV = t=>ingest(Papa.parse(t,{header:true,skipEmptyLines:true}).data);
 const scope = ()=>S.data.filter(r=>S.stove==='All'||r.st===S.stove);
@@ -415,77 +505,137 @@ function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const rs=S.data.filter(r
 
 /* ================= Digital twin ================= */
 // Ring geometry: perspective rims (ellipse arcs) give every ring a cylindrical, slightly top-down look.
+/* Geometry from the stove general-arrangement drawing: shell Ø10 700 mm, shaft rings 1-16 = 34 955 mm tall (3.3 : 1),
+   dome = sphere of R≈6 250 mm centred at +38 830. Ring-seam elevations (mm) are scaled from the drawing image (±50 mm).
+   1 mm = PX svg units; elevation 0 = bottom of ring 1 (YB). RZ[i-1]..RZ[i] = elevation range of ring i. */
+const PX=90/5350,YB=811;
+const RZ=[0,2230,4420,6660,8840,11030,13270,15450,17640,19780,21970,24160,26390,28580,30770,32950,34955,35560,37420,38070,38830,41830,45290];
+const yAt=z=>YB-z*PX;
+const DZ=[34955,35560,37420,38070,38830,41830],DWM=[5350,5560,6170,6240,6250,5483];
+const DY=DZ.map(yAt),DW=DWM.map(m=>m*PX),DC=yAt(38830),DR=6250*PX;
+// Fittings: n name · z elevation (mm) · a azimuth on the drawing's plan sections (0 front, 90 left, 180 back, 270 right) · d bore (mm, indicative) · p projection from shell (mm, indicative)
+const FITS=[
+ {n:'Manway',z:1500,a:20,d:600,p:450},{n:'Cold main',z:1800,a:90,d:1600,p:600},{n:'Waste gas',z:2100,a:60,d:1400,p:500},{n:'Waste gas',z:2100,a:120,d:1400,p:500},
+ {n:'Thermocouple',z:3200,a:18,d:200,p:300},{n:'Gas main',z:6623,a:270,d:1900,p:450},{n:'Combustion air',z:9753,a:270,d:1700,p:450},
+ {n:'Erection manhole',z:13723,a:270,d:900,p:400},{n:'Pilot burner',z:13723,a:245,d:400,p:350},{n:'Hot blast main',z:17723,a:270,d:2400,p:600},
+ {n:'Thermocouple',z:21500,a:90,d:200,p:300},{n:'Connection pipe',z:28600,a:29,d:800,p:400},{n:'Dome manhole',z:38830,a:36,d:700,p:350},{n:'Dome thermocouple',z:38830,a:29,d:200,p:300}];
+FITS.forEach((f,k)=>{f.k=k;f.L=(((90-f.a)%360)+360)%360;f.hw=f.z>34955?DW[4]:90;f.ring=RZ.findIndex((v,i)=>i>0&&f.z<=v);});
+const SECS=[['A',3200],['B',6623],['C',9753],['D',13723],['E',17723],['F',21500],['G',28600],['H',38830]];
+// Initial markup for fittings (drawn behind the shell until place() moves each to the front/back layer) and their labels
+function fitMk(){let a='',l='';
+  for(const f of FITS){a+=`<g class="ft" data-k="${f.k}" data-ring="${f.ring}"><rect fill="url(#steel)" stroke="#1f2130" stroke-width=".6"/><ellipse fill="#8d92a8" stroke="#1f2130" stroke-width=".6"/><ellipse fill="#0f1120" opacity="0"/></g>`;
+    l+=`<g class="fl" data-k="${f.k}"><polyline fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width=".7"/><text font-size="8.5" font-weight="600" fill="currentColor"><tspan>${f.n}</tspan><tspan dy="9.5" font-weight="400" opacity=".75"></tspan></text></g>`;}
+  return [a,l];}
+function scaleSvg(){let s=`<line x1="-58" x2="-58" y1="${yAt(0)}" y2="${yAt(45000)}" stroke="currentColor" stroke-opacity=".4"/>`;
+  for(let z=0;z<=45000;z+=5000)s+=`<line x1="-61" x2="-55" y1="${yAt(z)}" y2="${yAt(z)}" stroke="currentColor" stroke-opacity=".5"/><text x="-64" y="${yAt(z)+2.8}" text-anchor="end" font-size="7.5" fill="currentColor" opacity=".7">${z?'+'+z:'0'}</text>`;
+  s+=`<text transform="translate(-88 ${yAt(22500)}) rotate(-90)" text-anchor="middle" font-size="8" fill="currentColor" opacity=".55">Elevation (mm)</text>`;
+  for(const [k,z] of SECS)s+=`<line x1="372" x2="381" y1="${yAt(z)}" y2="${yAt(z)}" stroke="currentColor" stroke-opacity=".4"/><circle cx="389" cy="${yAt(z)}" r="8" fill="rgba(127,127,170,.18)" stroke="#8b7cf0"/><text x="389" y="${yAt(z)+3.2}" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">${k}</text>`;
+  return s;}
 const RY=r=>5*r/90, SEV=['','#eab308','#f97316','#ef4444'];
 function geom(i){
-  if(i<=16){const yb=600-24*(i-1),yt=yb-24,L=60,R=240;
-    return {d:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}L${R} ${yb}A90 5 0 0 1 ${L} ${yb}Z`,seam:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}`,y:(yt+yb)/2+3,h:24,hw:90,jg:[yt,yb,90,90,90,5,5]};}
+  if(i<=16){const yb=yAt(RZ[i-1]),yt=yAt(RZ[i]),L=60,R=240;
+    return {d:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}L${R} ${yb}A90 5 0 0 1 ${L} ${yb}Z`,seam:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}`,y:(yt+yb)/2+3,h:yb-yt,hw:90,jg:[yt,yb,90,90,90,5,5]};}
   // Dome traced from the drawing (shaft half-width 90 = 209 px there): neck flares out, widest ~1.14x shaft, hemispherical cap (R = widest half-width)
-  const c=150,DC=150.1,DR=102.5,DY=[216,203.1,173.8,161.3,150.1,101.9],DW=[90,90.9,99.9,102.1,102.5,90.5];
+  const c=150;
   if(i===22){const w=DW[5],yb=DY[5];
-    return {d:`M${c-w} ${yb}A${DR} ${DR} 0 0 1 ${c+w} ${yb}A${w} ${RY(w)} 0 0 1 ${c-w} ${yb}Z`,seam:'',y:84,h:36,hw:78,jg:[DC-DR,yb,0,w,93.8,0,RY(w)]};}
+    return {d:`M${c-w} ${yb}A${DR} ${DR} 0 0 1 ${c+w} ${yb}A${w} ${RY(w)} 0 0 1 ${c-w} ${yb}Z`,seam:'',y:84,h:36,hw:78,jg:[DC-DR,yb,0,w,w*1.04,0,RY(w)]};}
   const k=i-17,yb=DY[k],wb=DW[k],yt=DY[k+1],wt=DW[k+1],m=(yb+yt)/2,top=`M${c-wt} ${yt}A${wt} ${RY(wt)} 0 0 0 ${c+wt} ${yt}`;
   let right,left,wm;
-  if(i===21){right=`A${DR} ${DR} 0 0 1 ${c+wb} ${yb}`;left=`A${DR} ${DR} 0 0 1 ${c-wt} ${yt}`;wm=102.7;}
+  if(i===21){right=`A${DR} ${DR} 0 0 1 ${c+wb} ${yb}`;left=`A${DR} ${DR} 0 0 1 ${c-wt} ${yt}`;wm=DR*1.002;}
   else{const q=(yb-yt)*.45;right=`C${c+wt} ${yt+q} ${c+wb} ${yb-q} ${c+wb} ${yb}`;left=`C${c-wb} ${yb-q} ${c-wt} ${yt+q} ${c-wt} ${yt}`;wm=(wb+wt)/2;}
   return {d:`${top}${right}A${wb} ${RY(wb)} 0 0 1 ${c-wb} ${yb}${left}Z`,seam:top,y:m+3,h:yb-yt,hw:wm,jg:[yt,yb,wt,wb,wm,RY(wt),RY(wb)]};}
+/* Colour modes: UT progress (default) · wall thickness (optional WallMM data) · defect severity (from observation depth) */
+const MODEN={ut:'UT progress',wall:'Wall thickness',def:'Defect severity'};
+// Wall bands = % of reference thickness (nominal if entered, else the stove's highest reading). Edit here to change thresholds.
+const WBANDS=[[90,'#22c55e','≥ 90 % of reference'],[80,'#eab308','80–90 %'],[70,'#f97316','70–80 %'],[0,'#ef4444','< 70 %']];
+const refW=st=>S.nom>0?S.nom:Math.max(0,...S.data.filter(x=>x.st===st&&x.wall).map(x=>x.wall));
+function cInfo(r,st,m){m=m||S.cm;
+  if(m==='wall'){const w=r&&r.wall,ref=refW(st);if(!w||!ref)return {c:'#6b7280',t:''};const p=w/ref*100;return {c:(WBANDS.find(b=>p>=b[0])||WBANDS[3])[1],t:f1(w)+' mm'};}
+  if(m==='def'){const os=(r&&r.obs)||[],s=os.reduce((a,o)=>Math.max(a,o.sev),0),d=os.reduce((a,o)=>Math.max(a,o.depth||0),0);return {c:s?SEV[s]:'#5b6478',t:d?d+' mm':''};}
+  return {c:COL[band(r?r.up:0)],t:r&&r.up?f1(r.up)+'%':''};}
+function legendItems(m){
+  if(m==='wall')return WBANDS.map(b=>[b[1],b[2]]).concat([['#6b7280','No reading']]);
+  if(m==='def')return [['#5b6478','No observation'],[SEV[1],'Low (< 2 mm / unsized)'],[SEV[2],'Medium (2–4 mm)'],[SEV[3],'High (≥ 4 mm)']];
+  return COL.map((c,i)=>[c,LBL[i]]);}
+const renderLegend=()=>{$('#lg').innerHTML=legendItems(S.cm).map(x=>`<span><i style="background:${x[0]}"></i>${x[1]}</span>`).join('');};
 // Dark pill behind each ring label keeps text readable on every colour
-function pill(i,r,G){const fs=i<=16?11.5:Math.max(7,Math.min(11.5,G.h-4.5)),lab=`Ring-${i}${r.up?` · ${f1(r.up)}%`:''}`,tw=lab.length*fs*.58+12,ph=fs+(G.h<14?3.5:5);
-  return `<rect x="${150-tw/2}" y="${G.y-ph/2}" width="${tw}" height="${ph}" rx="${ph/2}" fill="rgba(8,6,22,.84)"/><text x="150" y="${G.y+fs*.36}" text-anchor="middle" font-size="${fs}" font-weight="700" font-family="Segoe UI,system-ui,sans-serif" fill="#fff">${lab}</text>`;}
+function pill(i,r,G){const fs=i<=16?11.5:Math.max(7,Math.min(11.5,G.h-4.5)),lab=`Ring-${i}${cInfo(r,S.twin).t?` · ${cInfo(r,S.twin).t}`:''}`,tw=lab.length*fs*.58+12,ph=fs+(G.h<14?3.5:5);
+  return `<rect x="${150-tw/2}" y="${G.y-ph/2}" width="${tw}" height="${ph}" rx="${ph/2}" fill="rgba(8,6,22,.84)"/><text x="150" y="${G.y+fs*.36}" text-anchor="middle" font-size="${fs}" font-weight="700" font-family="inherit" fill="#fff">${lab}</text>`;}
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function drawTwin(a){
   const rows=S.data.filter(r=>r.st===S.twin),anim=a||S.drawn!==S.twin;S.drawn=S.twin;
-  let g='',lab='',mk='',vjs='';
+  let g='',lab='',mk='',vjs='';const [fa,fl]=fitMk();
   for(let i=1;i<=22;i++){const r=rows.find(x=>x.ring===i)||{up:0,obs:[]},G=geom(i);
-    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${COL[band(r.up)]}"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${i>16?`<path d="${G.d}" fill="url(#dome)" pointer-events="none"/>`:''}${G.seam?`<path d="${G.seam}" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/>`:''}${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}</g>`;
+    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${cInfo(r,S.twin).c}"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${i>16?`<path d="${G.d}" fill="url(#dome)" pointer-events="none"/>`:''}${G.seam?`<path d="${G.seam}" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/>`:''}${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}</g>`;
     lab+=pill(i,r,G);
     (r.vj||attachVJ({st:S.twin,ring:i}).vj).forEach(j=>{vjs+=`<g class="vj" data-ring="${i}" data-j="${j.j}" data-a="${j.a}" data-g="${G.jg.join(',')}"><path fill="none" stroke="transparent" stroke-width="9" stroke-linecap="round"/><path fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="4.4" stroke-linecap="round" pointer-events="none"/><path fill="none" stroke="${j.c}" stroke-width="2.4" stroke-linecap="round"${j.st===0?' stroke-dasharray="3.2 2.6"':''} pointer-events="none"/></g>`;});
     r.obs.forEach(o=>{mk+=`<g class="mk" data-ring="${i}" data-a="${o.angle??''}" data-hw="${G.hw}" data-y="${G.y+(i<=16?7:0)}"><circle class="halo" r="6" fill="#ef4444" fill-opacity=".35"/><ellipse rx="5" ry="5" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1.5"/></g>`;});}
-  const mer=[0,90,180,270].map((t,k)=>`<g class="mer" data-a="${t}" pointer-events="none"><text y="636" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">VJ-${k+1} · ${t}°</text></g>`).join('');
+  const mer=[0,90,180,270].map((t,k)=>`<g class="mer" data-a="${t}" pointer-events="none"><text y="${YB+57}" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">VJ-${k+1} · ${t}°</text></g>`).join('');
   $('#twin').innerHTML=`<defs>
   <linearGradient id="cyl" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".6"/><stop offset=".16" stop-color="#000" stop-opacity=".18"/><stop id="hl" offset=".42" stop-color="#fff" stop-opacity=".42"/><stop offset=".62" stop-color="#fff" stop-opacity=".05"/><stop offset=".86" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".68"/></linearGradient>
   <radialGradient id="dome" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>
-  <radialGradient id="aura"><stop offset="0" stop-color="#7C3AED" stop-opacity=".4"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+  <radialGradient id="aura"><stop offset="0" stop-color="#6d5be0" stop-opacity=".12"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
   <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d92a8"/><stop offset="1" stop-color="#2b2d3d"/></linearGradient>
   <linearGradient id="scanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#06B6D4" stop-opacity="0"/><stop offset=".5" stop-color="#06B6D4" stop-opacity=".55"/><stop offset="1" stop-color="#06B6D4" stop-opacity="0"/></linearGradient>
   <pattern id="rung" width="6" height="9" patternUnits="userSpaceOnUse"><rect y="4" width="6" height="1.4" fill="#9aa0b8"/></pattern>
   <filter id="ds" x="-20%" y="-10%" width="140%" height="125%"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000" flood-opacity=".5"/></filter></defs>
-  <ellipse class="aura" cx="150" cy="330" rx="170" ry="310" fill="url(#aura)" pointer-events="none"/>
-  <ellipse cx="150" cy="622" rx="128" ry="8" fill="rgba(0,0,0,.4)" pointer-events="none"/>
-  <g pointer-events="none"><rect x="44" y="222" width="6" height="376" fill="url(#rung)"/><line x1="44" x2="44" y1="222" y2="598" stroke="#9aa0b8"/><line x1="50" x2="50" y1="222" y2="598" stroke="#9aa0b8"/>
-  <rect x="236" y="262" width="40" height="18" fill="url(#steel)"/><rect x="272" y="257" width="7" height="28" rx="2" fill="#5b5f73"/><rect x="147" y="36" width="6" height="18" fill="url(#steel)"/></g>
-  <g filter="url(#ds)"><rect x="48" y="603" width="204" height="14" rx="3" fill="url(#steel)"/><rect x="40" y="615" width="220" height="6" rx="2" fill="#1f2130"/><g id="ringsG">${g}</g>
-  <path d="M60 600A90 5 0 0 0 240 600" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/><ellipse cx="150" cy="53" rx="11" ry="3.4" fill="url(#steel)" pointer-events="none"/></g>
+  <ellipse class="aura" cx="150" cy="${YB/2+20}" rx="190" ry="${YB/2+30}" fill="url(#aura)" pointer-events="none"/>
+  <ellipse cx="150" cy="${YB+22}" rx="128" ry="8" fill="rgba(0,0,0,.4)" pointer-events="none"/>
+  <g id="fitB" pointer-events="none">${fa}<rect x="147" y="${(yAt(45290)-8).toFixed(1)}" width="6" height="${(DC-DR-yAt(45290)+9).toFixed(1)}" fill="url(#steel)"/></g>
+  <g filter="url(#ds)"><rect x="48" y="${YB+3}" width="204" height="14" rx="3" fill="url(#steel)"/><rect x="40" y="${YB+15}" width="220" height="6" rx="2" fill="#1f2130"/><g id="ringsG">${g}</g>
+  <path d="M60 ${YB}A90 5 0 0 0 240 ${YB}" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/><ellipse cx="150" cy="${(DC-DR+1.5).toFixed(1)}" rx="11" ry="3.4" fill="url(#steel)" pointer-events="none"/></g>
+  <g id="fitF"></g><g id="fitL" pointer-events="none">${fl}</g>
   <g id="vjG">${vjs}</g><g>${mer}</g><g id="lab" pointer-events="none">${lab}</g>
   <rect id="scan" x="52" y="0" width="196" height="26" fill="url(#scanG)" pointer-events="none"/>
   <g id="mks">${mk}</g>
-  <text transform="translate(22 150) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Dome (17–22)</text><text transform="translate(30 410) rotate(-90)" text-anchor="middle" font-size="12" fill="currentColor" opacity=".7">Shaft (1–16)</text>`;
-  $('#tt').textContent=`${S.twin} · UT colour scale`;
+  ${scaleSvg()}`;
+  $('#tt').textContent=`${S.twin} · ${MODEN[S.cm]} colour scale · elevations in mm`;renderLegend();
+  {const nw=rows.filter(r=>r.wall).length;$('#wnote').textContent=S.cm!=='wall'?'':nw?`${nw} of ${rows.length} rings have a reading · reference ${f1(refW(S.twin))} mm ${S.nom>0?'(nominal you entered)':'(highest reading – enter a nominal wall to change)'}`:'No wall-thickness readings for this stove yet. Add a WallMM column (mm) to the CSV, or use “Min wall thickness” in the admin form.';}
   S.mk=$$('#twin .mk');S.mer=$$('#twin .mer');
   S.vj=$$('#twin .vj');S.vj.forEach(e=>{e._g=e.dataset.g.split(',').map(Number);e._a=+e.dataset.a;e._p=[...e.children];});applyLayers();
+  S.ft=FITS.map(f=>Object.assign(f,{el:$(`#twin .ft[data-k="${f.k}"]`),lb:$(`#twin .fl[data-k="${f.k}"]`)}));S.ft.forEach(f=>{f.lb.children[1].children[1].textContent=`+${f.z} · ${cv(f.L)}°`;});
   drawDial();place(S.view);
   if(S.scan)S.scan.kill();
-  if(!RM){S.scan=gsap.fromTo('#scan',{y:600,opacity:.85},{y:70,duration:6,ease:'sine.inOut',repeat:-1,yoyo:true});
+  if(!RM){S.scan=gsap.fromTo('#scan',{y:YB-26,opacity:.85},{y:60,duration:6,ease:'sine.inOut',repeat:-1,yoyo:true});
     if(anim)gsap.from('#ringsG .rg',{opacity:0,y:10,duration:.45,stagger:.025,ease:'power2.out'});}}
 // Position markers + meridians for the current view angle v (exact azimuth: x = centre + radius·sin(angle − view))
 function applyLayers(){const j=$('#vjG'),l=$('#lab');if(j)j.style.display=S.showJ?'':'none';if(l)l.style.display=S.showL?'':'none';}
 function place(v){const R=Math.PI/180;
   // Vertical joints: a line down each ring at its own azimuth; follows the cylinder perspective while rotating
-  for(const e of S.vj||[]){const [yt,yb,wt,wb,wm,rt,rb]=e._g,rel=(e._a-v)*R,s=Math.sin(rel),c=Math.cos(rel),
+  for(const e of S.vj||[]){const [yt,yb,wt,wb,wm,rt,rb]=e._g,rel=(cv(e._a)-v)*R,s=Math.sin(rel),c=Math.cos(rel),
     x1=150+wt*s,y1=yt+rt*c,x2=150+wb*s,y2=yb+rb*c,d=`M${x1.toFixed(1)} ${y1.toFixed(1)}Q${(150+wm*s).toFixed(1)} ${((y1+y2)/2).toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
     for(const p of e._p)p.setAttribute('d',d);
     e.style.opacity=c>.04?(.4+.6*c).toFixed(2):0;e.style.pointerEvents=c>.25?'auto':'none';}
   for(const m of S.mk||[]){const a=m.dataset.a,hw=+m.dataset.hw,y=+m.dataset.y;let x,c=1;
-    if(a===''){x=150+hw-8;}else{const rel=(+a-v)*R;c=Math.cos(rel);x=150+hw*Math.sin(rel);}
+    if(a===''){x=150+hw-8;}else{const rel=(cv(+a)-v)*R;c=Math.cos(rel);x=150+hw*Math.sin(rel);}
     m.setAttribute('transform',`translate(${x.toFixed(1)} ${y})`);m.style.opacity=c>.04?(.35+.65*c).toFixed(2):0;m.style.pointerEvents=c>.2?'auto':'none';m.lastChild.setAttribute('rx',(1.8+3.4*Math.max(0,c)).toFixed(2));}
-  for(const l of S.mer||[]){const rel=(+l.dataset.a-v)*R,c=Math.cos(rel);l.setAttribute('transform',`translate(${(150+90*Math.sin(rel)).toFixed(1)} 0)`);l.style.opacity=c>.05?(.15+.6*c).toFixed(2):0;}
+  for(const l of S.mer||[]){const rel=(cv(+l.dataset.a)-v)*R,c=Math.cos(rel);l.setAttribute('transform',`translate(${(150+90*Math.sin(rel)).toFixed(1)} 0)`);l.style.opacity=c>.05?(.15+.6*c).toFixed(2):0;}
+  // Fittings sit at their real azimuth: nozzle = cylinder seen from the current view; labels are laid out in two side columns
+  const fb=$('#fitB'),ff=$('#fitF');
+  if(S.ft&&fb&&ff){const sd={L:[],R:[]};
+    for(const f of S.ft){const rel=(f.L-v)*R,s=Math.sin(rel),c=Math.cos(rel),y=yAt(f.z),r=f.d*PX/2,x0=150+f.hw*s,ln=f.p*PX*s,x1=x0+ln,par=c>=0?ff:fb;
+      if(f.el.parentNode!==par)par.appendChild(f.el);
+      const [b,fl,h]=f.el.children,A=(el,o)=>{for(const k in o)el.setAttribute(k,o[k]);};
+      A(b,{x:Math.min(x0,x1).toFixed(2),width:Math.max(.01,Math.abs(ln)).toFixed(2),y:(y-r).toFixed(2),height:(2*r).toFixed(2)});
+      A(fl,{cx:x1.toFixed(2),cy:y.toFixed(2),rx:Math.max(.9,(r+1.4)*Math.abs(c)).toFixed(2),ry:(r+1.4).toFixed(2)});
+      A(h,{cx:x1.toFixed(2),cy:y.toFixed(2),rx:(r*.78*Math.abs(c)).toFixed(2),ry:(r*.78).toFixed(2),opacity:c>.25&&r>3?1:0});
+      f.el.style.pointerEvents=c>.15?'auto':'none';f.s=s;f.c=c;f.x1=x1;f.y=y;
+      if(c>-.3)sd[s>=0?'R':'L'].push(f);else f.lb.style.opacity=0;}
+    for(const k of ['L','R']){const a=sd[k].sort((p,q)=>p.y-q.y);let last=-1e9;
+      for(const f of a){f.ly=Math.max(f.y,last+21);last=f.ly;}
+      let lim=YB+8;for(let i=a.length-1;i>=0;i--){a[i].ly=Math.min(a[i].ly,lim);lim=a[i].ly-21;}
+      for(const f of a){const X=k==='R'?272:28,[pl,tx]=f.lb.children;
+        pl.setAttribute('points',`${f.x1.toFixed(1)},${f.y.toFixed(1)} ${k==='R'?263:37},${f.ly.toFixed(1)} ${k==='R'?268:32},${f.ly.toFixed(1)}`);
+        tx.setAttribute('x',X);tx.setAttribute('y',(f.ly-1).toFixed(1));tx.setAttribute('text-anchor',k==='R'?'start':'end');
+        tx.children[0].setAttribute('x',X);tx.children[1].setAttribute('x',X);f.lb.style.opacity=f.c>.15?1:.5;}}}
   const hl=$('#hl');if(hl)hl.setAttribute('offset',(.39+.2*Math.sin((v-90)*R)).toFixed(3));
   const w=$('#vw');if(w)w.setAttribute('transform',`rotate(${180-v} 100 100)`);}
 // Top-view azimuth dial: 0° left, 90° front (bottom), 180° right, 270° back (top). Dots = observations (radius = ring number)
 function drawDial(){const rows=S.data.filter(r=>r.st===S.twin),R=70,pt=(t,r)=>[100-r*Math.cos(t*Math.PI/180),100+r*Math.sin(t*Math.PI/180)];
   let s=`<circle cx="100" cy="100" r="${R}" fill="rgba(127,127,170,.08)" stroke="currentColor" stroke-opacity=".3"/>`+[20,45,70].map(r=>`<circle cx="100" cy="100" r="${r}" fill="none" stroke="currentColor" stroke-opacity=".15" stroke-dasharray="2 3"/>`).join('');
-  [0,90,180,270].forEach(t=>{const [x,y]=pt(t,R),[lx,ly]=pt(t,87);s+=`<line x1="100" y1="100" x2="${x}" y2="${y}" stroke="currentColor" stroke-opacity=".3"/><g class="dl" data-v="${t}" style="cursor:pointer"><circle cx="${lx}" cy="${ly}" r="11" fill="var(--bg2)" stroke="var(--s)"/><text x="${lx}" y="${ly+3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="currentColor">${t}°</text></g>`;});
+  [0,90,180,270].forEach(t=>{const [x,y]=pt(t,R),[lx,ly]=pt(t,87);s+=`<line x1="100" y1="100" x2="${x}" y2="${y}" stroke="currentColor" stroke-opacity=".3"/><g class="dl" data-v="${t}" style="cursor:pointer"><circle cx="${lx}" cy="${ly}" r="11" fill="var(--bg2)" stroke="var(--s)"/><text x="${lx}" y="${ly+3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="currentColor">${cv(t)}°</text></g>`;});
   s+=`<g id="vw"><path d="M100 100L160.6 65A70 70 0 0 1 160.6 135Z" fill="rgba(6,182,212,.28)" stroke="#06B6D4"/></g>`;
-  rows.forEach(r=>r.obs.forEach(o=>{if(o.angle===null)return;const [x,y]=pt(o.angle,20+(r.ring-1)*50/21);s+=`<circle class="od" data-ring="${r.ring}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${3+o.sev}" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1" style="cursor:pointer"><title>Ring-${r.ring} @ ${o.angle}°</title></circle>`;}));
+  rows.forEach(r=>r.obs.forEach(o=>{if(o.angle===null)return;const [x,y]=pt(cv(o.angle),20+(r.ring-1)*50/21);s+=`<circle class="od" data-ring="${r.ring}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${3+o.sev}" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1" style="cursor:pointer"><title>Ring-${r.ring} @ ${o.angle}°</title></circle>`;}));
   s+=`<text x="100" y="97" text-anchor="middle" font-size="9" fill="currentColor" opacity=".7">${S.twin}</text><text x="100" y="108" text-anchor="middle" font-size="7" fill="currentColor" opacity=".5">top view</text>`;
   $('#dial').innerHTML=s;}
 function ripple(i){if(RM)return;const G=geom(i),e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
@@ -493,35 +643,35 @@ function ripple(i){if(RM)return;const G=geom(i),e=document.createElementNS('http
   $('#twin').append(e);gsap.to(e,{attr:{rx:130,ry:22},opacity:0,duration:.8,ease:'power2.out',onComplete:()=>e.remove()});}
 function rotate(t){const from=S.view,d=((t-from+540)%360)-180,o={v:from};S.view=t;
   $$('.cb').forEach(b=>b.classList.toggle('on',+b.dataset.v===t));
-  $('#vl').textContent={0:'0° – Left view',90:'90° – Front view',180:'180° – Right view',270:'270° – Back view'}[t];
+  $('#vl').textContent=`${cv(t)}° – ${VIEWN[t]} view`;
   gsap.to(o,{v:from+d,duration:.9,ease:'power2.inOut',onUpdate:()=>place(o.v)});}
 /* Zoom / pan: animate the SVG viewBox */
-const Z={x:0,y:0,w:300,h:640,k:1};
+const VB={x:-95,y:0,w:495,h:880},Z={x:VB.x,y:VB.y,w:VB.w,h:VB.h,k:1};
 function applyZ(){const s=$('#twin');s.setAttribute('viewBox',`${Z.x} ${Z.y} ${Z.w} ${Z.h}`);$('#zl').textContent=Math.round(Z.k*100)+'%';s.style.cursor=Z.k>1?'grab':'';s.style.touchAction=Z.k>1?'none':'pan-y';}
-function zoomTo(k,cx,cy){k=Math.min(4,Math.max(1,k));const w=300/k,h=640/k;cx=cx??Z.x+Z.w/2;cy=cy??Z.y+Z.h/2;
-  const x=Math.max(0,Math.min(300-w,cx-w/2)),y=Math.max(0,Math.min(640-h,cy-h/2));gsap.to(Z,{x,y,w,h,k,duration:.35,ease:'power2.out',onUpdate:applyZ});}
+function zoomTo(k,cx,cy){k=Math.min(4,Math.max(1,k));const w=VB.w/k,h=VB.h/k;cx=cx??Z.x+Z.w/2;cy=cy??Z.y+Z.h/2;
+  const x=Math.max(VB.x,Math.min(VB.x+VB.w-w,cx-w/2)),y=Math.max(VB.y,Math.min(VB.y+VB.h-h,cy-h/2));gsap.to(Z,{x,y,w,h,k,duration:.35,ease:'power2.out',onUpdate:applyZ});}
 $('#zi').onclick=()=>zoomTo(Z.k*1.4);$('#zo').onclick=()=>zoomTo(Z.k/1.4);$('#zr').onclick=()=>zoomTo(1);
 $('#twin').addEventListener('wheel',e=>{if(!(e.ctrlKey||e.metaKey))return;e.preventDefault();const s=$('#twin'),p=s.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(s.getScreenCTM().inverse());zoomTo(Z.k*(e.deltaY<0?1.2:1/1.2),q.x,q.y);},{passive:false});
 $('#twin').addEventListener('pointerdown',e=>{if(Z.k<=1)return;const s=$('#twin'),r=s.getBoundingClientRect(),sc=Math.min(r.width/Z.w,r.height/Z.h);let lx=e.clientX,ly=e.clientY,moved=0;
   const mv=ev=>{const dx=ev.clientX-lx,dy=ev.clientY-ly;moved+=Math.abs(dx)+Math.abs(dy);if(moved<6)return;lx=ev.clientX;ly=ev.clientY;gsap.killTweensOf(Z);
-    Z.x=Math.max(0,Math.min(300-Z.w,Z.x-dx/sc));Z.y=Math.max(0,Math.min(640-Z.h,Z.y-dy/sc));S.dragged=true;applyZ();};
+    Z.x=Math.max(VB.x,Math.min(VB.x+VB.w-Z.w,Z.x-dx/sc));Z.y=Math.max(VB.y,Math.min(VB.y+VB.h-Z.h,Z.y-dy/sc));S.dragged=true;applyZ();};
   const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);setTimeout(()=>{S.dragged=false;},0);};
   window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);});
-$('#twin').addEventListener('click',e=>{if(S.dragged)return;const g=e.target.closest('.rg,.mk,.vj');if(!g)return;const i=+g.dataset.ring;S.sel=i;ripple(i);
+$('#twin').addEventListener('click',e=>{if(S.dragged)return;const g=e.target.closest('.rg,.mk,.vj,.ft');if(!g)return;const i=+g.dataset.ring;S.sel=i;ripple(i);
   $$('#twin .rg').forEach(x=>x.classList.toggle('sel',+x.dataset.ring===i));
   
   openModal(S.twin,i);});
 
 /* ================= Ring cards, observations ================= */
 function renderRings(){const rs=filtered();$('#rn').textContent=`${rs.length} rings shown`;
-  $('#rings').innerHTML=rs.length?rs.map(r=>`<div class="rc" data-s="${r.st}" data-r="${r.ring}" tabindex="0"><div class="rt"><b>${r.st} · Ring-${r.ring}</b><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${r.obs.length?`<span class="chip ob">⚠ ${r.obs.length}</span>`:''}</div>${bars(r)}<div class="vjs">VJ ${r.vj.map(j=>`<i title="VJ-${j.j} @ ${j.a}° · ${j.sn} · Buffing ${f1(j.b)}/${j.len} m · UT ${f1(j.u)}/${j.len} m" style="background:${j.c}"></i>`).join('')}<span>${r.vj.filter(j=>j.st===3).length}/4 UT</span></div></div>`).join(''):'<p class="empty">No rings match these filters.</p>';
+  $('#rings').innerHTML=rs.length?rs.map(r=>`<div class="rc" data-s="${r.st}" data-r="${r.ring}" tabindex="0"><div class="rt"><b>${r.st} · Ring-${r.ring}</b><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${r.obs.length?`<span class="chip ob">${r.obs.length} obs</span>`:''}</div>${bars(r)}<div class="vjs">VJ ${r.vj.map(j=>`<i title="VJ-${j.j} @ ${j.a}° · ${j.sn} · Buffing ${f1(j.b)}/${j.len} m · UT ${f1(j.u)}/${j.len} m" style="background:${j.c}"></i>`).join('')}<span>${r.vj.filter(j=>j.st===3).length}/4 UT</span></div></div>`).join(''):'<p class="empty">No rings match these filters.</p>';
   fillBars($('#rings'));}
 function renderObs(){const q=S.oq.toLowerCase(),list=[];
   scope().forEach(r=>r.obs.forEach(o=>list.push({r,o})));
   const sh=list.filter(x=>(S.os==='All'||x.o.sev==+S.os)&&(!q||(x.o.text+' ring '+x.r.ring+' '+x.r.st).toLowerCase().includes(q)));
   const c=[1,2,3].map(s=>list.filter(x=>x.o.sev===s).length);
   $('#os').textContent=`${list.length} total · ${new Set(list.map(x=>x.r.st+x.r.ring)).size} rings · High ${c[2]} / Med ${c[1]} / Low ${c[0]}`;
-  $('#obl').innerHTML=sh.length?sh.map(x=>`<div class="oi" data-s="${x.r.st}" data-r="${x.r.ring}" tabindex="0"><span class="chip ob">⚠ ${['','Low','Medium','High'][x.o.sev]}</span> <b>${x.r.st} · Ring-${x.r.ring}</b>${x.o.angle!==null?` <small>@ ${x.o.angle}°</small>`:''}<br>${esc(x.o.text)}</div>`).join(''):'<p class="empty">No observations match.</p>';}
+  $('#obl').innerHTML=sh.length?sh.map(x=>`<div class="oi" data-s="${x.r.st}" data-r="${x.r.ring}" tabindex="0"><span class="chip ob">${['','Low','Medium','High'][x.o.sev]}</span> <b>${x.r.st} · Ring-${x.r.ring}</b>${x.o.angle!==null?` <small>@ ${x.o.angle}°</small>`:''}<br>${esc(x.o.text)}</div>`).join(''):'<p class="empty">No observations match.</p>';}
 
 /* ================= Modal ================= */
 function openModal(st,ring){const r=S.data.find(x=>x.st===st&&x.ring===ring);if(!r)return;
@@ -529,17 +679,17 @@ function openModal(st,ring){const r=S.data.find(x=>x.st===st&&x.ring===ring);if(
   $('#mb').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:20px">${st} · Ring-${ring}</h2><button class="btn" id="mx" aria-label="Close">✕</button></div>
   <div style="display:flex;gap:14px;align-items:center;margin-top:10px"><svg width="110" height="110" viewBox="0 0 100 100"><g transform="rotate(-90 50 50)" fill="none" stroke-width="10" stroke-linecap="round"><circle cx="50" cy="50" r="40" stroke="rgba(127,127,170,.25)"/><circle id="mc" cx="50" cy="50" r="40" stroke="${COL[band(r.up)]}" stroke-dasharray="${circ}" stroke-dashoffset="${circ}"/></g><text x="50" y="55" text-anchor="middle" font-size="16" font-weight="700" fill="currentColor">${f1(r.up)}%</text></svg>
   <div style="flex:1"><span class="chip" style="background:${COL[band(r.up)]}">${r.status}</span>${bars(r)}</div></div><button class="btn" id="me" style="margin-top:10px">✎ Edit${S.role==='admin'?' in admin form':' (admin login)'}</button>
-  <div class="kv"><div><small>Circumference</small>${r.c} m</div><div><small>Remaining (UT)</small>${r.rem} m</div><div><small>Buffing length</small>${r.b} m</div><div><small>UT length</small>${r.u} m</div><div><small>Buffing %</small>${f1(r.bp)}%</div><div><small>UT %</small>${f1(r.up)}%</div></div>
+  <div class="kv"><div><small>Circumference</small>${r.c} m</div><div><small>Remaining (UT)</small>${r.rem} m</div><div><small>Buffing length</small>${r.b} m</div><div><small>UT length</small>${r.u} m</div><div><small>Buffing %</small>${f1(r.bp)}%</div><div><small>UT %</small>${f1(r.up)}%</div>${r.wall?`<div><small>Min wall</small>${f1(r.wall)} mm</div>`:''}</div>
   <h2>Vertical joints <small>4 × 2.2 m · UT complete ${r.vj.filter(j=>j.st===3).length}/4</small></h2><div class="vjmg">${r.vj.map(j=>`<div class="vjm" style="--vc:${j.c}"><div class="vjh"><i class="vjd"></i><b>VJ-${j.j}</b><small>${j.a}° · ${JVIEW[j.a]} · ${j.len} m</small><span class="chip" style="background:${j.c}">${j.sn}</span></div><div class="lb"><span>Buffing</span><span>${f1(j.b)}/${j.len} m</span></div><div class="bar bb"><i data-w="${j.bp}"></i></div><div class="lb"><span>UT</span><span>${f1(j.u)}/${j.len} m</span></div><div class="bar ub"><i data-w="${j.up}"></i></div>${j.raw?`<div class="oi" style="cursor:default;margin-top:6px">${esc(j.raw)}</div>`:''}</div>`).join('')}</div>
   <h2>Observation</h2>${r.obs.length?r.obs.map(o=>`<div class="oi" style="cursor:default">${esc(o.text)}</div>`).join(''):'<p class="empty">No observation recorded.</p>'}`;
   const m=$('#md');m.style.display='grid';gsap.fromTo('#mb',{y:30,opacity:0,scale:.96},{y:0,opacity:1,scale:1,duration:.35,ease:'power3.out'});
-  requestAnimationFrame(()=>{$('#mc').style.transition='stroke-dashoffset 1s';$('#mc').setAttribute('stroke-dashoffset',circ*(1-r.up/100));});fillBars($('#mb'));$('#mx').focus();$('#me').onclick=()=>{closeModal();const go=()=>{fillForm(st,ring);$('#adm').scrollIntoView({behavior:'smooth'});};S.role==='admin'?go():askLogin(go);};}
+  requestAnimationFrame(()=>{$('#mc').style.transition='stroke-dashoffset 1s';$('#mc').setAttribute('stroke-dashoffset',circ*(1-r.up/100));});fillBars($('#mb'));$('#mx').focus();$('#me').onclick=()=>{closeModal();const go=()=>{fillForm(st,ring);showTab('adm');$('#adm').scrollIntoView({behavior:'smooth'});};S.role==='admin'?go():askLogin(go);};}
 const closeModal=()=>{$('#md').style.display='none';};
 $('#md').addEventListener('click',e=>{if(e.target.id==='md'||e.target.id==='mx')closeModal();});
 
 /* ================= Charts (ApexCharts) ================= */
 // Create the chart once, then update in place (much cheaper than destroy/recreate)
-function mk(id,o){const el=$('#'+id);if(!el)return;const fc=S.theme==='dark'?'#c9c2e6':'#3b2f63',k=(o.chart.type)+S.theme+(o.key||'');delete o.key;
+function mk(id,o){const el=$('#'+id);if(!el||!el.offsetWidth)return;const fc=S.theme==='dark'?'#c9c2e6':'#3b2f63',k=(o.chart.type)+S.theme+(o.key||'');delete o.key;
   o.chart=Object.assign({foreColor:fc,toolbar:{show:false},background:'transparent',fontFamily:'inherit',height:300,animations:{enabled:!RM,speed:500}},o.chart);
   o.theme={mode:S.theme};o.grid=Object.assign({borderColor:'rgba(127,127,170,.2)'},o.grid);o.legend={labels:{colors:fc}};
   if(CH[id]&&CH[id].k===k)CH[id].updateOptions(o,true,true);
@@ -572,12 +722,13 @@ const vis=new Set(),io=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersect
 function lazyCharts(){S.cd=true;if(vis.size){S.cd=false;renderCharts();}}
 const queue=()=>{if(S.q)return;S.q=requestAnimationFrame(()=>{S.q=0;render();});};
 const deb=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};};
-S.met='ut';
+S.met='ut';S.cm='ut';S.nom=0;try{S.nom=+localStorage.getItem('stoveNom')||0;}catch(e){}
+S.az='dwg';try{const z=localStorage.getItem('stoveAz');if(z==='old'||z==='dwg')S.az=z;}catch(e){}
 /* ================= Render orchestration ================= */
 function render(){
   $$('#seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.s===S.stove));
   if(S.stove!=='All')S.twin=S.stove;
-  renderKPI();renderCmp();drawTwin();renderRings();renderObs();lazyCharts();}
+  renderKPI();renderCmp();drawTwin();renderRings();renderObs();lazyCharts();if(S.tab==='rpt')renderRepPrev();}
 /* ================= Cloud (Supabase) + CSV data sources ================= */
 const SB_URL='https://lgyladuiyezqccyjxqgn.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxneWxhZHVpeWV6cWNjeWp4cWduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NDEyMTksImV4cCI6MjA3ODUxNzIxOX0.O-K3aJkcdvnj0k3ltu37AK3hrW2ibZCZbwVy9SDTBZg';
@@ -587,14 +738,14 @@ const USERS={admin:{pw:'Admin@123',role:'admin'},user:{pw:'User@123',role:'viewe
 // Always act as the public (anon) role: never pick up a Supabase login saved in this browser by another app
 let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});}catch(e){}
 Object.assign(S,{cloud:[],csv:[],src:'cloud',role:null,user:null,online:false});
-const fromDB=d=>d.map(x=>({Stove:x.stove,Ring:x.ring,Circumference:x.circumference,BuffingCompleted:x.buffing_completed,UTCompleted:x.ut_completed,Observations:x.observations}));
+const fromDB=d=>d.map(x=>({Stove:x.stove,Ring:x.ring,Circumference:x.circumference,BuffingCompleted:x.buffing_completed,UTCompleted:x.ut_completed,Observations:x.observations,WallMM:x.wall_mm}));
 function compose(){let rows;
   if(S.src==='cloud')rows=S.cloud;
   else if(S.src==='csv')rows=S.csv;
   else{const m=new Map();S.cloud.concat(S.csv).forEach(r=>m.set(r.st+'|'+r.ring,r));rows=[...m.values()];} // CSV wins per ring
   if(!rows.length){S.fallback=true;return parseCSV(SAMPLE);}S.fallback=false;rows.forEach(attachVJ);return rows;}
 function apply(msg){S.data=compose();buildHist();queue();$('#lv').classList.toggle('off',!S.online);$('#lt').textContent=S.online?'LIVE':'OFFLINE';
-  $('#cs').textContent=(S.online?'☁ Connected':'☁ Offline')+` · cloud ${S.cloud.length} · csv ${S.csv.length}`;
+  $('#cs').textContent=(S.online?'Connected':'Offline')+` · cloud ${S.cloud.length} · csv ${S.csv.length}`;
   if(msg)toast(S.fallback?'Selected source is empty – showing sample data':msg);}
 async function fetchCloud(){if(!sb){S.online=false;return;}
   const {data,error}=await sb.from(TABLE).select('*').order('stove').order('ring');
@@ -612,7 +763,7 @@ function subscribe(){if(!sb)return;try{const h=()=>{clearTimeout(S.rt);S.rt=setT
 
 /* ================= Admin form ================= */
 function fillForm(st,ring){$('#aS').value=st;$('#aR').value=ring;const r=S.data.find(x=>x.st===st&&x.ring===ring);
-  $('#aC').value=r?r.c:'';$('#aB').value=r?r.b:0;$('#aU').value=r?r.u:0;$('#aO').value=r?r.raw:'';$('#am').textContent=r?'Existing values loaded':'New record';fillVJ(st,ring,r);}
+  $('#aC').value=r?r.c:'';$('#aB').value=r?r.b:0;$('#aU').value=r?r.u:0;$('#aO').value=r?r.raw:'';$('#aW').value=r&&r.wall?r.wall:'';$('#am').textContent=r?'Existing values loaded':'New record';fillVJ(st,ring,r);}
 /* ---- vertical joints form ---- */
 function vjRow(j){return `<div class="vjr" data-j="${j.j}"><div class="vjh"><i class="vjd"></i><b>VJ-${j.j}</b><small>${j.a}° · ${JVIEW[j.a]}</small><span class="chip vjc"></span></div>
   <label>Buffing done (m)<span class="vjin"><input class="vB" type="number" min="0" step="any" inputmode="decimal" value="${j.b}"><button type="button" class="btn" data-f="B" title="Set to full joint length">Full</button></span></label>
@@ -646,20 +797,21 @@ async function saveRing(e){e.preventDefault();if(S.role!=='admin')return toast('
   if(b<0||u<0)return toast('Values cannot be negative');
   if(b>c||u>c)return toast('Buffing and UT cannot exceed the circumference');
   const row={stove:$('#aS').value,ring:+$('#aR').value,circumference:c,buffing_completed:b,ut_completed:u,observations:$('#aO').value.trim(),updated_by:S.user};
+  const w=num($('#aW').value);if(w!==null)row.wall_mm=w;
   const {error}=await sb.from(TABLE).upsert(row,{onConflict:'stove,ring'});
-  if(error)return toast('Save failed: '+error.message);
+  if(error)return toast('Save failed: '+error.message+(/wall_mm/.test(error.message)?' – run in Supabase: alter table stove_rings add column wall_mm numeric;':''));
   await fetchCloud();S.src='cloud';$('#src').value='cloud';apply(`Saved ${row.stove} Ring-${row.ring} to cloud`);}
 async function pushCSV(){if(S.role!=='admin')return;if(!S.csv.length)return toast('Upload a CSV first');
   if(!confirm(`Upsert ${S.csv.length} CSV rows into the cloud table? Existing rings will be overwritten.`))return;
-  const rows=S.csv.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw||'',updated_by:S.user}));
-  for(let i=0;i<rows.length;i+=200){const {error}=await sb.from(TABLE).upsert(rows.slice(i,i+200),{onConflict:'stove,ring'});if(error)return toast('Push failed: '+error.message);}
+  const rows=S.csv.map(r=>({stove:r.st,ring:r.ring,circumference:r.c,buffing_completed:r.b,ut_completed:r.u,observations:r.raw||'',updated_by:S.user,...(r.wall?{wall_mm:r.wall}:{})}));
+  for(let i=0;i<rows.length;i+=200){const {error}=await sb.from(TABLE).upsert(rows.slice(i,i+200),{onConflict:'stove,ring'});if(error)return toast('Push failed: '+error.message+(/wall_mm/.test(error.message)?' – run in Supabase: alter table stove_rings add column wall_mm numeric;':''));}
   await fetchCloud();S.src='cloud';$('#src').value='cloud';apply(`Pushed ${rows.length} rows to cloud`);}
 
 /* ================= Login ================= */
 function setRole(user){S.user=user||'Guest';S.role=user?USERS[user].role:'viewer';
   try{user?sessionStorage.setItem('stoveUser',user):sessionStorage.removeItem('stoveUser');}catch(e){}
-  const ad=S.role==='admin';$('#av').textContent=ad?'🛡':'👤';$('#av').title=S.user+' · '+(ad?'Admin':'View only');
-  $('#bL').textContent=user?'⎋':'🔒';$('#bL').title=user?'Log out':'Admin login';$('#af').hidden=!ad;$('#alock').hidden=ad;$('#uls').textContent=ad?'Admin only':'🔒 Admin login required';}
+  const ad=S.role==='admin';$('#av').innerHTML=ad?IC.shield:IC.user;$('#av').title=S.user+' · '+(ad?'Admin':'View only');
+  $('#bL').innerHTML=user?IC.out:IC.lock;$('#bL').title=user?'Log out':'Admin login';$('#af').hidden=!ad;$('#alock').hidden=ad;$('#uls').textContent=ad?'Admin only':'Admin login required';}
 function askLogin(then){S.pending=then||null;$('#le').textContent='';$('#lgn').style.display='grid';$('#lu').focus();}
 function closeLogin(){$('#lgn').style.display='none';S.pending=null;}
 function enter(user){setRole(user);$('#lgn').style.display='none';toast('Signed in as '+user);const p=S.pending;S.pending=null;if(p&&S.role==='admin')p();}
@@ -682,25 +834,25 @@ $('#aS').onchange=$('#aR').onchange=()=>fillForm($('#aS').value,+$('#aR').value)
 $('#src').onchange=e=>{S.src=e.target.value;apply('Source: '+e.target.selectedOptions[0].text.replace('Source: ',''));};
 
 /* ================= Exports ================= */
-function exportPNG(){const svg=$('#twin').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('viewBox','0 0 300 640');svg.setAttribute('width',600);svg.setAttribute('height',1280);
-  const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=600;c.height=1330;const x=c.getContext('2d');x.fillStyle='#090714';x.fillRect(0,0,600,1330);x.fillStyle='#fff';x.font='bold 22px Segoe UI,sans-serif';x.fillText(`${S.twin} – UT progress`,20,34);x.drawImage(img,0,40);
+function exportPNG(){const svg=$('#twin').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');svg.setAttribute('viewBox','-95 0 495 880');svg.setAttribute('width',660);svg.setAttribute('height',1173);
+  const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=660;c.height=1233;const x=c.getContext('2d');x.fillStyle='#0e1020';x.fillRect(0,0,660,1233);x.fillStyle='#fff';x.font='bold 22px Segoe UI,sans-serif';x.fillText(`${S.twin} – ${MODEN[S.cm]}`,20,34);x.drawImage(img,0,40);
     c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`${S.twin}-snapshot.png`;a.click();toast('PNG snapshot saved');});};
   img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg).replace(/currentColor/g,'#ffffff'));}
-function exportCSV(){const rows=S.data.map(r=>({Stove:r.st,Ring:r.ring,Circumference:r.c,BuffingCompleted:r.b,UTCompleted:r.u,'Buffing%':f1(r.bp),'UT%':f1(r.up),Remaining:r.rem,Status:r.status,Observations:r.raw}));
+function exportCSV(){const rows=S.data.map(r=>({Stove:r.st,Ring:r.ring,Circumference:r.c,BuffingCompleted:r.b,UTCompleted:r.u,'Buffing%':f1(r.bp),'UT%':f1(r.up),Remaining:r.rem,Status:r.status,WallMM:r.wall??'',Observations:r.raw}));
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([Papa.unparse(rows)],{type:'text/csv'}));a.download='stove-ndt-summary.csv';a.click();toast('Summary CSV exported');}
 function exportVJ(){const rows=[];S.data.slice().sort((a,b)=>a.st.localeCompare(b.st)||a.ring-b.ring).forEach(r=>r.vj.forEach(j=>rows.push({Stove:r.st,Ring:r.ring,Joint:'VJ-'+j.j,'Angle(deg)':j.a,'Length(m)':j.len,'BuffingCompleted(m)':j.b,'UTCompleted(m)':j.u,'Buffing%':f1(j.bp),'UT%':f1(j.up),Status:j.sn,Observation:j.raw})));
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([Papa.unparse(rows)],{type:'text/csv'}));a.download='stove-vertical-joints.csv';a.click();toast('Vertical joints CSV exported');}
-function doExport(k){$('#xm').classList.remove('open');if(k==='png')exportPNG();else if(k==='csv')exportCSV();else if(k==='vjcsv')exportVJ();else{toast(k==='pdf'?'Choose "Save as PDF" in the print dialog':'Opening print view');setTimeout(()=>window.print(),400);}}
+function doExport(k){$('#xm').classList.remove('open');cleanRep();if(k==='png')exportPNG();else if(k==='csv')exportCSV();else if(k==='vjcsv')exportVJ();else{toast(k==='pdf'?'Choose "Save as PDF" in the print dialog':'Opening print view');setTimeout(()=>window.print(),400);}}
 
 /* ================= Theme, fullscreen, refresh ================= */
-function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;$('#bT').textContent=t==='dark'?'☀':'🌙';$('#bT').title=t==='dark'?'Switch to day mode (T)':'Switch to night mode (T)';if(S.data.length)lazyCharts();}
+function setTheme(t){S.theme=t;document.documentElement.dataset.theme=t;$('#bT').innerHTML=t==='dark'?IC.sun:IC.moon;$('#bT').title=t==='dark'?'Switch to day mode (T)':'Switch to night mode (T)';if(S.data.length)lazyCharts();}
 function fullscreen(){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(e){toast('Fullscreen not available here');}}
 async function refresh(silent){await fetchCloud();apply(silent?'':'Refreshed');if(!silent&&S.fallback===false&&S.online)toast('Cloud data refreshed');}
 
 /* ================= Wiring ================= */
 $('#seg').innerHTML=['All',...STOVES].map(s=>`<button class="btn" data-s="${s}">${s}</button>`).join('');
 $('#fRing').innerHTML='<option value="All">All rings</option>'+Array.from({length:22},(_,i)=>`<option value="${i+1}">Ring-${i+1}</option>`).join('');
-$('#lg').innerHTML=COL.map((c,i)=>`<span><i style="background:${c}"></i>${LBL[i]}</span>`).join('');
+renderLegend();
 $('#lgJ').innerHTML='<span class="lh">Vertical joints</span>'+JST.map(s=>`<span><i class="ln" style="background:${s.c}"></i>${s.n}</span>`).join('');
 fillVJ('Stove-1',1);
 $('#seg').onclick=e=>{const b=e.target.closest('.btn');if(b){S.stove=b.dataset.s;render();}};
@@ -718,7 +870,7 @@ $$('.cb').forEach(b=>b.onclick=()=>rotate(+b.dataset.v));
 $('#file').onchange=e=>{if(e.target.files[0])loadFile(e.target.files[0]);e.target.value='';};
 $('#bR').onclick=()=>{refresh(false);};
 
-$('#xm').onclick=e=>{const b=e.target.closest('[data-x]');if(b)doExport(b.dataset.x);};
+$('#xm').onclick=$('#rx').onclick=e=>{const b=e.target.closest('[data-x]');if(b)doExport(b.dataset.x);};
 $('#bT').onclick=()=>setTheme(S.theme==='dark'?'light':'dark');
 $('#bF').onclick=fullscreen;
 $('#auto').onchange=e=>{clearInterval(S.timer);if(e.target.checked){S.timer=setInterval(()=>refresh(true),30000);toast('Auto refresh on (30 s)');}else toast('Auto refresh off');};
@@ -738,11 +890,12 @@ $('#clock').textContent=new Date().toLocaleString();
 
 /* ================= Twin tooltip, dial, heatmap metric ================= */
 const tip=$('#tip');
-$('#twin').addEventListener('pointermove',e=>{const g=e.target.closest('.rg,.mk,.vj');if(!g){tip.style.opacity=0;return;}
+$('#twin').addEventListener('pointermove',e=>{const g=e.target.closest('.rg,.mk,.vj,.ft');if(!g){tip.style.opacity=0;return;}
+  if(g.classList.contains('ft')){const f=FITS[+g.dataset.k];tip.innerHTML=`<b>${f.n}</b><br>+${f.z} mm · ${cv(f.L)}° · Ø${f.d} mm <small>(size indicative)</small><br><small>Ring-${f.ring}</small>`;tip.style.opacity=1;tip.style.left=Math.max(4,Math.min(innerWidth-250,e.clientX+14))+'px';tip.style.top=(e.clientY+14)+'px';return;}
   const i=+g.dataset.ring,r=S.data.find(x=>x.st===S.twin&&x.ring===i);if(!r)return;
   if(g.classList.contains('vj')){const j=r.vj[+g.dataset.j-1];
-    tip.innerHTML=`<b>${S.twin} · Ring-${i} · VJ-${j.j}</b> <small>${j.a}° ${JVIEW[j.a]}</small><br><span style="color:${j.c}">●</span> ${j.sn}<br>Buffing ${f1(j.b)}/${j.len} m · UT ${f1(j.u)}/${j.len} m${j.raw?`<br><span style="color:#f87171">⚠ ${esc(j.raw)}</span>`:''}`;}
-  else tip.innerHTML=`<b>${S.twin} · Ring-${i}</b><br>UT ${f1(r.up)}% · Buffing ${f1(r.bp)}%<br>${r.status} · ${r.rem} m left${r.obs.length?`<br><span style="color:#f87171">⚠ ${r.obs.length} observation${r.obs.length>1?'s':''}</span>`:''}`;
+    tip.innerHTML=`<b>${S.twin} · Ring-${i} · VJ-${j.j}</b> <small>${j.a}° ${JVIEW[j.a]}</small><br><span style="color:${j.c}">●</span> ${j.sn}<br>Buffing ${f1(j.b)}/${j.len} m · UT ${f1(j.u)}/${j.len} m${j.raw?`<br><span style="color:#f87171">${esc(j.raw)}</span>`:''}`;}
+  else tip.innerHTML=`<b>${S.twin} · Ring-${i}</b><br><small>+${Math.round(RZ[i-1])} to +${Math.round(RZ[i])} mm</small><br>UT ${f1(r.up)}% · Buffing ${f1(r.bp)}%${r.wall?`<br>Min wall ${f1(r.wall)} mm`:''}<br>${r.status} · ${r.rem} m left${r.obs.length?`<br><span style="color:#f87171">${r.obs.length} observation${r.obs.length>1?'s':''}</span>`:''}`;
   tip.style.opacity=1;tip.style.left=Math.max(4,Math.min(innerWidth-250,e.clientX+14))+'px';tip.style.top=(e.clientY+14)+'px';});
 $('#twin').addEventListener('pointerleave',()=>{tip.style.opacity=0;});
 $('#dial').addEventListener('click',e=>{const d=e.target.closest('.dl'),o=e.target.closest('.od');if(d)rotate(+d.dataset.v);else if(o)openModal(S.twin,+o.dataset.ring);});
@@ -757,9 +910,73 @@ $('#sb').addEventListener('click',e=>{if(document.body.classList.contains('col')
 document.addEventListener('click',e=>{if(document.body.classList.contains('mo')&&!e.target.closest('#sb,#mm'))document.body.classList.remove('mo');});
 try{if(localStorage.getItem('stoveSb')==='1')document.body.classList.add('col');}catch(e){}
 
+/* ================= Colour-mode wiring ================= */
+$('#cmode').onclick=e=>{const b=e.target.closest('[data-cm]');if(!b)return;S.cm=b.dataset.cm;$$('#cmode [data-cm]').forEach(x=>x.classList.toggle('on',x===b));$('#nomw').hidden=S.cm!=='wall';drawTwin();};
+$('#nom').value=S.nom||'';
+$('#nom').oninput=deb(()=>{const v=+$('#nom').value;S.nom=v>0?v:0;try{localStorage.setItem('stoveNom',S.nom);}catch(x){}drawTwin();},250);
+
+/* ================= Inspection report (A4, print to PDF) ================= */
+const REPK='stoveRep',SRCN={cloud:'Cloud Server',csv:'Uploaded CSV (not yet pushed to cloud)',merge:'Cloud + CSV'},SVN=['','Low','Medium','High'];
+S.rep=Object.assign({plant:'',title:'Hot Blast Stove – NDT Inspection Report',no:'',by:'',rev:'',app:'',logo:''},(()=>{try{return JSON.parse(localStorage.getItem(REPK)||'{}');}catch(e){return {};}})());
+const saveRep=()=>{try{localStorage.setItem(REPK,JSON.stringify(S.rep));}catch(e){toast('Could not store report settings in this browser');}};
+const elev=i=>`+${Math.round(RZ[i-1])} to +${Math.round(RZ[i])}`;
+const swatches=m=>`<div class="lgd">${legendItems(m).map(x=>`<span><i class="sw" style="background:${x[0]}"></i>${x[1]}</span>`).join('')}</div>`;
+// Static, label-light stove drawing for the report (same ring geometry as the twin)
+function miniStove(st,m){const rows=S.data.filter(r=>r.st===st);let g='',lab='',tk='';
+  for(let i=1;i<=22;i++){const r=rows.find(x=>x.ring===i),G=geom(i),c=cInfo(r,st,m).c,fs=Math.max(7,Math.min(13,G.h-3)),ty=i===22?78:G.y-3;
+    g+=`<path d="${G.d}" fill="${c}" stroke="#1f2937" stroke-width=".9"/>`+(r&&r.obs.length?`<path d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.6"/>`:'');
+    lab+=`<text x="150" y="${ty}" font-size="${fs}" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#fff" stroke="#111" stroke-width="2.4" paint-order="stroke" stroke-linejoin="round">${i}</text>`;}
+  for(let z=0;z<=40000;z+=5000)tk+=`<line x1="38" x2="44" y1="${yAt(z)}" y2="${yAt(z)}" stroke="#555"/><text x="35" y="${yAt(z)}" font-size="9" text-anchor="end" dominant-baseline="central" fill="#444">${z?'+'+z:'0'}</text>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 36 272 810" style="width:100%;height:auto;max-height:205mm">${tk}<line x1="44" x2="44" y1="${yAt(0)}" y2="${yAt(40000)}" stroke="#555"/>${g}${lab}</svg>`;}
+function reportHTML(){
+  const R=S.rep,now=new Date(),ds=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),ts=now.toLocaleString('en-GB'),
+    by=R.by||(S.user&&S.user!=='Guest'?S.user:''),hw=S.data.some(r=>r.wall),no=R.no||('NDT-'+iso(now).replace(/-/g,'')),aT=agg(S.data),vT=aggVJ(S.data);
+  const sumRow=(st,rs)=>{const a=agg(rs),v=aggVJ(rs),ws=rs.filter(r=>r.wall).map(r=>r.wall);
+    return `<tr><td><b>${st}</b></td><td>${a.n}</td><td>${f1(a.bp)}</td><td>${f1(a.up)}</td><td>${a.done}/${a.n}</td><td>${v.b}/${v.n}</td><td>${v.u}/${v.n}</td><td>${a.obs}</td>${hw?`<td>${ws.length?f1(Math.min(...ws)):'–'}</td>`:''}</tr>`;};
+  const obs=[];S.data.forEach(r=>r.obs.forEach(o=>obs.push({r,o})));obs.sort((a,b)=>b.o.sev-a.o.sev||a.r.st.localeCompare(b.r.st)||a.r.ring-b.r.ring);
+  const vjn=[];S.data.forEach(r=>r.vj.forEach(j=>{if(j.raw)vjn.push({r,j});}));
+  const sc=[3,2,1].map(s=>obs.filter(x=>x.o.sev===s).length);
+  const fig=(m,title,cap)=>`<div class="pg"></div><h2>${title}</h2><div class="fig">${STOVES.map(st=>{const rs=S.data.filter(r=>r.st===st),a=agg(rs);
+    return `<figure><figcaption>${st}</figcaption>${miniStove(st,m)}<small>${m==='wall'?(rs.filter(r=>r.wall).length+' of '+rs.length+' rings with a reading'):`UT ${f1(a.up)} % · Buffing ${f1(a.bp)} %`}</small></figure>`;}).join('')}</div>${swatches(m)}<div class="note">${cap}</div>`;
+  const reg=st=>{const rs=S.data.filter(r=>r.st===st).sort((a,b)=>a.ring-b.ring);
+    return `<div class="pg"></div><h2>${st} – ring register</h2><table><thead><tr><th>Ring</th><th>Elevation (mm)</th><th>Circ. (m)</th><th>Buffing %</th><th>UT %</th><th>Status</th>${hw?'<th>Min wall (mm)</th>':''}<th>Obs.</th></tr></thead><tbody>${rs.map(r=>`<tr><td>${r.ring}</td><td>${elev(r.ring)}</td><td>${r.c}</td><td>${f1(r.bp)}</td><td>${f1(r.up)}</td><td>${r.status}</td>${hw?`<td>${r.wall?f1(r.wall):'–'}</td>`:''}<td>${r.obs.length||''}</td></tr>`).join('')}</tbody></table>`;};
+  const refNote=S.nom>0?`Reference thickness: ${S.nom} mm (nominal entered by the user).`:'Reference thickness: '+STOVES.map(st=>st+' '+f1(refW(st))+' mm').join(' · ')+' (highest reading of each stove – no nominal entered).';
+  return `<div class="hd">${R.logo&&R.logo.startsWith('data:image/')?`<img src="${esc(R.logo)}" alt="Logo">`:''}<div style="flex:1"><div class="pl">${esc(R.plant||'')}</div><h1>${esc(R.title||'Inspection report')}</h1><div class="pl">Hot blast stoves 1–3 · buffing and ultrasonic (UT) inspection of shell rings and vertical joints</div></div></div>
+  ${S.fallback?'<div class="warn">SAMPLE DATA – the selected data source is empty, so this report shows the built-in sample figures. Do not issue.</div>':''}${!S.online&&!S.fallback?'<div class="warn">Cloud connection was offline – figures may not be the latest.</div>':''}
+  <div class="meta"><div><small>Report no.</small>${esc(no)}</div><div><small>Report date</small>${ds}</div><div><small>Prepared by</small>${esc(by)||'&nbsp;'}</div><div><small>Angle convention</small>${S.az==='dwg'?'0° front · 90° left · 180° back · 270° right':'0° left · 90° front · 180° right · 270° back'}</div><div><small>Data source</small>${SRCN[S.src]||esc(S.src)}</div><div><small>Generated</small>${ts}</div></div>
+  <h2>1. Summary</h2><table><thead><tr><th>Stove</th><th>Rings</th><th>Buffing %</th><th>UT %</th><th>Rings UT-complete</th><th>VJ buffed</th><th>VJ UT done</th><th>Observations</th>${hw?'<th>Lowest wall (mm)</th>':''}</tr></thead><tbody>${STOVES.map(st=>sumRow(st,S.data.filter(r=>r.st===st))).join('')}<tr><td><b>All</b></td><td>${aT.n}</td><td>${f1(aT.bp)}</td><td>${f1(aT.up)}</td><td>${aT.done}/${aT.n}</td><td>${vT.b}/${vT.n}</td><td>${vT.u}/${vT.n}</td><td>${aT.obs}</td>${hw?`<td>${(()=>{const w=S.data.filter(r=>r.wall).map(r=>r.wall);return w.length?f1(Math.min(...w)):'–';})()}</td>`:''}</tr></tbody></table>
+  <h2>2. Observations register <small>${obs.length} total · High ${sc[0]} · Medium ${sc[1]} · Low ${sc[2]}</small></h2>
+  ${obs.length?`<table><thead><tr><th>Stove</th><th>Ring</th><th>Ring elevation (mm)</th><th>Angle</th><th>Depth</th><th>Length</th><th>Severity</th><th>Description</th></tr></thead><tbody>${obs.map(x=>`<tr><td>${x.r.st}</td><td>${x.r.ring}</td><td>${elev(x.r.ring)}</td><td>${x.o.angle!==null?x.o.angle+'°':'–'}</td><td>${x.o.depth!==null?x.o.depth+' mm':'–'}</td><td>${x.o.len!==null?x.o.len+' mm':'–'}</td><td class="sev${x.o.sev}">${SVN[x.o.sev]}</td><td>${esc(x.o.text)}</td></tr>`).join('')}</tbody></table>`:'<p>No observations recorded.</p>'}
+  ${vjn.length?`<h2>Vertical joint notes</h2><table><thead><tr><th>Stove</th><th>Ring</th><th>Joint</th><th>Note</th></tr></thead><tbody>${vjn.map(x=>`<tr><td>${x.r.st}</td><td>${x.r.ring}</td><td>VJ-${x.j.j} @ ${x.j.a}°</td><td>${esc(x.j.raw)}</td></tr>`).join('')}</tbody></table>`:''}
+  ${fig('ut','3. Stove diagrams – UT progress','Rings outlined in red carry at least one observation. Elevations (mm) are indicative (±50 mm).')}
+  ${hw?fig('wall','4. Stove diagrams – wall thickness',refNote+' Rings without a reading are grey.'):''}
+  ${STOVES.map(reg).join('')}
+  <h2>${hw?'5':'4'}. Sign-off</h2>
+  <div class="sign">${[['Prepared by',by],['Reviewed by',R.rev],['Approved by',R.app]].map(([h,n])=>`<div><b>${h}</b><div>${esc(n||'')||'&nbsp;'}</div><div class="ln">Designation</div><div class="ln">Signature</div><div class="ln">Date</div></div>`).join('')}</div>
+  <div class="note">Severity is taken from the reported defect depth: High ≥ 4 mm, Medium 2–4 mm, Low &lt; 2 mm or unsized. Ring elevations are indicative (±50 mm).</div>`;}
+const renderRepPrev=()=>{const p=$('#repPrev');if(p)p.innerHTML='<div class="rep">'+reportHTML()+'</div>';};
+function cleanRep(){document.body.classList.remove('rep-mode');const e=$('#repPrint');if(e)e.remove();S.repP=0;}
+function printReport(){cleanRep();const h=document.createElement('div');h.id='repPrint';h.className='rep';h.innerHTML=reportHTML();document.body.append(h);document.body.classList.add('rep-mode');S.repP=1;
+  toast('Choose “Save as PDF” in the print dialog');setTimeout(()=>window.print(),300);}
+addEventListener('afterprint',cleanRep);addEventListener('beforeprint',()=>{if(!S.repP)cleanRep();});
+[['rpPlant','plant'],['rpTitle','title'],['rpNo','no'],['rpBy','by'],['rpRev','rev'],['rpApp','app']].forEach(([id,k])=>{const el=$('#'+id);el.value=S.rep[k]||'';el.oninput=deb(()=>{S.rep[k]=el.value.trim();saveRep();renderRepPrev();},200);});
+$('#rpLogo').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;if(!/^image\//.test(f.type))return toast('Choose an image file');if(f.size>400*1024)return toast('Logo is too large – use an image under 400 KB');
+  const fr=new FileReader();fr.onload=()=>{S.rep.logo=String(fr.result);saveRep();renderRepPrev();toast('Logo added');};fr.readAsDataURL(f);};
+$('#rpClr').onclick=()=>{S.rep.logo='';saveRep();renderRepPrev();};
+$('#rpPrint').onclick=printReport;
+
+$('#azS').onchange=e=>{S.az=e.target.value;try{localStorage.setItem('stoveAz',S.az);}catch(x){}setAzUI();drawTwin();};
+
 /* ================= Boot ================= */
 ['hmP','chs'].forEach(id=>io.observe($('#'+id)));
-S.data=parseCSV(SAMPLE);render();rotate(90);subscribe();
+function showTab(t){S.tab=t;$$('[data-tab]').forEach(e=>{e.hidden=e.dataset.tab!==t;});$$('#tabs [data-go]').forEach(b=>b.setAttribute('aria-selected',b.dataset.go===t));
+  try{history.replaceState(null,'','#'+t);}catch(e){}
+  {const fb=$('.bar-f');if(fb)fb.style.display=(t==='adm'||t==='rpt')?'none':'';}
+  if(t==='rpt')renderRepPrev();
+  requestAnimationFrame(()=>{renderCharts();window.dispatchEvent(new Event('resize'));});}
+$('#tabs').onclick=e=>{const b=e.target.closest('[data-go]');if(b)showTab(b.dataset.go);};
+setAzUI();S.data=parseCSV(SAMPLE);render();rotate(90);subscribe();
+{const h=(location.hash||'').slice(1);showTab(['ov','tw','jt','adm','ob','rpt'].includes(h)?h:'ov');}
 if(!RM)gsap.from('.kpi,.sc',{opacity:0,y:16,duration:.6,stagger:.05,ease:'power2.out'});
 gsap.to('#ld',{opacity:0,delay:.7,duration:.5,onComplete:()=>$('#ld').remove()});
 let saved=null;try{saved=sessionStorage.getItem('stoveUser');}catch(e){}
