@@ -10,7 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
 /* ===== Theme tokens ===== */
-:root{--bg:#0e1020;--bg2:#171a2e;--glass:rgba(255,255,255,.05);--bd:rgba(255,255,255,.12);--tx:#eceef7;--mu:#9aa0b8;--p:#6d5be0;--s:#8b7cf0;--a:#06B6D4;--sh:0 4px 16px rgba(0,0,0,.35);--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--r:14px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#0e1020;--bg2:#171a2e;--glass:rgba(255,255,255,.05);--bd:rgba(255,255,255,.12);--tx:#eceef7;--mu:#9aa0b8;--p:#1E76F7;--s:#1E76F7;--a:#1E76F7;--sh:0 4px 16px rgba(0,0,0,.35);--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--r:14px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 :root[data-theme=light]{--bg:#f4f5fa;--bg2:#e8eaf4;--glass:rgba(255,255,255,.9);--bd:rgba(40,50,100,.16);--tx:#1b1e33;--mu:#5a6080;--sh:0 2px 10px rgba(30,40,90,.10)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -57,7 +57,7 @@ input[type=range]{accent-color:var(--s);width:110px}
 .rg.sel path:first-child{stroke:#fff;stroke-width:3}
 .pulse{animation:pl 1.2s ease-in-out infinite}
 .mk{cursor:pointer}.halo{animation:halo 1.6s ease-out infinite}@keyframes halo{0%{r:5px;opacity:.8}100%{r:16px;opacity:0}}.aura{animation:au 6s ease-in-out infinite alternate}@keyframes au{from{opacity:.5}to{opacity:1}}
-@keyframes pl{50%{stroke-width:5;stroke:#fecaca}}
+@keyframes pl{50%{stroke-width:5;stroke:#F9C9CC}}
 .compass{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:330px;margin:6px auto}
 .compass .btn{padding:8px 4px;font-size:12px}.compass i{display:grid;place-items:center;color:var(--a);font-style:normal;font-size:20px}
 .legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--mu);margin-top:10px}
@@ -67,13 +67,13 @@ input[type=range]{accent-color:var(--s);width:110px}
 .rc:hover{border-color:var(--a);transform:translateY(-2px)}
 .rt{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;font-size:13px}
 .chip{font-size:11px;padding:2px 8px;border-radius:20px;color:#fff}
-.ob{background:#ef4444}
+.ob{background:#E44B58}
 .lb{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin:6px 0 3px}
 .bar{height:11px;border-radius:9px;background:rgba(127,127,170,.25);overflow:hidden}
 .bar i{display:block;height:100%;width:0;border-radius:9px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
 .bb i{background:var(--s)}.ub i{background:var(--a)}
 .obl{max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin-top:10px}
-.oi{border-left:4px solid #ef4444;background:var(--glass);border-radius:10px;padding:9px 11px;font-size:13px;cursor:pointer}
+.oi{border-left:4px solid #E44B58;background:var(--glass);border-radius:10px;padding:9px 11px;font-size:13px;cursor:pointer}
 .oi small{color:var(--mu)}
 .prod{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:12px}
 .prod .glass b{font-size:22px;display:block;margin-top:4px}.prod span{font-size:12px;color:var(--mu)}
@@ -119,12 +119,12 @@ body.col{--sw:68px}
 @media(max-width:900px){.twin{grid-template-columns:1fr}}
 @media(min-width:2200px){body{font-size:19px}.wrap{max-width:2400px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-@media print{body{background:#fff;color:#000;padding:0}.glass{box-shadow:none;backdrop-filter:none;background:#fff;border-color:#bbb;break-inside:avoid}.hb,.bar-f,#toasts,#md,#ld,.compass{display:none!important}.rings{max-height:none}.kpi b{color:#4c1d95;-webkit-text-fill-color:#4c1d95}}
+@media print{body{background:#fff;color:#000;padding:0}.glass{box-shadow:none;backdrop-filter:none;background:#fff;border-color:#bbb;break-inside:avoid}.hb,.bar-f,#toasts,#md,#ld,.compass{display:none!important}.rings{max-height:none}.kpi b{color:#362F2F;-webkit-text-fill-color:#362F2F}}
 /* ---- enterprise polish ---- */
 :root{--grid:rgba(168,85,247,.08)}:root[data-theme=light]{--grid:rgba(80,40,160,.07)}
 header.glass{background:var(--glass)}
 .live{display:inline-flex;gap:7px;align-items:center;font-size:11px;font-weight:600;letter-spacing:.05em;padding:6px 11px;border:1px solid var(--bd);border-radius:20px;background:var(--glass);color:var(--mu)}
-.live i{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:lv 2s infinite}.live.off i{background:#f59e0b;animation:none}
+.live i{width:8px;height:8px;border-radius:50%;background:#2FB67C;animation:lv 2s infinite}.live.off i{background:#f59e0b;animation:none}
 @keyframes lv{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%,100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
 .kpi{position:relative;overflow:hidden}.kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--p)}
 #tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .15s;background:var(--bg2);border:1px solid var(--s);border-radius:12px;padding:9px 12px;font-size:12px;box-shadow:var(--sh);max-width:240px;line-height:1.5}
@@ -159,8 +159,8 @@ header.glass{background:var(--glass)}
 .rep{font:11px/1.45 system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .rep *{box-sizing:border-box}
 .rep h1{font-size:19px;margin:2px 0;color:#111;display:block;font-weight:700}
-.rep h2{font-size:12.5px;margin:14px 0 6px;padding-bottom:3px;border-bottom:2px solid #6d5be0;color:#111;display:block;font-weight:700}
-.rep .hd{display:flex;gap:14px;align-items:center;border-bottom:3px solid #6d5be0;padding-bottom:10px}
+.rep h2{font-size:12.5px;margin:14px 0 6px;padding-bottom:3px;border-bottom:2px solid #1E76F7;color:#111;display:block;font-weight:700}
+.rep .hd{display:flex;gap:14px;align-items:center;border-bottom:3px solid #1E76F7;padding-bottom:10px}
 .rep .hd img{max-height:54px;max-width:150px;object-fit:contain}
 .rep .pl{font-size:11.5px;color:#444}
 .rep .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}
@@ -239,6 +239,108 @@ header{flex-wrap:nowrap;gap:8px}
 .vjr input{background:var(--glass);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;width:100%;min-width:0}
 .vjin{display:flex;gap:4px}.vjin .btn{padding:4px 9px;font-size:11px;flex:none}
 @media(max-width:700px){.kpi em{font-size:9.5px}.vjg{grid-template-columns:1fr}}
+
+/* ===================== SPATIAL UI ===================== */
+:root{--c-white:#F3F2F3;--c-calm:#CDD1D9;--c-peach:#F4999D;--c-blue:#1E76F7;--c-red:#E44B58;--c-ink:#362F2F;
+ --bg:#262020;--bg2:#3a3232;--glass:rgba(243,242,243,.07);--bd:rgba(205,209,217,.16);--tx:#F3F2F3;--mu:#b9bdc6;--p:#1E76F7;--s:#F4999D;--a:#1E76F7;
+ --sh:0 18px 40px -18px rgba(0,0,0,.65),0 2px 6px rgba(0,0,0,.3);--shh:0 28px 54px -18px rgba(0,0,0,.75),0 4px 10px rgba(0,0,0,.35);
+ --r:26px;--sbg:rgba(54,47,47,.78);--hi:inset 0 1px 0 rgba(255,255,255,.08);--pill:#F3F2F3;--pillt:#362F2F;
+ --amb1:rgba(30,118,247,.28);--amb2:rgba(244,153,157,.20);--grid:rgba(205,209,217,.07)}
+:root[data-theme=light]{--bg:#F3F2F3;--bg2:#fbfafb;--glass:rgba(255,255,255,.66);--bd:rgba(205,209,217,.85);--tx:#362F2F;--mu:#6a6366;
+ --sh:0 22px 44px -22px rgba(54,47,47,.28),0 2px 6px rgba(54,47,47,.06);--shh:0 32px 56px -22px rgba(54,47,47,.36),0 4px 10px rgba(54,47,47,.08);
+ --sbg:rgba(255,255,255,.62);--hi:inset 0 1px 0 #fff;--pill:#362F2F;--pillt:#F3F2F3;--amb1:rgba(30,118,247,.20);--amb2:rgba(244,153,157,.34);--grid:rgba(54,47,47,.06)}
+html{background:var(--bg)}
+body{background-color:var(--bg);background-image:radial-gradient(900px 620px at 88% -8%,var(--amb1),transparent 62%),radial-gradient(820px 600px at -6% 108%,var(--amb2),transparent 60%),radial-gradient(520px 420px at 52% 46%,rgba(205,209,217,.28),transparent 70%);background-attachment:fixed;font-feature-settings:"tnum" 1;letter-spacing:.005em}
+.glass{background:var(--glass);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh),var(--hi);backdrop-filter:blur(22px) saturate(1.25);-webkit-backdrop-filter:blur(22px) saturate(1.25);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .25s}
+.glass.hv:hover{transform:translateY(-5px) scale(1.012);box-shadow:var(--shh),var(--hi);border-color:var(--c-peach)}
+h2{font-size:15px;font-weight:650;letter-spacing:.01em}
+/* pills */
+.btn{border-radius:999px;background:var(--glass);border:1px solid var(--bd);padding:8px 15px;box-shadow:var(--hi);transition:background .2s,color .2s,transform .2s,box-shadow .2s}
+.btn:hover{background:var(--c-blue);border-color:transparent;color:#fff;transform:translateY(-1px);box-shadow:0 10px 22px -10px rgba(30,118,247,.7)}
+.btn.on{background:var(--pill);color:var(--pillt);border-color:transparent;box-shadow:0 10px 22px -12px rgba(54,47,47,.7)}
+.btn.on:hover{background:var(--c-blue);color:#fff}
+.ib{border-radius:50%}
+:focus-visible{outline:2px solid var(--c-blue);outline-offset:3px}
+select,input[type=search],.afm textarea,.afm input[type=number],#rform input[type=text],.vjr input,#lgn input,.mode input[type=number]{border-radius:16px;background:rgba(255,255,255,.5);border:1px solid var(--bd)}
+:root:not([data-theme=light]) select,:root:not([data-theme=light]) input[type=search]{background:rgba(255,255,255,.07)}
+select{border-radius:999px;padding:8px 14px}input[type=search]{border-radius:999px;padding:8px 16px}
+input[type=range]{accent-color:var(--c-blue)}
+/* floating header */
+header.glass{border-radius:34px;padding:12px 16px 12px 14px}
+.logo{border-radius:50%;background:var(--pill);box-shadow:0 12px 24px -10px rgba(54,47,47,.6)}
+.logo svg path{stroke:var(--pillt)}
+.live{border-radius:999px;background:var(--glass)}
+.usr{border-radius:999px;background:var(--glass);box-shadow:var(--hi)}
+.av{background:linear-gradient(135deg,var(--c-peach),var(--c-red));color:#fff}
+/* floating pill tab bar */
+.tabs{display:flex;gap:4px;width:max-content;max-width:100%;margin:16px auto 4px;padding:6px;border:1px solid var(--bd);border-radius:999px;background:var(--glass);backdrop-filter:blur(22px) saturate(1.25);-webkit-backdrop-filter:blur(22px) saturate(1.25);box-shadow:var(--sh),var(--hi);position:sticky;top:10px;z-index:30}
+.tabs button{border:0;border-radius:999px;padding:10px 18px;color:var(--mu);transition:background .25s,color .25s,box-shadow .25s}
+.tabs button:hover{color:var(--tx);background:rgba(205,209,217,.35)}
+.tabs button[aria-selected=true]{background:var(--pill);color:var(--pillt);border:0;box-shadow:0 10px 22px -10px rgba(54,47,47,.65)}
+.tabs button[aria-selected=true] .i{color:var(--c-peach);opacity:1}
+/* sidebar = floating dock */
+:root{--sw:250px}
+#sb{left:14px;top:14px;bottom:14px;border:1px solid var(--bd);border-radius:30px;background:var(--sbg);box-shadow:var(--sh),var(--hi);backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3)}
+body{padding-left:calc(var(--sw) + 30px)}
+.ic{border-radius:50%;background:rgba(205,209,217,.35)}
+.si{border-top:1px solid var(--bd)}
+@media(max-width:900px){body{padding-left:14px}#sb{transform:translateX(-120%)}}
+/* KPI bubbles */
+.kpis{gap:14px}
+.kpi{padding:18px 18px 16px;overflow:hidden}
+.kpi::after{display:none}
+.kpi::before{content:"";position:absolute;right:-12px;top:-12px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.8),var(--c-calm) 70%);opacity:.9;box-shadow:inset 0 -6px 12px rgba(54,47,47,.12)}
+.kpi:nth-child(3n+1)::before{background:radial-gradient(circle at 32% 30%,#fff,var(--c-peach) 72%)}
+.kpi:nth-child(3n+2)::before{background:radial-gradient(circle at 32% 30%,#cfe2ff,var(--c-blue) 75%)}
+.kpi:nth-child(7)::before{background:radial-gradient(circle at 32% 30%,#ffd5d8,var(--c-red) 75%)}
+.kpi span{font-size:12px;position:relative;display:block;padding-right:30px}.kpi b{position:relative;font-weight:700}
+/* progress as blue timeline */
+.bar{height:10px;border-radius:999px;background:rgba(205,209,217,.55);box-shadow:inset 0 1px 2px rgba(54,47,47,.12)}
+.bar i{border-radius:999px;position:relative}
+.bb i{background:linear-gradient(90deg,#f8c0c3,var(--c-peach))}
+.ub i{background:linear-gradient(90deg,#5b9bff,var(--c-blue));box-shadow:0 0 12px rgba(30,118,247,.45)}
+.ub i::after{content:"";position:absolute;right:-1px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#fff;border:3px solid var(--c-blue);box-shadow:0 2px 6px rgba(30,118,247,.5)}
+.stack{border-radius:999px;background:rgba(205,209,217,.55)}
+.rc,.vjm,.vjr,.kv div,.oi{border-radius:22px;background:rgba(255,255,255,.5);box-shadow:var(--hi)}
+:root:not([data-theme=light]) .rc,:root:not([data-theme=light]) .vjm,:root:not([data-theme=light]) .vjr,:root:not([data-theme=light]) .kv div,:root:not([data-theme=light]) .oi{background:rgba(255,255,255,.05)}
+.rc:hover{border-color:var(--c-peach);transform:translateY(-4px);box-shadow:var(--shh)}
+.chip{border-radius:999px}
+.oi{border-left-width:5px}
+.sc.act{border-color:var(--c-blue);box-shadow:0 0 0 2px rgba(30,118,247,.25),var(--shh)}
+/* hero stage */
+.stage{position:relative;padding-top:78px;border-radius:30px;background:radial-gradient(60% 44% at 50% 56%,rgba(255,255,255,.95),rgba(205,209,217,.25) 62%,transparent 76%);isolation:isolate}
+:root:not([data-theme=light]) .stage{background:radial-gradient(60% 44% at 50% 56%,rgba(30,118,247,.18),rgba(244,153,157,.06) 62%,transparent 76%)}
+.stage::after{content:"";position:absolute;left:18%;right:18%;bottom:1%;height:34px;border-radius:50%;background:radial-gradient(closest-side,rgba(54,47,47,.28),transparent);filter:blur(6px);z-index:-1}
+#twin{filter:drop-shadow(0 26px 22px rgba(54,47,47,.26)) drop-shadow(0 4px 6px rgba(54,47,47,.18))}
+.fl{position:absolute;top:0;left:0;right:0;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;z-index:2;pointer-events:none}
+.flc{pointer-events:auto;display:flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:var(--glass);border:1px solid var(--bd);box-shadow:var(--sh),var(--hi);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);animation:flt 6s ease-in-out infinite alternate}
+.flc:nth-child(2){animation-delay:-2s}.flc:nth-child(3){animation-delay:-4s}
+@keyframes flt{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+.flc span{font-size:11.5px;color:var(--mu);line-height:1.2;max-width:90px}
+.bub{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-style:normal;background:conic-gradient(var(--cc) calc(var(--pc)*1%),rgba(205,209,217,.5) 0);position:relative;flex:none}
+.bub::before{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--bg2)}
+.bub b{position:relative;font-size:12px;font-weight:700}
+/* overlays */
+#md,#lgn{background:rgba(54,47,47,.5)}
+#md .glass,#lgn form{background:var(--bg2);border-radius:30px}
+.toast,#tip{border-radius:20px;background:var(--bg2);border-color:var(--bd)}.toast{border-left-color:var(--c-blue)}
+#ld div{border-color:rgba(30,118,247,.2);border-top-color:var(--c-blue)}
+#le{color:var(--c-red)}
+.compass .btn{border-radius:20px}
+.paper{background:var(--c-calm);border-radius:22px}
+@media(max-width:700px){
+ .tabs{margin-top:10px;top:6px;padding:4px;overflow-x:auto;max-width:100%;width:auto;justify-content:flex-start}.tabs button{padding:9px 13px}
+ .tabs button span{display:none}.tabs button[aria-selected=true] span{display:inline}
+ header.glass{border-radius:26px}.glass{border-radius:22px}
+ .stage{padding-top:0}.fl{position:static;margin-bottom:8px}.flc{animation:none;padding-right:12px}.bub{width:42px;height:42px}.flc span{font-size:10.5px;max-width:64px}
+ .kpi::before{width:44px;height:44px;right:-10px;top:-10px}
+}
+.btn.ib,.ib{display:grid;place-items:center;padding:0;width:40px;height:40px;line-height:0;border-radius:50%}
+.ib .i,.ib svg{display:block;margin:0;flex:none}
+@media(max-width:700px){.btn.ib,.ib{width:36px;height:36px}}
+/* print stays plain white */
+@media print{body,html{background:#fff!important;background-image:none!important}.glass,.tabs,#sb,.rc,.kpi{backdrop-filter:none!important;box-shadow:none!important;background:#fff!important;border-radius:10px}.tabs,.fl,.stage::after{display:none!important}.stage{background:none;padding-top:0}.kpi::before{display:none}}
+body.rep-mode,body.rep-mode html{background:#fff!important;background-image:none!important}
 </style>
 </head>
 <body>
@@ -249,7 +351,7 @@ header{flex-wrap:nowrap;gap:8px}
   <div class="si" id="upl"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg></div><div class="sl"><small id="uls">Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
   <div class="si"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="vjcsv">Vertical joints CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
   <div class="si"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
-  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>CMC</em></div>
+  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>MED</em></div>
 </aside>
 <div class="wrap" id="app">
 <header class="glass">
@@ -279,10 +381,10 @@ header{flex-wrap:nowrap;gap:8px}
   <div class="twin">
     <div><div class="zc"><button class="btn" id="zi" aria-label="Zoom in">＋</button><button class="btn" id="zo" aria-label="Zoom out">－</button><button class="btn" id="zr">Reset</button><b id="zl">100%</b><small>Ctrl + scroll to zoom · drag to pan · keys + / −</small></div>
       <div class="mode" id="cmode"><b style="font-size:12px;color:var(--mu)">Colour by</b><button class="btn on" data-cm="ut">UT progress</button><button class="btn" data-cm="wall">Wall thickness</button><button class="btn" data-cm="def">Defect severity</button><label id="nomw" hidden>Nominal wall (mm) <input id="nom" type="number" min="1" step="0.1" placeholder="auto"></label></div><p id="wnote"></p>
-      <div class="lay"><label><input type="checkbox" id="tgJ" checked> Vertical joints (VJ-1…4)</label><label><input type="checkbox" id="tgL" checked> Ring labels</label></div><svg id="twin" viewBox="-95 0 495 880" role="img" aria-label="Stove with 22 rings"></svg></div>
+      <div class="lay"><label><input type="checkbox" id="tgJ" checked> Vertical joints (VJ-1…4)</label><label><input type="checkbox" id="tgL" checked> Ring labels</label></div><div class="stage"><div class="fl" id="fl"></div><svg id="twin" viewBox="-95 0 495 880" role="img" aria-label="Stove with 22 rings"></svg></div></div>
     <div>
       <p style="font-size:13px;color:var(--mu);text-align:center">Orientation – rotates the shell and slides observation markers by their stated angle</p>
-      <label class="azs">Angle convention <select id="azS" aria-label="Angle convention"><option value="dwg">Plant drawing · 0° front, 90° left, 180° back, 270° right</option><option value="old">Previous · 0° left, 90° front, 180° right, 270° back</option></select></label>
+      <p class="azs" style="margin:6px 0">Angle convention: 0° front · 90° left · 180° back · 270° right</p>
       <div class="compass">
         <span></span><button class="btn cb" data-v="270">270° Back View</button><span></span>
         <button class="btn cb" data-v="0">0° Left View</button><i>✛</i><button class="btn cb" data-v="180">180° Right View</button>
@@ -292,7 +394,7 @@ header{flex-wrap:nowrap;gap:8px}
       <svg id="dial" class="dial" viewBox="0 0 200 200" role="img" aria-label="Top view azimuth dial: click 0°, 90°, 180° or 270° to rotate"></svg>
       <div class="legend" id="lg"></div>
       <div class="legend" id="lgJ"></div>
-      <div class="legend"><span><i style="border:2px solid #ef4444;background:none"></i>Pulsing border = observation</span><span><i style="background:#ef4444;border-radius:50%"></i>Marker at stated azimuth (colour = severity)</span></div>
+      <div class="legend"><span><i style="border:2px solid #E44B58;background:none"></i>Pulsing border = observation</span><span><i style="background:#E44B58;border-radius:50%"></i>Marker at stated azimuth (colour = severity)</span></div>
       <div id="sel" class="empty">Click any ring for details.</div>
     </div>
   </div>
@@ -429,7 +531,7 @@ Stove-3,21,37,0,0,
 Stove-3,22,35,0,0,
 `;
 const STOVES = ['Stove-1','Stove-2','Stove-3'];
-const COL = ['#6b7280','#ef4444','#f97316','#eab308','#a855f7','#22c55e'];
+const COL = ['#9aa1ad','#E44B58','#F4999D','#F2B94B','#1E76F7','#2FB67C'];
 const LBL = ['0% – not started','1–25%','26–50%','51–75%','76–99%','100% – complete'];
 const S = {data:[],stove:'All',twin:'Stove-1',sel:null,view:90,f:{ring:'All',st:'All',ob:'All',min:0,q:''},oq:'',os:'All',hist:[],sim:true,file:null,theme:'light',timer:null,vjs:{},vjOk:true,showJ:true,showL:true,atab:'ring'};
 const CH = {};
@@ -454,7 +556,7 @@ function setAzUI(){Object.assign(JVIEW,S.az==='dwg'?{0:'Front',90:'Left',180:'Ba
   const s=$('#azS');if(s)s.value=S.az;
   $$('#vjg .vjr').forEach(r=>{const a=JANG[+r.dataset.j-1],e=r.querySelector('.vjh small');if(e)e.textContent=`${a}° · ${JVIEW[a]}`;});
   const v=$('#vl');if(v)v.textContent=`${cv(S.view)}° – ${VIEWN[S.view]} view`;}
-const JST=[{n:'Not started',c:'#64748b'},{n:'Buffing in progress',c:'#f59e0b'},{n:'Buffed · UT pending',c:'#06B6D4'},{n:'UT complete',c:'#16a34a'}];
+const JST=[{n:'Not started',c:'#64748b'},{n:'Buffing in progress',c:'#f59e0b'},{n:'Buffed · UT pending',c:'#1E76F7'},{n:'UT complete',c:'#16a34a'}];
 const jStage=(b,u,l)=>u>=l-EPS?3:b>=l-EPS?2:(b>0||u>0)?1:0;
 function attachVJ(r){r.vj=JANG.map((a,k)=>{const d=S.vjs[r.st+'|'+r.ring+'|'+(k+1)]||{},len=+d.len>0?+d.len:JLEN,b=Math.min(+d.b||0,len),u=Math.min(+d.u||0,len),st=jStage(b,u,len);
   return {j:k+1,a,len,b,u,bp:b/len*100,up:u/len*100,raw:d.raw||'',st,sn:JST[st].n,c:JST[st].c};});return r;}
@@ -499,8 +601,8 @@ function renderKPI(){const a=agg(scope()),va=aggVJ(scope());
     ['Vertical joints buffed',va.b,0,'',va.bp,`of ${va.n} joints · ${f1(va.bm)} / ${f1(va.len)} m`],['Vertical joints UT done',va.u,0,'',va.up,`of ${va.n} joints · ${f1(va.um)} / ${f1(va.len)} m`]];
   $('#kpis').innerHTML=k.map(x=>`<div class="glass kpi hv"><span>${x[0]}</span><b><i data-v="${x[1]}" data-d="${x[2]}" data-s="${x[3]}">0</i>${x[4]===undefined?'':` <small>(<i data-v="${x[4]}" data-d="1" data-s="%">0</i>)</small>`}</b>${x[5]?`<em>${x[5]}</em>`:''}</div>`).join('');count($('#kpis'));}
 function renderCmp(){$('#cmp').innerHTML=STOVES.map(s=>{const rs=S.data.filter(r=>r.st===s),a=agg(rs),va=aggVJ(rs),cnt=rs.reduce((c,r)=>(c[band(r.up)]++,c),[0,0,0,0,0,0]),R=42,C=2*Math.PI*R,r2=30,C2=2*Math.PI*r2;
-  return `<div class="glass hv sc ${S.stove===s?'act':''}" data-s="${s}" tabindex="0"><svg viewBox="0 0 104 104"><g transform="rotate(-90 52 52)" fill="none" stroke-width="9" stroke-linecap="round"><circle cx="52" cy="52" r="${R}" stroke="rgba(127,127,170,.25)"/><circle cx="52" cy="52" r="${R}" stroke="#06B6D4" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C*(1-a.up/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/><circle cx="52" cy="52" r="${r2}" stroke="rgba(127,127,170,.25)" stroke-width="7"/><circle cx="52" cy="52" r="${r2}" stroke="#A855F7" stroke-width="7" stroke-dasharray="${C2}" stroke-dashoffset="${C2}" data-o="${C2*(1-a.bp/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/></g><text x="52" y="57" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">${f1(a.up)}%</text></svg>
-  <div><h2 style="margin:0">${s}</h2><p>Buffing <b>${f1(a.bp)}%</b> · UT <b>${f1(a.up)}%</b></p><p>Rings completed <b>${a.done}/${a.n}</b></p><p>Vertical joints · Buffed <b>${va.b}/${va.n}</b> · UT <b>${va.u}/${va.n}</b></p><p>Observations <b style="color:#ef4444">${a.obs}</b></p><div class="stack">${cnt.map((n,i)=>`<i title="${LBL[i]}: ${n} rings" style="width:${n/(rs.length||1)*100}%;background:${COL[i]}"></i>`).join('')}</div></div></div>`;}).join('');
+  return `<div class="glass hv sc ${S.stove===s?'act':''}" data-s="${s}" tabindex="0"><svg viewBox="0 0 104 104"><g transform="rotate(-90 52 52)" fill="none" stroke-width="9" stroke-linecap="round"><circle cx="52" cy="52" r="${R}" stroke="rgba(127,127,170,.25)"/><circle cx="52" cy="52" r="${R}" stroke="#1E76F7" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-o="${C*(1-a.up/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/><circle cx="52" cy="52" r="${r2}" stroke="rgba(127,127,170,.25)" stroke-width="7"/><circle cx="52" cy="52" r="${r2}" stroke="#F4999D" stroke-width="7" stroke-dasharray="${C2}" stroke-dashoffset="${C2}" data-o="${C2*(1-a.bp/100)}" class="ring-a" style="transition:stroke-dashoffset 1.2s"/></g><text x="52" y="57" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">${f1(a.up)}%</text></svg>
+  <div><h2 style="margin:0">${s}</h2><p>Buffing <b>${f1(a.bp)}%</b> · UT <b>${f1(a.up)}%</b></p><p>Rings completed <b>${a.done}/${a.n}</b></p><p>Vertical joints · Buffed <b>${va.b}/${va.n}</b> · UT <b>${va.u}/${va.n}</b></p><p>Observations <b style="color:#E44B58">${a.obs}</b></p><div class="stack">${cnt.map((n,i)=>`<i title="${LBL[i]}: ${n} rings" style="width:${n/(rs.length||1)*100}%;background:${COL[i]}"></i>`).join('')}</div></div></div>`;}).join('');
   requestAnimationFrame(()=>requestAnimationFrame(()=>$$('.ring-a').forEach(c=>c.setAttribute('stroke-dashoffset',c.dataset.o))));}
 
 /* ================= Digital twin ================= */
@@ -529,9 +631,9 @@ function fitMk(){let a='',l='';
 function scaleSvg(){let s=`<line x1="-58" x2="-58" y1="${yAt(0)}" y2="${yAt(45000)}" stroke="currentColor" stroke-opacity=".4"/>`;
   for(let z=0;z<=45000;z+=5000)s+=`<line x1="-61" x2="-55" y1="${yAt(z)}" y2="${yAt(z)}" stroke="currentColor" stroke-opacity=".5"/><text x="-64" y="${yAt(z)+2.8}" text-anchor="end" font-size="7.5" fill="currentColor" opacity=".7">${z?'+'+z:'0'}</text>`;
   s+=`<text transform="translate(-88 ${yAt(22500)}) rotate(-90)" text-anchor="middle" font-size="8" fill="currentColor" opacity=".55">Elevation (mm)</text>`;
-  for(const [k,z] of SECS)s+=`<line x1="372" x2="381" y1="${yAt(z)}" y2="${yAt(z)}" stroke="currentColor" stroke-opacity=".4"/><circle cx="389" cy="${yAt(z)}" r="8" fill="rgba(127,127,170,.18)" stroke="#8b7cf0"/><text x="389" y="${yAt(z)+3.2}" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">${k}</text>`;
+  for(const [k,z] of SECS)s+=`<line x1="372" x2="381" y1="${yAt(z)}" y2="${yAt(z)}" stroke="currentColor" stroke-opacity=".4"/><circle cx="389" cy="${yAt(z)}" r="8" fill="rgba(127,127,170,.18)" stroke="#1E76F7"/><text x="389" y="${yAt(z)+3.2}" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">${k}</text>`;
   return s;}
-const RY=r=>5*r/90, SEV=['','#eab308','#f97316','#ef4444'];
+const RY=r=>5*r/90, SEV=['','#F2B94B','#F4999D','#E44B58'];
 function geom(i){
   if(i<=16){const yb=yAt(RZ[i-1]),yt=yAt(RZ[i]),L=60,R=240;
     return {d:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}L${R} ${yb}A90 5 0 0 1 ${L} ${yb}Z`,seam:`M${L} ${yt}A90 5 0 0 0 ${R} ${yt}`,y:(yt+yb)/2+3,h:yb-yt,hw:90,jg:[yt,yb,90,90,90,5,5]};}
@@ -547,14 +649,14 @@ function geom(i){
 /* Colour modes: UT progress (default) · wall thickness (optional WallMM data) · defect severity (from observation depth) */
 const MODEN={ut:'UT progress',wall:'Wall thickness',def:'Defect severity'};
 // Wall bands = % of reference thickness (nominal if entered, else the stove's highest reading). Edit here to change thresholds.
-const WBANDS=[[90,'#22c55e','≥ 90 % of reference'],[80,'#eab308','80–90 %'],[70,'#f97316','70–80 %'],[0,'#ef4444','< 70 %']];
+const WBANDS=[[90,'#2FB67C','≥ 90 % of reference'],[80,'#F2B94B','80–90 %'],[70,'#F4999D','70–80 %'],[0,'#E44B58','< 70 %']];
 const refW=st=>S.nom>0?S.nom:Math.max(0,...S.data.filter(x=>x.st===st&&x.wall).map(x=>x.wall));
 function cInfo(r,st,m){m=m||S.cm;
-  if(m==='wall'){const w=r&&r.wall,ref=refW(st);if(!w||!ref)return {c:'#6b7280',t:''};const p=w/ref*100;return {c:(WBANDS.find(b=>p>=b[0])||WBANDS[3])[1],t:f1(w)+' mm'};}
+  if(m==='wall'){const w=r&&r.wall,ref=refW(st);if(!w||!ref)return {c:'#9aa1ad',t:''};const p=w/ref*100;return {c:(WBANDS.find(b=>p>=b[0])||WBANDS[3])[1],t:f1(w)+' mm'};}
   if(m==='def'){const os=(r&&r.obs)||[],s=os.reduce((a,o)=>Math.max(a,o.sev),0),d=os.reduce((a,o)=>Math.max(a,o.depth||0),0);return {c:s?SEV[s]:'#5b6478',t:d?d+' mm':''};}
   return {c:COL[band(r?r.up:0)],t:r&&r.up?f1(r.up)+'%':''};}
 function legendItems(m){
-  if(m==='wall')return WBANDS.map(b=>[b[1],b[2]]).concat([['#6b7280','No reading']]);
+  if(m==='wall')return WBANDS.map(b=>[b[1],b[2]]).concat([['#9aa1ad','No reading']]);
   if(m==='def')return [['#5b6478','No observation'],[SEV[1],'Low (< 2 mm / unsized)'],[SEV[2],'Medium (2–4 mm)'],[SEV[3],'High (≥ 4 mm)']];
   return COL.map((c,i)=>[c,LBL[i]]);}
 const renderLegend=()=>{$('#lg').innerHTML=legendItems(S.cm).map(x=>`<span><i style="background:${x[0]}"></i>${x[1]}</span>`).join('');};
@@ -566,17 +668,17 @@ function drawTwin(a){
   const rows=S.data.filter(r=>r.st===S.twin),anim=a||S.drawn!==S.twin;S.drawn=S.twin;
   let g='',lab='',mk='',vjs='';const [fa,fl]=fitMk();
   for(let i=1;i<=22;i++){const r=rows.find(x=>x.ring===i)||{up:0,obs:[]},G=geom(i);
-    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${cInfo(r,S.twin).c}"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${i>16?`<path d="${G.d}" fill="url(#dome)" pointer-events="none"/>`:''}${G.seam?`<path d="${G.seam}" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/>`:''}${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.5" pointer-events="none"/>`:''}</g>`;
+    g+=`<g class="rg${S.sel===i?' sel':''}" data-ring="${i}"><path d="${G.d}" fill="${cInfo(r,S.twin).c}"/><path d="${G.d}" fill="url(#cyl)" pointer-events="none"/>${i>16?`<path d="${G.d}" fill="url(#dome)" pointer-events="none"/>`:''}${G.seam?`<path d="${G.seam}" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="1.2" pointer-events="none"/>`:''}${r.obs.length?`<path class="pulse" d="${G.d}" fill="none" stroke="#E44B58" stroke-width="2.5" pointer-events="none"/>`:''}</g>`;
     lab+=pill(i,r,G);
     (r.vj||attachVJ({st:S.twin,ring:i}).vj).forEach(j=>{vjs+=`<g class="vj" data-ring="${i}" data-j="${j.j}" data-a="${j.a}" data-g="${G.jg.join(',')}"><path fill="none" stroke="transparent" stroke-width="9" stroke-linecap="round"/><path fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="4.4" stroke-linecap="round" pointer-events="none"/><path fill="none" stroke="${j.c}" stroke-width="2.4" stroke-linecap="round"${j.st===0?' stroke-dasharray="3.2 2.6"':''} pointer-events="none"/></g>`;});
-    r.obs.forEach(o=>{mk+=`<g class="mk" data-ring="${i}" data-a="${o.angle??''}" data-hw="${G.hw}" data-y="${G.y+(i<=16?7:0)}"><circle class="halo" r="6" fill="#ef4444" fill-opacity=".35"/><ellipse rx="5" ry="5" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1.5"/></g>`;});}
+    r.obs.forEach(o=>{mk+=`<g class="mk" data-ring="${i}" data-a="${o.angle??''}" data-hw="${G.hw}" data-y="${G.y+(i<=16?7:0)}"><circle class="halo" r="6" fill="#E44B58" fill-opacity=".35"/><ellipse rx="5" ry="5" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1.5"/></g>`;});}
   const mer=[0,90,180,270].map((t,k)=>`<g class="mer" data-a="${t}" pointer-events="none"><text y="${YB+57}" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor">VJ-${k+1} · ${t}°</text></g>`).join('');
   $('#twin').innerHTML=`<defs>
   <linearGradient id="cyl" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".6"/><stop offset=".16" stop-color="#000" stop-opacity=".18"/><stop id="hl" offset=".42" stop-color="#fff" stop-opacity=".42"/><stop offset=".62" stop-color="#fff" stop-opacity=".05"/><stop offset=".86" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".68"/></linearGradient>
   <radialGradient id="dome" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>
-  <radialGradient id="aura"><stop offset="0" stop-color="#6d5be0" stop-opacity=".12"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+  <radialGradient id="aura"><stop offset="0" stop-color="#1E76F7" stop-opacity=".12"/><stop offset="1" stop-color="#F4999D" stop-opacity="0"/></radialGradient>
   <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d92a8"/><stop offset="1" stop-color="#2b2d3d"/></linearGradient>
-  <linearGradient id="scanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#06B6D4" stop-opacity="0"/><stop offset=".5" stop-color="#06B6D4" stop-opacity=".55"/><stop offset="1" stop-color="#06B6D4" stop-opacity="0"/></linearGradient>
+  <linearGradient id="scanG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1E76F7" stop-opacity="0"/><stop offset=".5" stop-color="#1E76F7" stop-opacity=".55"/><stop offset="1" stop-color="#1E76F7" stop-opacity="0"/></linearGradient>
   <pattern id="rung" width="6" height="9" patternUnits="userSpaceOnUse"><rect y="4" width="6" height="1.4" fill="#9aa0b8"/></pattern>
   <filter id="ds" x="-20%" y="-10%" width="140%" height="125%"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000" flood-opacity=".5"/></filter></defs>
   <ellipse class="aura" cx="150" cy="${YB/2+20}" rx="190" ry="${YB/2+30}" fill="url(#aura)" pointer-events="none"/>
@@ -590,6 +692,8 @@ function drawTwin(a){
   <g id="mks">${mk}</g>
   ${scaleSvg()}`;
   $('#tt').textContent=`${S.twin} · ${MODEN[S.cm]} colour scale · elevations in mm`;renderLegend();
+  {const q=agg(rows),pc=v=>Math.max(0,Math.min(100,+v||0)),card=(l,v,p,c)=>`<div class="flc" style="--pc:${p};--cc:${c}"><i class="bub"><b>${v}</b></i><span>${l}</span></div>`;
+   $('#fl').innerHTML=card('UT progress',f1(pc(q.up))+'%',pc(q.up),'#1E76F7')+card('Buffing',f1(pc(q.bp))+'%',pc(q.bp),'#F4999D')+card('Rings with observations',q.orings||0,rows.length?100*(q.orings||0)/rows.length:0,'#E44B58');}
   {const nw=rows.filter(r=>r.wall).length;$('#wnote').textContent=S.cm!=='wall'?'':nw?`${nw} of ${rows.length} rings have a reading · reference ${f1(refW(S.twin))} mm ${S.nom>0?'(nominal you entered)':'(highest reading – enter a nominal wall to change)'}`:'No wall-thickness readings for this stove yet. Add a WallMM column (mm) to the CSV, or use “Min wall thickness” in the admin form.';}
   S.mk=$$('#twin .mk');S.mer=$$('#twin .mer');
   S.vj=$$('#twin .vj');S.vj.forEach(e=>{e._g=e.dataset.g.split(',').map(Number);e._a=+e.dataset.a;e._p=[...e.children];});applyLayers();
@@ -634,12 +738,12 @@ function place(v){const R=Math.PI/180;
 function drawDial(){const rows=S.data.filter(r=>r.st===S.twin),R=70,pt=(t,r)=>[100-r*Math.cos(t*Math.PI/180),100+r*Math.sin(t*Math.PI/180)];
   let s=`<circle cx="100" cy="100" r="${R}" fill="rgba(127,127,170,.08)" stroke="currentColor" stroke-opacity=".3"/>`+[20,45,70].map(r=>`<circle cx="100" cy="100" r="${r}" fill="none" stroke="currentColor" stroke-opacity=".15" stroke-dasharray="2 3"/>`).join('');
   [0,90,180,270].forEach(t=>{const [x,y]=pt(t,R),[lx,ly]=pt(t,87);s+=`<line x1="100" y1="100" x2="${x}" y2="${y}" stroke="currentColor" stroke-opacity=".3"/><g class="dl" data-v="${t}" style="cursor:pointer"><circle cx="${lx}" cy="${ly}" r="11" fill="var(--bg2)" stroke="var(--s)"/><text x="${lx}" y="${ly+3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="currentColor">${cv(t)}°</text></g>`;});
-  s+=`<g id="vw"><path d="M100 100L160.6 65A70 70 0 0 1 160.6 135Z" fill="rgba(6,182,212,.28)" stroke="#06B6D4"/></g>`;
+  s+=`<g id="vw"><path d="M100 100L160.6 65A70 70 0 0 1 160.6 135Z" fill="rgba(6,182,212,.28)" stroke="#1E76F7"/></g>`;
   rows.forEach(r=>r.obs.forEach(o=>{if(o.angle===null)return;const [x,y]=pt(cv(o.angle),20+(r.ring-1)*50/21);s+=`<circle class="od" data-ring="${r.ring}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${3+o.sev}" fill="${SEV[o.sev]}" stroke="#fff" stroke-width="1" style="cursor:pointer"><title>Ring-${r.ring} @ ${o.angle}°</title></circle>`;}));
   s+=`<text x="100" y="97" text-anchor="middle" font-size="9" fill="currentColor" opacity=".7">${S.twin}</text><text x="100" y="108" text-anchor="middle" font-size="7" fill="currentColor" opacity=".5">top view</text>`;
   $('#dial').innerHTML=s;}
 function ripple(i){if(RM)return;const G=geom(i),e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-  [['cx',150],['cy',G.y],['rx',20],['ry',5],['fill','none'],['stroke','#06B6D4'],['stroke-width',2],['pointer-events','none']].forEach(p=>e.setAttribute(p[0],p[1]));
+  [['cx',150],['cy',G.y],['rx',20],['ry',5],['fill','none'],['stroke','#1E76F7'],['stroke-width',2],['pointer-events','none']].forEach(p=>e.setAttribute(p[0],p[1]));
   $('#twin').append(e);gsap.to(e,{attr:{rx:130,ry:22},opacity:0,duration:.8,ease:'power2.out',onComplete:()=>e.remove()});}
 function rotate(t){const from=S.view,d=((t-from+540)%360)-180,o={v:from};S.view=t;
   $$('.cb').forEach(b=>b.classList.toggle('on',+b.dataset.v===t));
@@ -689,15 +793,15 @@ $('#md').addEventListener('click',e=>{if(e.target.id==='md'||e.target.id==='mx')
 
 /* ================= Charts (ApexCharts) ================= */
 // Create the chart once, then update in place (much cheaper than destroy/recreate)
-function mk(id,o){const el=$('#'+id);if(!el||!el.offsetWidth)return;const fc=S.theme==='dark'?'#c9c2e6':'#3b2f63',k=(o.chart.type)+S.theme+(o.key||'');delete o.key;
+function mk(id,o){const el=$('#'+id);if(!el||!el.offsetWidth)return;const fc=S.theme==='dark'?'#CDD1D9':'#362F2F',k=(o.chart.type)+S.theme+(o.key||'');delete o.key;
   o.chart=Object.assign({foreColor:fc,toolbar:{show:false},background:'transparent',fontFamily:'inherit',height:300,animations:{enabled:!RM,speed:500}},o.chart);
   o.theme={mode:S.theme};o.grid=Object.assign({borderColor:'rgba(127,127,170,.2)'},o.grid);o.legend={labels:{colors:fc}};
   if(CH[id]&&CH[id].k===k)CH[id].updateOptions(o,true,true);
   else{if(CH[id])CH[id].destroy();CH[id]=new ApexCharts(el,o);CH[id].k=k;CH[id].render();}}
-const UTR=[[0,0,'#7f1d1d','0%'],[.1,25,'#ef4444','1–25%'],[25.1,50,'#f97316','26–50%'],[50.1,75,'#eab308','51–75%'],[75.1,99.9,'#84cc16','76–99%'],[100,100,'#22c55e','100%']];
-const MET={vj:{n:'Vertical joints UT complete (of 4)',v:r=>r?r.vj.filter(j=>j.u>=j.len-EPS).length:0,f:v=>v+'/4',rg:[[0,0,'#7f1d1d','0 of 4'],[1,1,'#ef4444','1 of 4'],[2,2,'#f97316','2 of 4'],[3,3,'#eab308','3 of 4'],[4,4,'#22c55e','4 of 4']]},ut:{n:'UT progress',v:r=>r?r.up:0,f:v=>f1(v)+'%',rg:UTR},bf:{n:'Buffing progress',v:r=>r?r.bp:0,f:v=>f1(v)+'%',rg:UTR},
-  rem:{n:'Remaining UT length',v:r=>r?r.rem:0,f:v=>v+' m',rg:[[0,0,'#22c55e','Done'],[.1,10,'#84cc16','≤10 m'],[10.1,20,'#eab308','10–20 m'],[20.1,30,'#f97316','20–30 m'],[30.1,999,'#ef4444','>30 m']]},
-  sev:{n:'Observation severity index',v:r=>r?r.obs.reduce((t,o)=>t+o.sev,0):0,f:v=>v+' pts',rg:[[0,0,'#334155','None'],[1,2,'#eab308','Low'],[3,4,'#f97316','Medium'],[5,99,'#ef4444','High']]}};
+const UTR=[[0,0,'#7f1d1d','0%'],[.1,25,'#E44B58','1–25%'],[25.1,50,'#F4999D','26–50%'],[50.1,75,'#F2B94B','51–75%'],[75.1,99.9,'#84cc16','76–99%'],[100,100,'#2FB67C','100%']];
+const MET={vj:{n:'Vertical joints UT complete (of 4)',v:r=>r?r.vj.filter(j=>j.u>=j.len-EPS).length:0,f:v=>v+'/4',rg:[[0,0,'#7f1d1d','0 of 4'],[1,1,'#E44B58','1 of 4'],[2,2,'#F4999D','2 of 4'],[3,3,'#F2B94B','3 of 4'],[4,4,'#2FB67C','4 of 4']]},ut:{n:'UT progress',v:r=>r?r.up:0,f:v=>f1(v)+'%',rg:UTR},bf:{n:'Buffing progress',v:r=>r?r.bp:0,f:v=>f1(v)+'%',rg:UTR},
+  rem:{n:'Remaining UT length',v:r=>r?r.rem:0,f:v=>v+' m',rg:[[0,0,'#2FB67C','Done'],[.1,10,'#84cc16','≤10 m'],[10.1,20,'#F2B94B','10–20 m'],[20.1,30,'#F4999D','20–30 m'],[30.1,999,'#E44B58','>30 m']]},
+  sev:{n:'Observation severity index',v:r=>r?r.obs.reduce((t,o)=>t+o.sev,0):0,f:v=>v+' pts',rg:[[0,0,'#334155','None'],[1,2,'#F2B94B','Low'],[3,4,'#F4999D','Medium'],[5,99,'#E44B58','High']]}};
 function defectData(){const rows=S.data.filter(r=>r.st===S.twin),bins=[...Array(12).keys()].map(i=>i*30+'°').concat('n/a');
   return Array.from({length:22},(_,k)=>{const r=rows.find(x=>x.ring===k+1),v=new Array(13).fill(0);
     (r?r.obs:[]).forEach(o=>{const b=o.angle===null?12:Math.round(o.angle/30)%12;v[b]=Math.max(v[b],o.sev);});
@@ -711,11 +815,11 @@ function renderCharts(){
     tooltip:{y:{formatter:v=>M.f(v)}},xaxis:{position:'top'}});
   $('#dmS').textContent=`${S.twin} · unrolled shell, azimuth × ring`;
   mk('dm',{key:'dm',chart:{type:'heatmap',height:520},series:defectData(),dataLabels:{enabled:false},stroke:{width:1,colors:['transparent']},
-    plotOptions:{heatmap:{radius:2,colorScale:{ranges:[{from:0,to:0,color:S.theme==='dark'?'#241f45':'#e7e2f7',name:'None'},{from:1,to:1,color:'#eab308',name:'Low'},{from:2,to:2,color:'#f97316',name:'Medium'},{from:3,to:3,color:'#ef4444',name:'High'}]}}},
+    plotOptions:{heatmap:{radius:2,colorScale:{ranges:[{from:0,to:0,color:S.theme==='dark'?'#4a4141':'#E3E5EA',name:'None'},{from:1,to:1,color:'#F2B94B',name:'Low'},{from:2,to:2,color:'#F4999D',name:'Medium'},{from:3,to:3,color:'#E44B58',name:'High'}]}}},
     tooltip:{y:{formatter:v=>['None','Low','Medium','High'][v]||v}},xaxis:{position:'top',labels:{style:{fontSize:'10px'}}}});
   const tr=S.data.filter(r=>r.st===S.twin).sort((a,b)=>a.ring-b.ring);$('#rpS').textContent=S.twin;
   mk('rp',{key:'rp',chart:{type:'line',height:320},series:[{name:'Buffing %',type:'column',data:tr.map(r=>+f1(r.bp))},{name:'UT %',type:'line',data:tr.map(r=>+f1(r.up))}],
-    xaxis:{categories:tr.map(r=>r.ring),title:{text:'Ring'}},yaxis:{min:0,max:100,labels:{formatter:v=>v+'%'}},colors:['#A855F7','#06B6D4'],stroke:{width:[0,3],curve:'smooth'},
+    xaxis:{categories:tr.map(r=>r.ring),title:{text:'Ring'}},yaxis:{min:0,max:100,labels:{formatter:v=>v+'%'}},colors:['#F4999D','#1E76F7'],stroke:{width:[0,3],curve:'smooth'},
     plotOptions:{bar:{borderRadius:3,columnWidth:'62%'}},markers:{size:[0,4]},dataLabels:{enabled:false},tooltip:{shared:true,y:{formatter:v=>v+'%'}}});}
 // Charts render lazily: only when their panels are near the viewport
 const vis=new Set(),io=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersecting?vis.add(e.target.id):vis.delete(e.target.id));if(vis.size&&S.cd){S.cd=false;renderCharts();}},{rootMargin:'500px'});
@@ -723,7 +827,7 @@ function lazyCharts(){S.cd=true;if(vis.size){S.cd=false;renderCharts();}}
 const queue=()=>{if(S.q)return;S.q=requestAnimationFrame(()=>{S.q=0;render();});};
 const deb=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};};
 S.met='ut';S.cm='ut';S.nom=0;try{S.nom=+localStorage.getItem('stoveNom')||0;}catch(e){}
-S.az='dwg';try{const z=localStorage.getItem('stoveAz');if(z==='old'||z==='dwg')S.az=z;}catch(e){}
+S.az='dwg';
 /* ================= Render orchestration ================= */
 function render(){
   $$('#seg .btn').forEach(b=>b.classList.toggle('on',b.dataset.s===S.stove));
@@ -771,8 +875,8 @@ function vjRow(j){return `<div class="vjr" data-j="${j.j}"><div class="vjh"><i c
   <label>Length (m)<input class="vL" type="number" min="0.1" step="any" inputmode="decimal" value="${j.len}"></label>
   <label>Observation / note<input class="vO" type="text" maxlength="300" placeholder="optional" value="${esc(j.raw)}"></label></div>`;}
 function updVJ(row){if(!row)return;const q=s=>row.querySelector(s),len=+q('.vL').value,b=+q('.vB').value||0,u=+q('.vU').value||0,chip=q('.vjc');
-  const bad=!(len>0)||b>len+EPS||u>len+EPS||b<0||u<0,st=bad?0:jStage(b,u,len),warn=bad?'⚠ Check values':(u>b+EPS&&st<3?'⚠ UT ahead of buffing':JST[st].n),col=bad?'#ef4444':JST[st].c;
-  row.style.setProperty('--vc',col);chip.textContent=warn;chip.style.background=bad||warn[0]==='⚠'?'#ef4444':col;
+  const bad=!(len>0)||b>len+EPS||u>len+EPS||b<0||u<0,st=bad?0:jStage(b,u,len),warn=bad?'⚠ Check values':(u>b+EPS&&st<3?'⚠ UT ahead of buffing':JST[st].n),col=bad?'#E44B58':JST[st].c;
+  row.style.setProperty('--vc',col);chip.textContent=warn;chip.style.background=bad||warn[0]==='⚠'?'#E44B58':col;
   const rows=$$('#vjg .vjr'),n=f=>rows.filter(f).length,V=x=>[+x.querySelector('.vL').value,+x.querySelector('.vB').value||0,+x.querySelector('.vU').value||0],
     tot=rows.reduce((t,x)=>t+(V(x)[0]||0),0);
   $('#vjS').textContent=`Buffed ${n(x=>{const v=V(x);return v[0]>0&&v[1]>=v[0]-EPS})}/4 · UT complete ${n(x=>{const v=V(x);return v[0]>0&&v[2]>=v[0]-EPS})}/4 · ${f1(tot)} m of vertical joint`;}
@@ -924,7 +1028,7 @@ const swatches=m=>`<div class="lgd">${legendItems(m).map(x=>`<span><i class="sw"
 // Static, label-light stove drawing for the report (same ring geometry as the twin)
 function miniStove(st,m){const rows=S.data.filter(r=>r.st===st);let g='',lab='',tk='';
   for(let i=1;i<=22;i++){const r=rows.find(x=>x.ring===i),G=geom(i),c=cInfo(r,st,m).c,fs=Math.max(7,Math.min(13,G.h-3)),ty=i===22?78:G.y-3;
-    g+=`<path d="${G.d}" fill="${c}" stroke="#1f2937" stroke-width=".9"/>`+(r&&r.obs.length?`<path d="${G.d}" fill="none" stroke="#ef4444" stroke-width="2.6"/>`:'');
+    g+=`<path d="${G.d}" fill="${c}" stroke="#1f2937" stroke-width=".9"/>`+(r&&r.obs.length?`<path d="${G.d}" fill="none" stroke="#E44B58" stroke-width="2.6"/>`:'');
     lab+=`<text x="150" y="${ty}" font-size="${fs}" font-weight="700" text-anchor="middle" dominant-baseline="central" fill="#fff" stroke="#111" stroke-width="2.4" paint-order="stroke" stroke-linejoin="round">${i}</text>`;}
   for(let z=0;z<=40000;z+=5000)tk+=`<line x1="38" x2="44" y1="${yAt(z)}" y2="${yAt(z)}" stroke="#555"/><text x="35" y="${yAt(z)}" font-size="9" text-anchor="end" dominant-baseline="central" fill="#444">${z?'+'+z:'0'}</text>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 36 272 810" style="width:100%;height:auto;max-height:205mm">${tk}<line x1="44" x2="44" y1="${yAt(0)}" y2="${yAt(40000)}" stroke="#555"/>${g}${lab}</svg>`;}
@@ -939,7 +1043,7 @@ function reportHTML(){
   const fig=(m,title,cap)=>`<div class="pg"></div><h2>${title}</h2><div class="fig">${STOVES.map(st=>{const rs=S.data.filter(r=>r.st===st),a=agg(rs);
     return `<figure><figcaption>${st}</figcaption>${miniStove(st,m)}<small>${m==='wall'?(rs.filter(r=>r.wall).length+' of '+rs.length+' rings with a reading'):`UT ${f1(a.up)} % · Buffing ${f1(a.bp)} %`}</small></figure>`;}).join('')}</div>${swatches(m)}<div class="note">${cap}</div>`;
   const reg=st=>{const rs=S.data.filter(r=>r.st===st).sort((a,b)=>a.ring-b.ring);
-    return `<div class="pg"></div><h2>${st} – ring register</h2><table><thead><tr><th>Ring</th><th>Elevation (mm)</th><th>Circ. (m)</th><th>Buffing %</th><th>UT %</th><th>Status</th>${hw?'<th>Min wall (mm)</th>':''}<th>Obs.</th></tr></thead><tbody>${rs.map(r=>`<tr><td>${r.ring}</td><td>${elev(r.ring)}</td><td>${r.c}</td><td>${f1(r.bp)}</td><td>${f1(r.up)}</td><td>${r.status}</td>${hw?`<td>${r.wall?f1(r.wall):'–'}</td>`:''}<td>${r.obs.length||''}</td></tr>`).join('')}</tbody></table>`;};
+    return `<div class="pg"></div><h2>${st} – ring register</h2><table><thead><tr><th>Ring</th><th>Elevation (mm)</th><th>Circ. (m)</th><th>Buffing %</th><th>UT %</th><th>Status</th>${hw?'<th>Min wall (mm)</th>':''}<th>Obs.</th><th>VJ-1<br>B | UT %</th><th>VJ-2<br>B | UT %</th><th>VJ-3<br>B | UT %</th><th>VJ-4<br>B | UT %</th></tr></thead><tbody>${rs.map(r=>`<tr><td>${r.ring}</td><td>${elev(r.ring)}</td><td>${r.c}</td><td>${f1(r.bp)}</td><td>${f1(r.up)}</td><td>${r.status}</td>${hw?`<td>${r.wall?f1(r.wall):'–'}</td>`:''}<td>${r.obs.length||''}</td>${(r.vj||[]).map(j=>`<td style="white-space:nowrap">${f1(j.bp)} | ${f1(j.up)}</td>`).join('')}</tr>`).join('')}</tbody></table><div class="note">VJ-1…VJ-4 = four vertical joints of the ring; each cell shows buffing % | UT % of that joint (joint length ${f1(JLEN)} m unless a length is recorded).</div>`;};
   const refNote=S.nom>0?`Reference thickness: ${S.nom} mm (nominal entered by the user).`:'Reference thickness: '+STOVES.map(st=>st+' '+f1(refW(st))+' mm').join(' · ')+' (highest reading of each stove – no nominal entered).';
   return `<div class="hd">${R.logo&&R.logo.startsWith('data:image/')?`<img src="${esc(R.logo)}" alt="Logo">`:''}<div style="flex:1"><div class="pl">${esc(R.plant||'')}</div><h1>${esc(R.title||'Inspection report')}</h1><div class="pl">Hot blast stoves 1–3 · buffing and ultrasonic (UT) inspection of shell rings and vertical joints</div></div></div>
   ${S.fallback?'<div class="warn">SAMPLE DATA – the selected data source is empty, so this report shows the built-in sample figures. Do not issue.</div>':''}${!S.online&&!S.fallback?'<div class="warn">Cloud connection was offline – figures may not be the latest.</div>':''}
@@ -965,7 +1069,7 @@ $('#rpLogo').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)retu
 $('#rpClr').onclick=()=>{S.rep.logo='';saveRep();renderRepPrev();};
 $('#rpPrint').onclick=printReport;
 
-$('#azS').onchange=e=>{S.az=e.target.value;try{localStorage.setItem('stoveAz',S.az);}catch(x){}setAzUI();drawTwin();};
+
 
 /* ================= Boot ================= */
 ['hmP','chs'].forEach(id=>io.observe($('#'+id)));
