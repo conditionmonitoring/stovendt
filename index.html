@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -341,6 +342,15 @@ body{padding-left:calc(var(--sw) + 30px)}
 /* print stays plain white */
 @media print{body,html{background:#fff!important;background-image:none!important}.glass,.tabs,#sb,.rc,.kpi{backdrop-filter:none!important;box-shadow:none!important;background:#fff!important;border-radius:10px}.tabs,.fl,.stage::after{display:none!important}.stage{background:none;padding-top:0}.kpi::before{display:none}}
 body.rep-mode,body.rep-mode html{background:#fff!important;background-image:none!important}
+
+.fb{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;align-items:end;padding:14px;border-radius:22px;background:rgba(205,209,217,.28);border:1px dashed var(--bd)}
+.fb>b{grid-column:1/-1;font-size:13px}.fb label{font-size:12px;color:var(--mu);display:flex;flex-direction:column;gap:4px}
+.fb input,.fb select{width:100%;border-radius:14px;background:rgba(255,255,255,.55);border:1px solid var(--bd);padding:8px 10px}
+#sevL{display:flex;flex-direction:column;gap:6px}#sevL:empty{display:none}
+.sevr{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:6px 8px 6px 14px;border-radius:999px;background:rgba(255,255,255,.5);border:1px solid var(--bd);font-size:12px}
+.sevr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+.sevr select{width:auto;padding:5px 12px;font-size:12px;flex:none}
+.sevr i{width:10px;height:10px;border-radius:50%;flex:none}
 </style>
 </head>
 <body>
@@ -351,7 +361,7 @@ body.rep-mode,body.rep-mode html{background:#fff!important;background-image:none
   <div class="si" id="upl"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg></div><div class="sl"><small id="uls">Admin login required</small><label class="btn">Upload CSV<input id="file" type="file" accept=".csv,text/csv" hidden></label><small>Loads locally. Use “Push loaded CSV to cloud” in the admin form to save it.</small></div></div>
   <div class="si"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5M4 20h16"/></svg></div><div class="sl"><small>Export</small><div id="xm"><button class="btn" data-x="png">PNG snapshot</button><button class="btn" data-x="pdf">PDF (print dialog)</button><button class="btn" data-x="csv">Summary CSV</button><button class="btn" data-x="vjcsv">Vertical joints CSV</button><button class="btn" data-x="print">Print view</button></div></div></div>
   <div class="si"><div class="ic"><svg class="i" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></div><div class="sl"><small>View</small><button class="btn" id="bF" title="Fullscreen (F)">Fullscreen</button><label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto"> Auto refresh (30 s)</label></div></div>
-  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>MED</em></div>
+  <div class="sbf"><span><b>Copyright © 2026 Condition Monitoring</b>Developed by Sourav Biswal</span><em>CMC</em></div>
 </aside>
 <div class="wrap" id="app">
 <header class="glass">
@@ -428,7 +438,15 @@ body.rep-mode,body.rep-mode html{background:#fff!important;background-image:none
       <label>Buffing completed (m)<input id="aB" type="number" min="0" step="any"></label>
       <label>UT completed (m)<input id="aU" type="number" min="0" step="any"></label>
       <label>Min wall thickness (mm)<input id="aW" type="number" min="0" step="any" placeholder="optional"></label>
+      <div class="wide fb" id="fb"><b>Add a finding</b>
+        <label>Description<input id="fbD" type="text" placeholder="e.g. Undercut indication"></label>
+        <label>Angle (°)<input id="fbA" type="number" min="0" max="359" step="1" placeholder="0–359"></label>
+        <label>Depth (mm)<input id="fbH" type="number" min="0" step="any"></label>
+        <label>Length (mm)<input id="fbL" type="number" min="0" step="any"></label>
+        <label>Severity<select id="fbS"><option value="">Auto (from depth)</option><option value="Low">Low</option><option value="Medium">Medium</option><option value="High">High</option></select></label>
+        <button type="button" class="btn on" id="fbAdd">Add finding</button></div>
       <label class="wide">Observation (one finding per line, e.g. "Undercut at 270° Side: Depth 4.5mm, length 50mm")<textarea id="aO"></textarea></label>
+      <div class="wide" id="sevL" aria-label="Severity of each finding"></div>
       <div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn on" type="submit">Save to cloud</button><button class="btn" type="button" id="aP">Push loaded CSV to cloud</button><span id="am" style="font-size:12px;color:var(--mu);align-self:center"></span></div>
     </div>
     <div class="wide" id="pVJ" role="tabpanel" hidden>
@@ -543,9 +561,26 @@ const iso = d=>new Date(d).toISOString().slice(0,10);
 
 /* ================= Data layer ================= */
 // One observation line -> {angle, depth, length, severity}; angle comes from text such as "270°"
-function parseObs(t){return (t||'').split(/\n+/).map(s=>s.trim()).filter(Boolean).map(s=>{
-  const a=s.match(/(\d{1,3})\s*°/),d=s.match(/depth\s*([\d.]+)\s*mm/i),l=s.match(/length\s*([\d.]+)\s*mm/i),dep=d?+d[1]:null;
-  return {text:s,angle:a?(+a[1])%360:null,depth:dep,len:l?+l[1]:null,sev:dep>=4?3:dep>=2?2:1};});}
+const SEVTAG=/\s*\[\s*severity\s*:\s*(low|medium|high)\s*\]/i,SEVN={low:1,medium:2,high:3};
+/* Free-text observation reader: finds angle, depth and length however the team phrases it.
+   Handles "Depth 4.5mm", "depth found 11mm", "at a depth of 11-13 mm", "3 mm deep", "length found 450mm",
+   "extending approximately 120mm", "120 mm long", ranges (the larger value is used), cm / m units. */
+const NUMRX='(\\d+(?:[.,]\\d+)?)(?:\\s*(?:-|–|to)\\s*(\\d+(?:[.,]\\d+)?))?\\s*(mm|cm|m)?(?![a-z])';
+function _sz(m){if(!m)return null;const f=s=>parseFloat(String(s).replace(',','.')),u=(m[3]||'mm').toLowerCase(),k=u==='cm'?10:u==='m'?1000:1,a=f(m[1])*k,b=m[2]!=null?f(m[2])*k:null;
+  const hi=b!=null?Math.max(a,b):a,lo=b!=null?Math.min(a,b):a,r=x=>+x.toFixed(2);
+  return {v:r(hi),txt:(b!=null?r(lo)+'–'+r(hi):''+r(a))+' mm',end:m.index+m[0].length};}
+function readObs(s){
+  let rest=s,depth=null,len=null;
+  const take=(rx)=>{const m=rest.match(rx);if(!m)return null;const z=_sz(m);rest=rest.slice(0,m.index)+' '.repeat(m[0].length)+rest.slice(m.index+m[0].length);return z;};
+  const NN=NUMRX.replace(/\(\?!\[a-z\]\)$/,'');
+  depth=take(new RegExp('\\bdepth\\b[^0-9\\n]{0,28}?'+NUMRX,'i'))||take(new RegExp(NN+'\\s*deep\\b','i'));
+  len=take(new RegExp('\\b(?:length|extend(?:s|ing|ed)?|extent|spread(?:ing)?)\\b[^0-9\\n]{0,28}?'+NUMRX,'i'))||take(new RegExp(NN+'\\s*(?:long|in\\s+length|along)\\b','i'));
+  if(depth&&!len){const m=rest.match(new RegExp('(\\d+(?:[.,]\\d+)?)\\s*(mm|cm)\\b','i'));if(m){len=_sz([m[0],m[1],null,m[2]]);}}
+  return {depth,len};}
+function parseObs(t){return (t||'').split(/\n+/).map(s=>s.trim()).filter(Boolean).map(s0=>{
+  const tg=s0.match(SEVTAG),s=s0.replace(SEVTAG,'').trim();
+  const a=s.match(/(\d{1,3})\s*(?:°|º|deg(?:ree)?s?\b)/i),z=readObs(s),dep=z.depth?z.depth.v:null;
+  return {text:s,angle:a?(+a[1])%360:null,depth:dep,depthTxt:z.depth?z.depth.txt:'',len:z.len?z.len.v:null,lenTxt:z.len?z.len.txt:'',sev:tg?SEVN[tg[1].toLowerCase()]:(dep>=4?3:dep>=2?2:1),manual:!!tg};});}
 // Vertical joints: 4 per ring, equally spaced round 360° (0/90/180/270), 2.2 m each; buffing & UT tracked per joint
 const JLEN=2.2,JANG=[0,90,180,270],JVIEW={0:'Left',90:'Front',180:'Right',270:'Back'},EPS=1e-9;
 /* Angle conventions. Internal angle L: 0 = left, 90 = front, 180 = right, 270 = back (as seen in the default view).
@@ -866,8 +901,12 @@ function subscribe(){if(!sb)return;try{const h=()=>{clearTimeout(S.rt);S.rt=setT
   sb.channel('stove-rt').on('postgres_changes',{event:'*',schema:'public',table:TABLE},h).on('postgres_changes',{event:'*',schema:'public',table:VT},h).subscribe();}catch(e){}}
 
 /* ================= Admin form ================= */
+function setSevTag(line,v){line=line.replace(SEVTAG,'').trim();return v?line+' [Severity: '+v+']':line;}
+function renderSevL(){const ta=$('#aO'),L=ta.value.split(/\n/).filter(x=>x.trim()),box=$('#sevL');
+  box.innerHTML=L.length?'<small style="color:var(--mu);font-size:11px">Severity of each finding · Auto uses depth: &lt; 2 mm Low, 2–4 mm Medium, ≥ 4 mm High</small>'+L.map((x,i)=>{const o=parseObs(x)[0],tg=x.match(SEVTAG),cur=tg?tg[1][0].toUpperCase()+tg[1].slice(1).toLowerCase():'';
+    return `<div class="sevr"><i style="background:${SEV[o.sev]}"></i><span title="${esc(o.text)}">${esc(o.text)}</span><select data-i="${i}" aria-label="Severity"><option value="" ${cur===''?'selected':''}>Auto · ${['','Low','Medium','High'][o.sev]}</option>${['Low','Medium','High'].map(v=>`<option ${cur===v?'selected':''}>${v}</option>`).join('')}</select></div>`;}).join(''):'';}
 function fillForm(st,ring){$('#aS').value=st;$('#aR').value=ring;const r=S.data.find(x=>x.st===st&&x.ring===ring);
-  $('#aC').value=r?r.c:'';$('#aB').value=r?r.b:0;$('#aU').value=r?r.u:0;$('#aO').value=r?r.raw:'';$('#aW').value=r&&r.wall?r.wall:'';$('#am').textContent=r?'Existing values loaded':'New record';fillVJ(st,ring,r);}
+  $('#aC').value=r?r.c:'';$('#aB').value=r?r.b:0;$('#aU').value=r?r.u:0;$('#aO').value=r?r.raw:'';$('#aW').value=r&&r.wall?r.wall:'';$('#am').textContent=r?'Existing values loaded':'New record';renderSevL();fillVJ(st,ring,r);}
 /* ---- vertical joints form ---- */
 function vjRow(j){return `<div class="vjr" data-j="${j.j}"><div class="vjh"><i class="vjd"></i><b>VJ-${j.j}</b><small>${j.a}° · ${JVIEW[j.a]}</small><span class="chip vjc"></span></div>
   <label>Buffing done (m)<span class="vjin"><input class="vB" type="number" min="0" step="any" inputmode="decimal" value="${j.b}"><button type="button" class="btn" data-f="B" title="Set to full joint length">Full</button></span></label>
@@ -1020,7 +1059,7 @@ $('#nom').value=S.nom||'';
 $('#nom').oninput=deb(()=>{const v=+$('#nom').value;S.nom=v>0?v:0;try{localStorage.setItem('stoveNom',S.nom);}catch(x){}drawTwin();},250);
 
 /* ================= Inspection report (A4, print to PDF) ================= */
-const REPK='stoveRep',SRCN={cloud:'Cloud Server',csv:'Uploaded CSV (not yet pushed to cloud)',merge:'Cloud + CSV'},SVN=['','Low','Medium','High'];
+const REPK='stoveRep',SRCN={cloud:'Cloud (Supabase)',csv:'Uploaded CSV (not yet pushed to cloud)',merge:'Cloud + CSV'},SVN=['','Low','Medium','High'];
 S.rep=Object.assign({plant:'',title:'Hot Blast Stove – NDT Inspection Report',no:'',by:'',rev:'',app:'',logo:''},(()=>{try{return JSON.parse(localStorage.getItem(REPK)||'{}');}catch(e){return {};}})());
 const saveRep=()=>{try{localStorage.setItem(REPK,JSON.stringify(S.rep));}catch(e){toast('Could not store report settings in this browser');}};
 const elev=i=>`+${Math.round(RZ[i-1])} to +${Math.round(RZ[i])}`;
@@ -1050,7 +1089,7 @@ function reportHTML(){
   <div class="meta"><div><small>Report no.</small>${esc(no)}</div><div><small>Report date</small>${ds}</div><div><small>Prepared by</small>${esc(by)||'&nbsp;'}</div><div><small>Angle convention</small>${S.az==='dwg'?'0° front · 90° left · 180° back · 270° right':'0° left · 90° front · 180° right · 270° back'}</div><div><small>Data source</small>${SRCN[S.src]||esc(S.src)}</div><div><small>Generated</small>${ts}</div></div>
   <h2>1. Summary</h2><table><thead><tr><th>Stove</th><th>Rings</th><th>Buffing %</th><th>UT %</th><th>Rings UT-complete</th><th>VJ buffed</th><th>VJ UT done</th><th>Observations</th>${hw?'<th>Lowest wall (mm)</th>':''}</tr></thead><tbody>${STOVES.map(st=>sumRow(st,S.data.filter(r=>r.st===st))).join('')}<tr><td><b>All</b></td><td>${aT.n}</td><td>${f1(aT.bp)}</td><td>${f1(aT.up)}</td><td>${aT.done}/${aT.n}</td><td>${vT.b}/${vT.n}</td><td>${vT.u}/${vT.n}</td><td>${aT.obs}</td>${hw?`<td>${(()=>{const w=S.data.filter(r=>r.wall).map(r=>r.wall);return w.length?f1(Math.min(...w)):'–';})()}</td>`:''}</tr></tbody></table>
   <h2>2. Observations register <small>${obs.length} total · High ${sc[0]} · Medium ${sc[1]} · Low ${sc[2]}</small></h2>
-  ${obs.length?`<table><thead><tr><th>Stove</th><th>Ring</th><th>Ring elevation (mm)</th><th>Angle</th><th>Depth</th><th>Length</th><th>Severity</th><th>Description</th></tr></thead><tbody>${obs.map(x=>`<tr><td>${x.r.st}</td><td>${x.r.ring}</td><td>${elev(x.r.ring)}</td><td>${x.o.angle!==null?x.o.angle+'°':'–'}</td><td>${x.o.depth!==null?x.o.depth+' mm':'–'}</td><td>${x.o.len!==null?x.o.len+' mm':'–'}</td><td class="sev${x.o.sev}">${SVN[x.o.sev]}</td><td>${esc(x.o.text)}</td></tr>`).join('')}</tbody></table>`:'<p>No observations recorded.</p>'}
+  ${obs.length?`<table><thead><tr><th>Stove</th><th>Ring</th><th>Ring elevation (mm)</th><th>Angle</th><th>Depth</th><th>Length</th><th>Severity</th><th>Description</th></tr></thead><tbody>${obs.map(x=>`<tr><td>${x.r.st}</td><td>${x.r.ring}</td><td>${elev(x.r.ring)}</td><td>${x.o.angle!==null?x.o.angle+'°':'–'}</td><td>${x.o.depth!==null?x.o.depthTxt:'–'}</td><td>${x.o.len!==null?x.o.lenTxt:'–'}</td><td class="sev${x.o.sev}">${SVN[x.o.sev]}</td><td>${esc(x.o.text)}</td></tr>`).join('')}</tbody></table>`:'<p>No observations recorded.</p>'}
   ${vjn.length?`<h2>Vertical joint notes</h2><table><thead><tr><th>Stove</th><th>Ring</th><th>Joint</th><th>Note</th></tr></thead><tbody>${vjn.map(x=>`<tr><td>${x.r.st}</td><td>${x.r.ring}</td><td>VJ-${x.j.j} @ ${x.j.a}°</td><td>${esc(x.j.raw)}</td></tr>`).join('')}</tbody></table>`:''}
   ${fig('ut','3. Stove diagrams – UT progress','Rings outlined in red carry at least one observation. Elevations (mm) are indicative (±50 mm).')}
   ${hw?fig('wall','4. Stove diagrams – wall thickness',refNote+' Rings without a reading are grey.'):''}
@@ -1078,6 +1117,11 @@ function showTab(t){S.tab=t;$$('[data-tab]').forEach(e=>{e.hidden=e.dataset.tab!
   {const fb=$('.bar-f');if(fb)fb.style.display=(t==='adm'||t==='rpt')?'none':'';}
   if(t==='rpt')renderRepPrev();
   requestAnimationFrame(()=>{renderCharts();window.dispatchEvent(new Event('resize'));});}
+$('#aO').addEventListener('input',renderSevL);
+$('#sevL').addEventListener('change',e=>{const s=e.target.closest('select');if(!s)return;const ta=$('#aO'),L=ta.value.split(/\n/).filter(x=>x.trim());L[+s.dataset.i]=setSevTag(L[+s.dataset.i],s.value);ta.value=L.join('\n');renderSevL();});
+$('#fbAdd').onclick=()=>{const d=$('#fbD').value.trim()||'Indication',a=$('#fbA').value,h=$('#fbH').value,l=$('#fbL').value,sv=$('#fbS').value;
+  let line=d+(a!==''?' at '+(((+a)%360+360)%360)+'° Side':'')+((h!==''||l!=='')?': ':'')+(h!==''?'Depth '+h+'mm':'')+(h!==''&&l!==''?', ':'')+(l!==''?'length '+l+'mm':'');
+  line=setSevTag(line,sv);const ta=$('#aO');ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+line;renderSevL();['fbD','fbA','fbH','fbL'].forEach(k=>$('#'+k).value='');$('#fbS').value='';};
 $('#tabs').onclick=e=>{const b=e.target.closest('[data-go]');if(b)showTab(b.dataset.go);};
 setAzUI();S.data=parseCSV(SAMPLE);render();rotate(90);subscribe();
 {const h=(location.hash||'').slice(1);showTab(['ov','tw','jt','adm','ob','rpt'].includes(h)?h:'ov');}
